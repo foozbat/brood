@@ -1,0 +1,15 @@
+<Files autoload.php,init.php>
+order allow,deny
+Deny from all
+</Files>
+
+<Files *.ini>
+order allow,deny
+Deny from all
+</Files>
+
+RewriteEngine on
+RewriteCond %{SCRIPT_FILENAME} !-f
+RewriteCond %{SCRIPT_FILENAME} !-d
+RewriteCond %{SCRIPT_FILENAME} !-l
+RewriteRule ^(.*)$ index.php/$1

@@ -1,0 +1,18 @@
+{
+    "autoload": {
+        "psr-4": {
+            "TestApp\\": [ "models/" ]
+        }
+    },
+
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/foozbat/fzb"
+        }
+    ],
+
+    "require": {
+        "fzb/fzb": "dev-master"
+    }
+}

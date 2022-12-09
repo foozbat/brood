@@ -1,0 +1,6 @@
+*.ini
+vendor/
+composer.lock
+.phpunit*
+phpunit
+tailwindcss
