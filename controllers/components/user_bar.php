@@ -13,6 +13,10 @@ $router->get("/components/user_bar", function () use ($renderer) {
         'Jean Luc Picard', 'Deanna Troi', 'Data', 'Will Riker', 'Beverly Crusher',
         'Jean Luc Picard', 'Deanna Troi', 'Data', 'Will Riker', 'Beverly Crusher the Ship Doctor',
         'Jean Luc Picard', 'Deanna Troi', 'Data', 'Will Riker', 'Beverly Crusher',
+        'Jean Luc Picard', 'Deanna Troi', 'Data', 'Will Riker', 'Beverly Crusher',
+        'Jean Luc Picard', 'Deanna Troi', 'Data', 'Will Riker', 'Beverly Crusher',
+        'Jean Luc Picard', 'Deanna Troi', 'Data', 'Will Riker', 'Beverly Crusher',
+        'Jean Luc Picard', 'Deanna Troi', 'Data', 'Will Riker', 'Beverly Crusher',
         'Jean Luc Picard', 'Deanna Troi', 'Data', 'Will Riker', 'Beverly Crusher'
     ]);
 

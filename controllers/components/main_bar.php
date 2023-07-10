@@ -17,13 +17,19 @@ $router->get("/components/main_bar", function () use ($renderer) {
             ["Programming", "forum", 323],
             ["Graphic Design", "forum", 123],
             ["Web Development", "forum", "2.1K"],
-            ["API Design", "forum", 21]
+            ["API Design Super Long API Name That is so Long", "forum", 21]
         ],
         "More Discussion" => [
             ["Interesting Chat", "chat", 0],
             ["Uniteresting Chat", "chat", 0],
             ["Meme Contest", "chat", 0],
             ["Streaming Cat Videos", "video", "LIVE"],
+        ],
+        "More More Discussion" => [
+            ["More Interesting Chat", "chat", 0],
+            ["More Uniteresting Chat", "chat", 0],
+            ["More Meme Contest", "chat", 0],
+            ["More Streaming Cat Videos", "video", "LIVE"],
         ]
     ]);
 

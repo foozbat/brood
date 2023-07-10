@@ -1,21 +1,18 @@
 <?php 
 
+require_once("components/user_icon.tpl.php");
+
 function user_entry($username, $status) { ?>
     <a href="#" class="
-        flex items-center 
+        flex 
         w-full 
-        space-x-3 pb-1 pt-1 px-2
+        space-x-3 pb-1 pt-1 px-1
         rounded-md 
-        hover:bg-zinc-100 hover:dark:bg-zinc-900
+        items-center
+        hover:bg-zinc-200 hover:text-black 
+        hover:dark:bg-zinc-900 hover:dark:text-white
     ">
-        <div class="
-            inline-flex overflow-hidden relative 
-            justify-center items-center 
-            w-8 h-8 
-            rounded-md
-            bg-zinc-100 dark:bg-zinc-600">
-            <span class="text-sm text-zinc-600 dark:text-zinc-300">DT</span> 
-        </div>
+        <?php user_icon() ?>
         <div>
             <div class="text-sm"><?= $username ?></div>
             <div class="text-xs text-zinc-500"><?= $status ?></div>
@@ -23,23 +20,70 @@ function user_entry($username, $status) { ?>
     </a><?php 
 } ?>
 
-<div class="
-    flex flex-col
-    space-y-1 p-2
-    rounded-md border-r-2 border-b-2 
-    border-zinc-300 dark:border-black
-    bg-zinc-200 dark:bg-zinc-950
-    text-zinc-800 dark:text-zinc-300
-">
-    <span class="text-lg pb-2">
-        <i class="bx bxs-chevron-right"></i>
-        <i class="bx bxs-user"></i>
-        Online Now
-    </span>
+<div 
+    id="user_bar"
+    class="
+        flex flex-col
+        space-y-1 m-1 p-2 mb-2
+        rounded-md border-r-2 border-b-2 
+        border-zinc-300 dark:border-black
+        bg-zinc-100 dark:bg-zinc-950
+        text-zinc-800 dark:text-zinc-300
+        
+    "
+>
+    <div
+        class="
+            flex justify-center items-center 
+            w-full 
+            space-x-3 pb-1 pt-1 px-2
+            rounded-md 
+            hover:bg-zinc-200 hover:text-black 
+            hover:dark:bg-zinc-900/50 hover:dark:text-white
+            text-zinc-600 dark:text-zinc-400
+            cursor-pointer
+        "
+        @click="show_user_bar = !show_user_bar"
+    >
+<!--         @click="expand_user_bar = !expand_user_bar" -->
+            <div 
+                class="
+                    inline-flex overflow-hidden 
+                    justify-center items-center 
+                    w-[32px] h-[32px] 
+                    text-2xl
+                    pr-3
+                "
+            >
+                <i class="bx bxs-user z-10 absolute text-zinc-600 dark:text-zinc-400"></i> 
+                <i class="bx bxs-user z-20 absolute text-zinc-200 dark:text-black translate-x-1"></i> 
+                <i class="bx bxs-user z-20 absolute text-zinc-600 dark:text-zinc-400 translate-x-2"></i>
+            </div>
+        
+        <span
+            class="
+                inline-block
+                w-full
+                align-middle
+                uppercase font-bold text-sm 
+            "
+        >
+            Online Now
+        </span>
+        <span
+            class="
+                inline-block
+                align-middle
+                text-sm font-bold uppercase
+            "
+        >
+            <i class='bx bx-chevrons-right text-2xl' ></i>
+        </span>
+    </div>
     
     <?php 
-        foreach ($users as $user) { 
-            user_entry($user, "blah");
+        for ($i=0; $i<rand(10,sizeof($users)); $i++) { 
+            user_entry($users[$i], "blah");
         }
     ?>
 </div>
