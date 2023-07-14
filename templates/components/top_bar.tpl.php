@@ -13,7 +13,7 @@ $top_bar = function () {
         flex fixed 
         w-full h-<?= $top_bar_height ?>
         items-center justify-between p-2
-        border-b-2 border-zinc-200 dark:border-zinc-700
+        shadow-lg
         text-zinc-100 bg-black
         z-20
         space-x-2
@@ -25,9 +25,9 @@ $top_bar = function () {
             hx-push-url="true"
         >
             <div class="flex items-left">
-                <div class="flex text-lg lg:text-3xl">
+                <div class="flex text-2xl lg:text-3xl">
                     <i class='bx bx-layer pr-2' ></i>
-                    megaboard.<span class="text-red-700">chat</span>
+                    brood</span>
                 </div>
             </div>
         </a>
@@ -132,10 +132,11 @@ $top_bar = function () {
                 class="
                     absolute 
                     right-2 mt-1 w-48
-                    divide-y divide-zinc-200 dark:divide-zinc-800
+                    divide-y divide-zinc-200 dark:divide-zinc-900
                     rounded-md 
                     border border-zinc-200 dark:border-black
-                    bg-white dark:bg-zinc-700
+                    bg-white dark:bg-zinc-800
+                    text-md text-zinc-800 dark:text-zinc-200
                     shadow-lg
                     z-50
                 "
@@ -143,17 +144,51 @@ $top_bar = function () {
                 x-show="show_profile_menu" 
                 x-transition
             >
-                <div class="flex items-center space-x-2 p-2 text-sm font-bold">
+                <div class="
+                    flex items-center 
+                    space-x-2 p-2 text-sm 
+                    font-bold
+                ">
                     Username
                 </div>
 
-                <div class="flex flex-col space-y-3 p-2">
-                    <a href="#" class="transition hover:text-red-600"><i class='bx bxs-user'></i> Profile</a>
-                    <a href="#" class="transition hover:text-red-600"><i class='bx bxs-cog' ></i> Settings</a>
+                <div class="flex flex-col">
+                    <a 
+                        href="#" 
+                        class="
+                            rounded-md p-2
+                            transition
+                            hover:text-black hover:dark:text-white
+                            hover:bg-zinc-400 hover:dark:bg-zinc-700/50
+                        "
+                    >
+                        <i class='bx bxs-user'></i> Profile
+                    </a>
+                    <a 
+                        href="#" 
+                        class="
+                            rounded-md p-2
+                            transition
+                            hover:text-black hover:dark:text-white
+                            hover:bg-zinc-400 hover:dark:bg-zinc-700/50
+                        "
+                    >
+                        <i class='bx bxs-cog' ></i> Settings
+                    </a>
                 </div>
 
-                <div class="flex flex-col space-y-3 p-2">
-                    <a href="#" class="transition hover:text-red-600"><i class='bx bx-log-out' ></i> Log Out</a>
+                <div class="flex flex-col">
+                    <a 
+                        href="#" 
+                        class="
+                            rounded-md p-2
+                            transition
+                            hover:text-black hover:dark:text-white
+                            hover:bg-zinc-400 hover:dark:bg-zinc-700/50
+                        "
+                    >
+                        <i class='bx bx-log-out' ></i> Log Out
+                    </a>
                 </div>
             </div>
         </div>

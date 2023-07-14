@@ -4,6 +4,7 @@
  */
 
 require_once "components/user_icon.tpl.php";
+require_once "utils/bbcode.php";
 
 Fzb\extend("layouts/app_main.tpl.php");
 
@@ -12,11 +13,11 @@ function post_action_button(string $type) {
     $button_info = [
         'reply' => [
             'title' => 'Reply',
-            'icon' => 'bx-pencil text-amber-800'
+            'icon' => 'bx-pencil text-amber-800 dark:text-amber-500'
         ],
         'quote' => [
             'title' => 'Quote',
-            'icon' => 'bxs-quote-alt-left'
+            'icon' => 'bxs-quote-alt-left text-green-600'
         ],
         'like' => [
             'title' => 'Like',
@@ -47,7 +48,7 @@ function post_action_button(string $type) {
 
 function thread_post($post) { ?>
     <div class="
-        flex flex-wrap lg:flex-nowrap w-full space-x-3 
+        flex flex-wrap lg:flex-nowrap w-full
         bg-white dark:bg-zinc-800 
         text-zinc-950 dark:text-zinc-300
         rounded-md
@@ -62,7 +63,7 @@ function thread_post($post) { ?>
                 <p>
                     <a 
                         href="#"
-                        class="text-blue-500 font-bold"
+                        class="text-blue-500 hover:text-blue-400 hover:underline font-bold"
                     >
                         <?= $post['poster'] ?>
                     </a>
@@ -101,16 +102,20 @@ function thread_post($post) { ?>
                 </span>
             </div>
 
-            <p class="pt-2 pb-4">
-            
-                <?= $post['content'] ?>
-            </p>
-            <p class="text-right">
+            <div class="pt-2 pb-4">
+                <?php
+                    $content = (string) $post['content'];
+                    $content = bbcode($content);
+                    $content = str_replace("\n", "<br />", $content);
+                    echo $content;    
+                ?>
+            </div>
+            <div class="text-right">
                 <?php post_action_button('reply') ?>
                 <?php post_action_button('quote') ?>
                 <?php post_action_button('like') ?>
                 <?php post_action_button('report') ?>
-            </p>
+            </div>
         </div>
     </div><?php
 }

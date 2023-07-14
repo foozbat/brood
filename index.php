@@ -7,7 +7,7 @@
 */
 
 if (!preg_match('/^8\.1/i', phpversion())) {
-	die("Fzb Framework requires PHP version 8.1 or newer.");
+	die("brood requires PHP version 8.1 or newer.");
 }
 
 ini_set('display_errors', 1);

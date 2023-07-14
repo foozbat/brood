@@ -3,7 +3,7 @@
    //
 */
 
-define('APP_NAME', 'MegaboardX');
+define('APP_NAME', 'brood');
 
 define('APP_DIR', __DIR__);
 define('DEFAULT_CONTROLLER', 'index.php');

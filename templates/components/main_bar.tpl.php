@@ -5,21 +5,24 @@ function item_link($label, string $type, $posts) {
         "pin" => "bx bxs-pin",
         "forum" => "bx bxs-conversation",
         "chat" => "bx bx-hash",
-        "video" => "bx bxs-video"
+        "video" => "bx bxs-video",
+        "links" => "bx bx-link"
     ];
 
     ?>
     <a 
         class="
             flex items-center space-x-1 rounded-md px-2 
-            hover:text-black 
-            hover:bg-blue-800/20 hover:dark:text-white
+            hover:bg-zinc-200 hover:dark:bg-zinc-900 
+            hover:text-black hover:dark:text-white
         "
         href="/test_forum"
         hx-get="/test_forum"
         hx-target="#content_area"
         hx-replace-url="true"
         hx-push-url="true"
+
+        @click="(is_mobile ? show_main_bar=false: '')"
     >
         <span class="text-lg"><i class="<?= $icons[$type] ?>"></i></span>
         <span class="text-sm w-full"><?= $label ?></span>
@@ -50,6 +53,7 @@ function item_link($label, string $type, $posts) {
         space-y-1 m-1 p-2 mb-2
         rounded-md border-r-2 border-b-2 
         border-zinc-300 dark:border-black
+        shadow-lg
         bg-zinc-100 dark:bg-zinc-950
         text-zinc-800 dark:text-zinc-300
     "

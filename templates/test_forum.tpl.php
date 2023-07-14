@@ -7,7 +7,11 @@ require_once "components/user_icon.tpl.php";
 
 Fzb\extend("layouts/app_main.tpl.php");
 
-function forum_thread(array $thread) { ?>
+function forum_thread(array $thread) { 
+    // test
+    $bold = rand(0,1);
+    
+    ?>
     <div class="
         flex
         space-x-3 
@@ -26,7 +30,7 @@ function forum_thread(array $thread) { ?>
         <div class="w-full">
             <p>
                 <a 
-                    class="text-blue-500"
+                    class="text-blue-500 hover:text-blue-400 hover:underline <?php if ($bold): ?>font-bold<?php endif ?>"
                     href="/test_thread"
                     hx-get="/test_thread"
                     hx-target="#content_area"
@@ -36,14 +40,14 @@ function forum_thread(array $thread) { ?>
                     <?= $thread['title'] ?>
                 </a>
             </p>
-            <span class="text-xs"><?= $thread['poster'] ?></span>
+            <span class="text-sm"><?= $thread['poster'] ?></span>
         </div>
         <!-- replies and views -->
-        <div class="flex flex-wrap lg:flex-nowrap">
+        <div class="flex flex-wrap xl:flex-nowrap">
             <div class="
                 flex flex-nowrap 
                 items-center
-                pr-1 lg:pr-2
+                xl:pr-6
                 text-zinc-600 dark:text-zinc-400
             ">
                 <i class='bx bxs-message text-xl pr-2' ></i> <span class="text-sm">123</span>
@@ -51,7 +55,7 @@ function forum_thread(array $thread) { ?>
             <div class="
                 flex flex-nowrap
                 items-center
-                pr-1 lg:pr-2
+                xl:pr-6
                 text-zinc-600 dark:text-zinc-400
             ">
             <i class='bx bx-show text-xl pr-2' ></i> <span class="text-sm">4.1K</span>
@@ -124,11 +128,18 @@ $content = function () use ($title, $threads, $forum_description) { ?>
                     <i class="bx bx-collection"></i>
                     General Discussion
                 </button>
-</div>
+            </div>
 
-            <p class="p-8 pt-5 text-sm">
+            <div class="
+                p-4 mt-4 mb-4
+                text-sm
+                bg-zinc-100 dark:bg-zinc-950 
+                text-zinc-950 dark:text-zinc-300
+                rounded-md
+                border-l-4 border-zinc-400 dark:border-zinc-600
+            ">
                 <?= $forum_description ?>
-            </p>
+            </div>
 
             <!-- Thread List -->
             <div id="threads">

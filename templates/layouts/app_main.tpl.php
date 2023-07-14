@@ -8,7 +8,7 @@ require "components/page_footer.tpl.php";
 
 ?>
 <?php if ($_SERVER['HTTP_HX_REQUEST']): ?>
-    <title>megaboard.chat: <?= $title ?></title>
+    <title>brood: <?= $title ?></title>
     <?php $content() ?>
 <?php else: ?>
 
@@ -17,7 +17,7 @@ require "components/page_footer.tpl.php";
 
 <head>
     <meta charset="utf-8">
-    <title>megaboard.chat: <?= $title ?></title>
+    <title>brood: <?= $title ?></title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -31,9 +31,9 @@ require "components/page_footer.tpl.php";
 
     <link rel="stylesheet" href="/static/app.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <script src="https://unpkg.com/htmx.org@1.8.2" integrity="sha384-+8ISc/waZcRdXCLxVgbsLzay31nCdyZXQxnsUy++HJzJliTzxKWr0m1cIEMyUzQu" crossorigin="anonymous"></script>
-    <script src="https://unpkg.com/alpinejs-swipe"></script>
-    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="/static/htmx.min.js"></script>
+    <script src="https://unpkg.com/alpinejs-swipe@1.0.2/dist/cjs.js"></script>
+    <script defer src="/static/alpinejs.min.js"></script>
 
     <style>
         [x-cloak] { display: none !important; }
@@ -81,7 +81,7 @@ require "components/page_footer.tpl.php";
                 fixed
                 overflow-y-auto
                 z-10
-                w-72
+                w-72 lg:w-64 xl:w-72
             "
 
             hx-get="/components/main_bar"
@@ -89,6 +89,7 @@ require "components/page_footer.tpl.php";
 
             x-show="show_main_bar"
             x-swipe:left="show_main_bar = false"
+            @click.away="(is_mobile ? show_main_bar = false : '')"
 
             x-transition:enter="transition duration-250"
             x-transition:enter-start="transform -translate-x-full opacity-0 scale-90"
@@ -110,13 +111,11 @@ require "components/page_footer.tpl.php";
                 flex flex-col
             "
             :class="{ 
-                'pl-0': show_main_bar,
-                'lg:pl-72': show_main_bar,
-                'lg:pl-32': !show_main_bar,
+                'pl-0 lg:pl-64 xl:pl-72': show_main_bar,
+                'pl-0 lg:pl-32 xl:pl-48': !show_main_bar,
 
-                'lg:pr-64': show_user_bar,
-                'pr-0': !show_user_bar,
-                'lg:pr-32': !show_user_bar,
+                'pr-0 lg:pr-48 xl:pr-64': show_user_bar,
+                'pr-0 lg:pr-32 xl:pr-48': !show_user_bar,
             }"
 
             x-swipe:right.threshold.100px="
@@ -148,7 +147,7 @@ require "components/page_footer.tpl.php";
                 right-0 fixed
                 overflow-y-auto 
                 z-10
-                w-64
+                w-64 lg:w-48 xl:w-64
             "
 
             hx-get="/components/user_bar"
@@ -156,6 +155,7 @@ require "components/page_footer.tpl.php";
 
             x-show="show_user_bar"
             x-swipe:right="show_user_bar = false"
+            @click.away="(is_mobile ? show_user_bar = false : '')"
 
             x-transition:enter="transition duration-250"
             x-transition:enter-start="transform translate-x-full opacity-0 scale-90"

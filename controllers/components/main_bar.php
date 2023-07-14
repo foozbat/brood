@@ -19,15 +19,15 @@ $router->get("/components/main_bar", function () use ($renderer) {
             ["Web Development", "forum", "2.1K"],
             ["API Design Super Long API Name That is so Long", "forum", 21]
         ],
-        "More Discussion" => [
+        "More Groups" => [
             ["Interesting Chat", "chat", 0],
             ["Uniteresting Chat", "chat", 0],
-            ["Meme Contest", "chat", 0],
+            ["Meme Links", "links", 0],
             ["Streaming Cat Videos", "video", "LIVE"],
         ],
-        "More More Discussion" => [
-            ["More Interesting Chat", "chat", 0],
-            ["More Uniteresting Chat", "chat", 0],
+        "More More Groups" => [
+            ["More Interesting Links", "links", 0],
+            ["More Uniteresting Links", "links", 0],
             ["More Meme Contest", "chat", 0],
             ["More Streaming Cat Videos", "video", "LIVE"],
         ]

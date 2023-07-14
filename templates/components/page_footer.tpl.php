@@ -15,13 +15,11 @@ $page_footer = function () {  ?>
             text-center  lg:text-left
         "
         :class="{ 
-            'pl-0': show_main_bar,
-            'lg:pl-72': show_main_bar,
-            'lg:pl-32': !show_main_bar,
+            'pl-0 lg:pl-64 xl:pl-72': show_main_bar,
+            'pl-0 lg:pl-32 xl:pl-48': !show_main_bar,
 
-            'lg:pr-64': show_user_bar,
-            'pr-0': !show_user_bar,
-            'lg:pr-32': !show_user_bar,
+            'pr-0 lg:pr-48 xl:pr-64': show_user_bar,
+            'pr-0 lg:pr-32 xl:pr-48': !show_user_bar,
         }"
     >
 
@@ -34,15 +32,8 @@ $page_footer = function () {  ?>
                 <div class="">
                     <h6
                     class="mb-4 flex items-center justify-center font-semibold uppercase md:justify-start">
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                        class="mr-3 h-3 w-3">
-                        <path
-                        d="M12.378 1.602a.75.75 0 00-.756 0L3 6.632l9 5.25 9-5.25-8.622-5.03zM21.75 7.93l-9 5.25v9l8.628-5.032a.75.75 0 00.372-.648V7.93zM11.25 22.18v-9l-9-5.25v8.57a.75.75 0 00.372.648l8.628 5.033z" />
-                    </svg>
-                    megaboard.chat
+                        <i class='bx bx-layer pr-2' ></i>
+                        brood
                     </h6>
                     <p>
                         Here you can use rows and columns to organize your footer
@@ -52,9 +43,8 @@ $page_footer = function () {  ?>
                 </div>
                 <!-- Products section -->
                 <div class="">
-                    <h6
-                    class="mb-2 flex justify-center font-semibold uppercase md:justify-start">
-                    Products
+                    <h6 class="mb-2 flex justify-center font-semibold uppercase md:justify-start">
+                        Products
                     </h6>
                     <p class="mb-2">
                         <a href="#!">Forums</a>
@@ -71,29 +61,20 @@ $page_footer = function () {  ?>
                 </div>
                 <!-- Useful links section -->
                 <div class="">
-                    <h6
-                    class="mb-2 flex justify-center font-semibold uppercase md:justify-start">
-                    Useful links
+                    <h6 class="mb-2 flex justify-center font-semibold uppercase md:justify-start">
+                        Useful links
                     </h6>
                     <p class="mb-2">
-                    <a href="#!" 
-                        >Pricing</a
-                    >
+                        <a href="#!">Pricing</a>
                     </p>
                     <p class="mb-2">
-                    <a href="#!" 
-                        >Settings</a
-                    >
+                        <a href="#!">Settings</a>
                     </p>
                     <p class="mb-2">
-                    <a href="#!" 
-                        >Orders</a
-                    >
+                        <a href="#!">Orders</a>
                     </p>
                     <p>
-                    <a href="#!" 
-                        >Help</a
-                    >
+                        <a href="#!">Help</a>
                     </p>
                 </div>
                 <!-- Contact section -->
@@ -160,11 +141,11 @@ $page_footer = function () {  ?>
 
         <!--Copyright section-->
         <div class="p-2 text-center">
-            <span>© 2023 Copyright:</span>
-            <a
-            class="font-semibold text-zinc-600 dark:text-zinc-500"
-            href="https://tailwind-elements.com/"
-            >megaboard.chat</a>
+            <p class="text-md">
+                <a href="https://brood.chat">
+                    <i class="bx bxs-zap"></i> Powered by <i class='bx bx-layer' ></i> brood
+                </a>
+            </p>            
         </div>
     </footer><?php
 };

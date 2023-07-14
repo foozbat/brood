@@ -9,6 +9,8 @@ module.exports = {
       'w-[64px]', 'h-[64px]',
       'w-64', 'w-72', 'w-80',
       'pl-72', 'lg:pl-32', 'lg:pr-32', 'pr-16',
+      'text-[64px]',
+      'list-disc',
       {
          pattern: /bg-(zinc|red|orange|yellow|green|blue|purple|pink)-(700)/
       },
