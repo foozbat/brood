@@ -1,6 +1,70 @@
 <?php 
+/*
+    Main Menu Bar Component
+*/
 
-function item_link($label, string $type, $posts) { 
+require_once("components/user_icon.tpl.php");
+
+function heading_link(string $label, string $type, $href='', $unread=0, $target="#content_area", $swap="innerHTML") {
+    $icons = [
+        "home"  => "bx bxs-home",
+        "dm"    => "bx bxs-message-rounded",
+        "group" => "bx bx-list-ul",
+    ];
+
+    ?>
+    <div
+        class="
+            flex justify-center items-center 
+            w-full 
+            space-x-2 pb-2 pt-1 px-2
+            rounded-md 
+            text-zinc-600 dark:text-zinc-400
+            hover:bg-zinc-200 hover:text-black 
+            hover:dark:bg-zinc-900 hover:dark:text-white
+            cursor-pointer
+        "
+        <?php if ($href): ?>
+            hx-get="<?= $href ?>"
+            hx-target="<?= $target ?>"
+            hx-swap="<?= $swap ?>"
+        <?php endif ?>
+    >
+        <div 
+            class="
+                inline-flex overflow-hidden 
+                justify-center items-center 
+                w-[32px] h-[32px] 
+                text-2xl
+            "
+        >
+            <i class='<?= $icons[$type] ?>' ></i>
+        </div>
+        <span
+            class="
+                inline-block
+                w-full
+                align-middle
+                uppercase font-bold text-sm 
+            "
+        >
+            <?= $label ?>
+        </span>
+        <?php if ($unread): ?>
+            <span class="
+                transform rounded-full
+                px-1.5 py-0.5
+                border-r-2 border-b-2 border-red-950
+                text-xs font-bold leading-none 
+                text-white bg-red-700
+            ">
+                <?= $unread ?>
+            </span>
+        <?php endif ?>
+    </div><?php
+}
+
+function item_link(string $label, string $type, $posts) { 
     $icons = [
         "pin" => "bx bxs-pin",
         "forum" => "bx bxs-conversation",
@@ -44,6 +108,37 @@ function item_link($label, string $type, $posts) {
     </a><?php
 }
 
+function dm_link($user) { ?>
+    <a href="#" class="
+        flex 
+        w-full 
+        space-x-3 pb-1 pt-1 px-1
+        rounded-md 
+        items-center
+        hover:bg-zinc-200 hover:dark:bg-zinc-900 
+        hover:text-black hover:dark:text-white
+    ">
+        <?php user_icon() ?>
+        <div class="w-full">
+            <div class="text-sm"><?= $user['username'] ?></div>
+            <div class="text-xs text-zinc-500 w-full"><?= $status ?></div>
+        </div>
+        <div>
+            <?php if ($user['unread']): ?>
+                <span class="
+                    transform rounded-full
+                    px-1.5 py-0.5
+                    border-r-2 border-b-2 border-red-950
+                    text-xs font-bold leading-none 
+                    text-white bg-red-700
+                ">
+                <?= $user['unread'] ?>
+                </span>
+            <?php endif ?>
+        </div>
+    </a><?php 
+} 
+
 ?>
 
 <div 
@@ -58,69 +153,36 @@ function item_link($label, string $type, $posts) {
         text-zinc-800 dark:text-zinc-300
     "
 >
-    <div
-        class="
-            flex justify-center items-center 
-            w-full 
-            space-x-3 pb-1 pt-1 px-2
-            rounded-md 
-            text-zinc-600 dark:text-zinc-400
-            hover:bg-zinc-200 hover:text-black 
-            hover:dark:bg-zinc-900/50 hover:dark:text-white
-            cursor-pointer
-        "
-        @click="show_main_bar = !show_main_bar"
-    >
-        <div 
-            class="
-                inline-flex overflow-hidden 
-                justify-center items-center 
-                w-[32px] h-[32px] 
-                text-3xl
-            "
-        >
-            <i class='bx bx-list-ul' ></i>
-        </div>
-        
-        <span
-            class="
-                inline-block
-                w-full
-                align-middle
-                uppercase font-bold text-sm 
-            "
-        >
-            Groups
-        </span>
-        <span
-            class="
-                inline-block
-                align-middle
-                text-sm font-bold uppercase
-            "
-        >
-            <i class='bx bx-chevrons-left text-2xl' ></i>
-        </span>
-    </div>
 
-    <?php foreach ($forum_index as $section_name => $section_data): ?>
-        <div 
-            class="
-                flex flex-col 
-                space-y-1 m-1 pb-4
-                
-                border-zinc-300 dark:border-black
-                bg-zinc-100 dark:bg-zinc-950
-                text-zinc-800 dark:text-zinc-300
-            "
-        >
-            <span class="text-lg pb-2">
-                <i class="bx bx-collection"></i>
-                <?= $section_name ?>
-            </span>
-            
-            <?php foreach ($section_data as $section_item): ?>
-                <?php item_link(...$section_item) ?>
-            <?php endforeach ?>
-        </div>
-    <?php endforeach ?>
+    <!-- Private Messages -->
+    <?php heading_link("Direct Messages", "dm", "/components/main_bar/dm", 5, "#main_bar", "outerHTML"); ?>
+    
+    <!-- Home -->
+    <?php heading_link("Home", "home", "/") ?>
+
+
+    <!-- Groups Index -->
+    <?php if ($dm_users): ?>
+        <?php foreach ($dm_users as $user): ?>
+            <?php dm_link($user) ?>
+        <?php endforeach ?>
+    <?php else: ?>
+        <?php foreach ($forum_index as $section_name => $section_data): ?>
+            <?php heading_link($section_name, "group", 0); ?>
+
+            <div 
+                class="
+                    flex flex-col 
+                    space-y-1 m-1 pb-4
+                    
+                    border-zinc-300 dark:border-black
+                    bg-zinc-100 dark:bg-zinc-950
+                    text-zinc-800 dark:text-zinc-300
+                "
+            >
+                <?php foreach ($section_data as $section_item): ?>
+                    <?php item_link(...$section_item) ?>
+                <?php endforeach ?>
+            </div>
+        <?php endforeach ?>
+    <?php endif ?>

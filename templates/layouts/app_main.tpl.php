@@ -33,7 +33,9 @@ require "components/page_footer.tpl.php";
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <script src="/static/htmx.min.js"></script>
     <script src="https://unpkg.com/alpinejs-swipe@1.0.2/dist/cjs.js"></script>
+    <script src="/static/brood-common.js"></script>
     <script defer src="/static/alpinejs.min.js"></script>
+
 
     <style>
         [x-cloak] { display: none !important; }
@@ -84,9 +86,6 @@ require "components/page_footer.tpl.php";
                 w-72 lg:w-64 xl:w-72
             "
 
-            hx-get="/components/main_bar"
-            hx-trigger="load"
-
             x-show="show_main_bar"
             x-swipe:left="show_main_bar = false"
             @click.away="(is_mobile ? show_main_bar = false : '')"
@@ -98,6 +97,12 @@ require "components/page_footer.tpl.php";
             x-transition:leave-start="transform opacity-100 scale-100"
             x-transition:leave-end="transform -translate-x-full opacity-0 scale-90"
         >
+            <div 
+                id="main_bar"
+                hx-get="/components/main_bar"
+                hx-trigger="load"
+                hx-swap="outerHTML"
+            ></div>
         </div>
         
         <!-- main content page -->
@@ -150,9 +155,6 @@ require "components/page_footer.tpl.php";
                 w-64 lg:w-48 xl:w-64
             "
 
-            hx-get="/components/user_bar"
-            hx-trigger="load"
-
             x-show="show_user_bar"
             x-swipe:right="show_user_bar = false"
             @click.away="(is_mobile ? show_user_bar = false : '')"
@@ -164,6 +166,13 @@ require "components/page_footer.tpl.php";
             x-transition:leave-start="transform opacity-100 scale-100"
             x-transition:leave-end="transform translate-x-full opacity-0 scale-90"
         >
+            <div
+                id="user_bar"
+                hx-get="/components/user_bar"
+                hx-trigger="load"
+                hx-swap="outerHTML"
+            ></div>
+
         </div>
 
         <?php $page_footer() ?>

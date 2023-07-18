@@ -36,4 +36,31 @@ $router->get("/components/main_bar", function () use ($renderer) {
     $renderer->show('components/main_bar.tpl.php');
 });
 
+$router->get("/components/main_bar/dm", function () use ($renderer) {
+    $renderer->set('dm_users', [
+        1 => [
+            "user_id" => 1,
+            "username" => "Billy",
+            "unread" => 2,
+        ],
+        2 => [
+            "user_id" => 2,
+            "username" => "Steve-O",
+            "unread" => 5,
+        ],
+        3 => [
+            "user_id" => 3,
+            "username" => "Frank",
+            "unread" => 0,
+        ],
+        4 => [
+            "user_id" => 4,
+            "username" => "Suzy",
+            "unread" => 103,
+        ]
+    ]);
+
+    $renderer->show('components/main_bar.tpl.php');
+});
+
 $router->route();
