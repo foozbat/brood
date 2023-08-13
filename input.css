@@ -30,4 +30,8 @@
     .code-title {
         @apply text-sm text-slate-600 dark:text-slate-500 pb-2
     }
+
+    .scrollbar-thin {
+        scrollbar-width: thin;
+    }
 }

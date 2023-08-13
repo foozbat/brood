@@ -40,8 +40,9 @@ function user_entry($username, $status) { ?>
             w-full 
             space-x-3 pb-1 pt-1 px-2
             rounded-md 
+            bg-zinc-100 dark:bg-zinc-900
             hover:bg-zinc-200 hover:text-black 
-            hover:dark:bg-zinc-900/50 hover:dark:text-white
+            hover:dark:bg-zinc-800 hover:dark:text-white
             text-zinc-600 dark:text-zinc-400
             cursor-pointer
         "
@@ -56,9 +57,9 @@ function user_entry($username, $status) { ?>
                 pr-3
             "
         >
-            <i class="bx bxs-user z-10 absolute text-zinc-600 dark:text-zinc-400"></i> 
+            <i class="bx bxs-user z-10 absolute"></i> 
             <i class="bx bxs-user z-20 absolute text-zinc-200 dark:text-black translate-x-1"></i> 
-            <i class="bx bxs-user z-20 absolute text-zinc-600 dark:text-zinc-400 translate-x-2"></i>
+            <i class="bx bxs-user z-20 absolute translate-x-2"></i>
         </div>
         
         <span

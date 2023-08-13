@@ -33,10 +33,6 @@ $router->get("/components/main_bar", function () use ($renderer) {
         ]
     ]);
 
-    $renderer->show('components/main_bar.tpl.php');
-});
-
-$router->get("/components/main_bar/dm", function () use ($renderer) {
     $renderer->set('dm_users', [
         1 => [
             "user_id" => 1,

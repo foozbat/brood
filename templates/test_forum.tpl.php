@@ -34,7 +34,6 @@ function forum_thread(array $thread) {
                     href="/test_thread"
                     hx-get="/test_thread"
                     hx-target="#content_area"
-                    hx-replace-url="true"
                     hx-push-url="true"
                 >
                     <?= $thread['title'] ?>
@@ -125,7 +124,7 @@ $content = function () use ($title, $threads, $forum_description) { ?>
                         hover:dark:bg-zinc-700 hover:dark:text-white
                     "
                 >
-                    <i class="bx bx-collection"></i>
+                    <i class="bx bx-list-ul"></i>
                     General Discussion
                 </button>
             </div>

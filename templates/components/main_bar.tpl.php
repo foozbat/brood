@@ -85,8 +85,14 @@ function item_link(string $label, string $type, $posts) {
         hx-target="#content_area"
         hx-replace-url="true"
         hx-push-url="true"
+        
 
-        @click="(is_mobile ? show_main_bar=false: '')"
+        @click="
+            if (show_main_bar && is_mobile) {
+                await $store.htmx.snapshot_complete();
+                show_main_bar = false;
+            }
+        "
     >
         <span class="text-lg"><i class="<?= $icons[$type] ?>"></i></span>
         <span class="text-sm w-full"><?= $label ?></span>
@@ -119,11 +125,11 @@ function dm_link($user) { ?>
         hover:text-black hover:dark:text-white
     ">
         <?php user_icon() ?>
-        <div class="w-full">
+        <div class="w-4/6">
             <div class="text-sm"><?= $user['username'] ?></div>
             <div class="text-xs text-zinc-500 w-full"><?= $status ?></div>
         </div>
-        <div>
+        <div class="w-1/6 items-end">
             <?php if ($user['unread']): ?>
                 <span class="
                     transform rounded-full
@@ -154,19 +160,140 @@ function dm_link($user) { ?>
     "
 >
 
-    <!-- Private Messages -->
-    <?php heading_link("Direct Messages", "dm", "/components/main_bar/dm", 5, "#main_bar", "outerHTML"); ?>
+    <div
+        class="
+            flex flex-col
+            rounded-md 
+            p-2
+            bg-zinc-200 dark:bg-black
+            text-zinc-600 dark:text-zinc-400
+        "
+    >
+        <div class="
+            flex 
+            justify-center items-center 
+            w-full 
+            px-2 py-1 mb-2 space-x-3 
+            rounded-md 
+            cursor-pointer
+            hover:bg-zinc-200 hover:text-black 
+            hover:dark:bg-zinc-800 hover:dark:text-white
+        "
+            @click="show_main_bar = false"
+        >
+
+            <div 
+                class="
+                    inline-flex overflow-hidden 
+                    justify-center items-center 
+                    text-2xl
+                "
+            >
+                <i class="bx bx-layer"></i> 
+            </div>
+            
+            <span
+                class="
+                    inline-block
+                    w-full
+                    align-middle
+                    uppercase font-bold text-sm 
+                "
+            >
+                Super Awesome Community
+            </span>
+            <span
+                class="
+                    inline-block
+                    align-middle
+                    text-sm font-bold uppercase
+                "
+            >
+                <i class='bx bx-chevrons-left text-2xl' ></i>
+            </span>
+        </div>
+
+        <div class="flex w-full space-x-1 justify-center items-center">
+            <button 
+                class="
+                    w-1/4
+                    bg-zinc-400 hover:bg-zinc-500
+                    dark:bg-zinc-800 dark:hover:bg-zinc-700 
+                    text-sm text-white font-bold 
+                    py-2 px-3 rounded-full
+                "
+                hx-get="/"
+                hx-target="#content_area"
+                hx-push-url="true"
+            >
+                <i class="bx bxs-home text-lg"></i>
+            </button>
+
+            <button
+                class="
+
+                    bg-zinc-400 hover:bg-zinc-500
+                    dark:bg-zinc-800 dark:hover:bg-zinc-700 
+                    text-sm text-white font-bold 
+                    py-2 px-2 rounded-full
+                "
+
+                @click="active_main_bar_menu = 'groups'"
+            >
+                <i class="bx bx-list-ul text-lg"></i>
+                <span class="
+                    transform rounded-full
+                    px-1.5 py-0.5
+                    ml-1
+                    text-xs font-bold leading-none 
+                    text-white bg-red-700
+                ">
+                    103
+                </span>
+            </button>
+        
+            <button
+                class="
+                    bg-zinc-400 hover:bg-zinc-500
+                    dark:bg-zinc-800 dark:hover:bg-zinc-700 
+                    text-sm text-white font-bold 
+                    py-2 px-2 rounded-full
+                "
     
-    <!-- Home -->
-    <?php heading_link("Home", "home", "/") ?>
+                @click="active_main_bar_menu = 'dm'"
+            >
+                <i class="bx bxs-message-rounded text-lg"></i>
+                <span class="
+                    transform rounded-full
+                    px-1.5 py-0.5
+                    ml-1
+                    text-xs font-bold leading-none 
+                    text-white bg-red-700
+                ">
+                    15
+                </span>
+            </button>
+        
+        </div>
+    </div>
 
+    <!-- Groups List -->
+    <div 
+        id="dm_menu"
+        x-show="active_main_bar_menu=='dm'"
+    >
+        <?php heading_link("Direct Messages", "dm", 0); ?>
 
-    <!-- Groups Index -->
-    <?php if ($dm_users): ?>
         <?php foreach ($dm_users as $user): ?>
             <?php dm_link($user) ?>
         <?php endforeach ?>
-    <?php else: ?>
+    </div>
+
+    <!-- DM List -->
+    <div
+        id="group_menu"
+        x-show="active_main_bar_menu=='groups'"
+    >
         <?php foreach ($forum_index as $section_name => $section_data): ?>
             <?php heading_link($section_name, "group", 0); ?>
 
@@ -185,4 +312,4 @@ function dm_link($user) { ?>
                 <?php endforeach ?>
             </div>
         <?php endforeach ?>
-    <?php endif ?>
+    </div>

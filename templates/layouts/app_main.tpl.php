@@ -31,15 +31,44 @@ require "components/page_footer.tpl.php";
 
     <link rel="stylesheet" href="/static/app.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <script src="/static/htmx.min.js"></script>
-    <script src="https://unpkg.com/alpinejs-swipe@1.0.2/dist/cjs.js"></script>
-    <script src="/static/brood-common.js"></script>
-    <script defer src="/static/alpinejs.min.js"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.4"></script>
+    <!--<script src="https://unpkg.com/alpinejs-swipe@1.0.2/dist/cjs.js"></script>-->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
 
     <style>
         [x-cloak] { display: none !important; }
     </style>
+
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.store('htmx', {
+                is_swapping: false,
+                is_snapshotting: false,
+                async swap_complete() {
+                    console.log('awaiting swap complete... ' + this.is_snapshotting);
+                    await new Promise(r => setTimeout(r, 50));
+                    return await this.is_swapping == false;
+                },
+                async snapshot_complete() {
+                    console.log('awaiting snapshot complete... ' + this.is_snapshotting);
+                    await new Promise(r => setTimeout(r, 50));
+                    return await this.is_snapshotting == true;
+                },
+            });
+        });
+
+        htmx.on('htmx:beforeHistorySave', () => {
+            console.log('htmx is snapshotting');
+            Alpine.store('htmx').is_swapping = true;
+        });
+
+        htmx.on('htmx:pushedIntoHistory', () => {
+            console.log('htmx is done snapshotting');
+            Alpine.store('htmx').is_swapping = false;
+        });
+
+    </script>
 
 </head>
 
@@ -54,19 +83,9 @@ require "components/page_footer.tpl.php";
         is_mobile: !window.matchMedia('(min-width: 1024px)').matches,
         show_main_bar: window.matchMedia('(min-width: 1024px)').matches,
         show_user_bar: window.matchMedia('(min-width: 1024px)').matches,
+        active_main_bar_menu: 'groups',
     }"
-    x-on:resize.window="
-        prev_mobile = is_mobile;
-        is_mobile = !window.matchMedia('(min-width: 1024px)').matches;
 
-        if (is_mobile && !prev_mobile) {
-            show_main_bar = false;
-            show_user_bar = false;
-        } else if (!is_mobile && prev_mobile) {
-            show_main_bar = true;
-            show_user_bar = true;
-        }
-    "
     
 >
 
@@ -84,11 +103,18 @@ require "components/page_footer.tpl.php";
                 overflow-y-auto
                 z-10
                 w-72 lg:w-64 xl:w-72
+                scrollbar-thin
             "
 
             x-show="show_main_bar"
             x-swipe:left="show_main_bar = false"
-            @click.away="(is_mobile ? show_main_bar = false : '')"
+
+            @click.away="
+                if (show_main_bar && is_mobile) {
+                    await $store.htmx.snapshot_complete();
+                    show_main_bar = false;
+                }
+            "
 
             x-transition:enter="transition duration-250"
             x-transition:enter-start="transform -translate-x-full opacity-0 scale-90"
@@ -127,12 +153,14 @@ require "components/page_footer.tpl.php";
                 if (!show_main_bar && !show_user_bar) {
                     show_main_bar = true;
                 }
-            ",
+            "
             x-swipe:left.threshold.100px="
                 if (!show_user_bar && !show_main_bar) {
                     show_user_bar = true;
                 }
             "
+
+
         >
 <!--
             :class="{ 
@@ -153,11 +181,12 @@ require "components/page_footer.tpl.php";
                 overflow-y-auto 
                 z-10
                 w-64 lg:w-48 xl:w-64
+                scrollbar-thin
             "
 
             x-show="show_user_bar"
             x-swipe:right="show_user_bar = false"
-            @click.away="(is_mobile ? show_user_bar = false : '')"
+            
 
             x-transition:enter="transition duration-250"
             x-transition:enter-start="transform translate-x-full opacity-0 scale-90"

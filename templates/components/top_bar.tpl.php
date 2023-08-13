@@ -88,7 +88,7 @@ $top_bar = function () {
                     }
                 "
             >
-                <i class='bx bx-list-ul' ></i>
+                <i class='bx bx-menu' ></i>
             </div>
         </div>
 
@@ -121,8 +121,12 @@ $top_bar = function () {
             <button 
                 type="button" 
                 @click="show_profile_menu = !show_profile_menu" 
-                @click.outside="show_profile_menu = false"
-                class=""
+                @click.away="
+                    if (show_profile_menu) {
+                        await $store.htmx.snapshot_complete();
+                        show_profile_menu = false;
+                    }
+                "
             >
                 <?php user_icon(size: 40) ?>
             </button>

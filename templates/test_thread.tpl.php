@@ -167,7 +167,7 @@ $content = function() use ($title, $posts) { ?>
                         hover:dark:bg-zinc-700 hover:dark:text-white
                     "
                 >
-                    <i class="bx bx-collection"></i>
+                    <i class="bx bx-list-ul"></i>
                     General Discussion
                 </button>
                 <button 
