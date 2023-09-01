@@ -12,7 +12,7 @@ require_once "components/user_icon.tpl.php";
     hx-target="#chat_messages"
     hx-swap="afterbegin"
 
-    x-init="$nextTick(() => { $refs.chat_container.scrollTop = $refs.msg_<?= $chats[count($chats)-1]['chat_id'] ?>.offsetTop })"
+    x-init="$nextTick(() => { $refs.msg_<?= $chats[count($chats)-1]['chat_id'] ?>.scrollIntoView() })"
 ></div>
 
 <?php foreach ($chats as $message): ?>
