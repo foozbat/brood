@@ -6,7 +6,11 @@
 Fzb\extend("layouts/app_main.tpl.php");
 
 $content = function () use ($posts) { ?>
-    <div class="flex flex-col w-full p-2">
+<div 
+    id="main_page"
+    class="w-full p-2"
+>
+    <div class="flex flex-col">
         <p class="text-2xl lg:text-3xl pb-2">
             The Main Page
         </p>
@@ -44,5 +48,6 @@ $content = function () use ($posts) { ?>
             "Super Awesome Content Area" which will show featured streams.
         </div>
     </div>
+</div>
 <?php
 };

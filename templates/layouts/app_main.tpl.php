@@ -32,7 +32,8 @@ require "components/page_footer.tpl.php";
     <link rel="stylesheet" href="/static/app.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <script src="https://unpkg.com/htmx.org@1.9.4"></script>
-    <!--<script src="https://unpkg.com/alpinejs-swipe@1.0.2/dist/cjs.js"></script>-->
+    <script src="https://unpkg.com/alpinejs-swipe@1.0.2/dist/cjs.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/intersect@3.x.x/dist/cdn.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
 
@@ -41,31 +42,58 @@ require "components/page_footer.tpl.php";
     </style>
 
     <script>
+        // move all this into a .js file
+
         document.addEventListener('alpine:init', () => {
             Alpine.store('htmx', {
                 is_swapping: false,
                 is_snapshotting: false,
+
                 async swap_complete() {
-                    console.log('awaiting swap complete... ' + this.is_snapshotting);
-                    await new Promise(r => setTimeout(r, 50));
+/*                    await new Promise(r => setTimeout(r, 50));
                     return await this.is_swapping == false;
+*/
                 },
                 async snapshot_complete() {
-                    console.log('awaiting snapshot complete... ' + this.is_snapshotting);
-                    await new Promise(r => setTimeout(r, 50));
-                    return await this.is_snapshotting == true;
+                    /*
+                    if (this.is_snapshotting == false) {
+                        console.log("waiting for snapshot to start");
+                        await new Promise(r => setTimeout(r, 50));
+                        console.log("wait complete");
+                    }
+                    while (this.is_snapshotting) {
+                        console.log("we're snapshotting, now wait for complete");
+                    }
+                    console.log("snapshot complete!");
+*/
                 },
             });
+
+            Alpine.data('dropdown', () => ({
+                open: false,
+
+                toggle() {
+                    this.open = !this.open;
+                },
+                async click_away() {
+                    if (this.open) {
+                        // waiting for htmx history snapshot");
+                        await new Promise(r => setTimeout(r, 50));
+                        console.log("done");
+                        this.open = false;
+                    }
+                }
+            }));
         });
 
-        htmx.on('htmx:beforeHistorySave', () => {
-            console.log('htmx is snapshotting');
-            Alpine.store('htmx').is_swapping = true;
+        document.addEventListener('htmx:beforeHistorySave', () => {
+            //console.log('evt: htmx is snapshotting');
+            //Alpine.store('htmx').is_snapshotting = true;
         });
 
-        htmx.on('htmx:pushedIntoHistory', () => {
-            console.log('htmx is done snapshotting');
-            Alpine.store('htmx').is_swapping = false;
+        document.addEventListener('htmx:pushedIntoHistory', async () => {
+            //console.log('evt: htmx is done snapshotting');
+            //Alpine.store('htmx').is_snapshotting = false;
         });
 
     </script>
@@ -88,123 +116,118 @@ require "components/page_footer.tpl.php";
 
     
 >
-
     <!-- header page -->
     <?php $top_bar() ?>
 
-     <!-- container for main sections -->
+    <!-- main sidebar -->
+    <div
+        id="main_bar"
+        x-ref="main_bar"
+
+        class="
+            h-[calc(100%-4rem)]
+            top-16
+            fixed
+            overflow-y-auto
+            z-20
+            w-72 lg:w-64 xl:w-72
+            scrollbar-thin
+        "
+
+        x-show="show_main_bar"
+        x-swipe:left="show_main_bar = false"
+
+        @click.away="
+            if (show_main_bar && is_mobile) {
+                await $store.htmx.snapshot_complete();
+                show_main_bar = false;
+            }
+        "
+
+        x-transition:enter="transition duration-250"
+        x-transition:enter-start="transform -translate-x-full opacity-0 scale-90"
+        x-transition:enter-end="transform translate-x-0 opacity-100 scale-100"
+        x-transition:leave="transition duration-250"
+        x-transition:leave-start="transform opacity-100 scale-100"
+        x-transition:leave-end="transform -translate-x-full opacity-0 scale-90"
+    >
+        <div 
+            id="main_bar"
+            hx-get="/components/main_bar"
+            hx-trigger="load"
+            hx-swap="outerHTML"
+        ></div>
+    </div>
     
-        <!-- main sidebar -->
-        <div 
-            class="
-                h-[calc(100%-4rem)]
-                top-16
-                fixed
-                overflow-y-auto
-                z-10
-                w-72 lg:w-64 xl:w-72
-                scrollbar-thin
-            "
+    <!-- main content area -->
+    <div 
+        id="content_area"
+        x-ref="content_area"
 
-            x-show="show_main_bar"
-            x-swipe:left="show_main_bar = false"
+        class="
+            h-[calc(100%-4rem)]
+            fixed
+            left-0 right-0 top-16
+            overflow-y-auto
+            z-10
+            flex flex-col
+        "
+        :class="{ 
+            'lg:left-64 xl:left-72': show_main_bar,
+            'pl-0 lg:pl-32 xl:pl-48': !show_main_bar,
 
-            @click.away="
-                if (show_main_bar && is_mobile) {
-                    await $store.htmx.snapshot_complete();
-                    show_main_bar = false;
-                }
-            "
+            'lg:right-48 xl:right-64': show_user_bar,
+            'pr-0 lg:pr-32 xl:pr-48': !show_user_bar,
+        }"
 
-            x-transition:enter="transition duration-250"
-            x-transition:enter-start="transform -translate-x-full opacity-0 scale-90"
-            x-transition:enter-end="transform translate-x-0 opacity-100 scale-100"
-            x-transition:leave="transition duration-250"
-            x-transition:leave-start="transform opacity-100 scale-100"
-            x-transition:leave-end="transform -translate-x-full opacity-0 scale-90"
-        >
-            <div 
-                id="main_bar"
-                hx-get="/components/main_bar"
-                hx-trigger="load"
-                hx-swap="outerHTML"
-            ></div>
-        </div>
+        x-swipe:right.threshold.100px="
+            if (!show_main_bar && !show_user_bar) {
+                show_main_bar = true;
+            }
+        "
+        x-swipe:left.threshold.100px="
+            if (!show_user_bar && !show_main_bar) {
+                show_user_bar = true;
+            }
+        "
+        x-on:htmx:after-swap="$el.scrollTop=0;"
+    >
+        <?php $content() ?>
+    </div>
+
+    <!-- user sidebar -->
+    <div
+        id="user_bar"
+        x-ref="user_bar"
+
+        class="
+            h-[calc(100%-4rem)]
+            top-16 pb-2
+            right-0 fixed
+            overflow-y-auto 
+            z-10
+            w-64 lg:w-48 xl:w-64
+            scrollbar-thin
+        "
+
+        x-show="show_user_bar"
+        x-swipe:right="show_user_bar = false"
         
-        <!-- main content page -->
-        <div 
-            id="content_area"
-            class="
-                flex
-                w-full
-                pt-16
-                z-10
-                flex flex-col
-            "
-            :class="{ 
-                'pl-0 lg:pl-64 xl:pl-72': show_main_bar,
-                'pl-0 lg:pl-32 xl:pl-48': !show_main_bar,
 
-                'pr-0 lg:pr-48 xl:pr-64': show_user_bar,
-                'pr-0 lg:pr-32 xl:pr-48': !show_user_bar,
-            }"
-
-            x-swipe:right.threshold.100px="
-                if (!show_main_bar && !show_user_bar) {
-                    show_main_bar = true;
-                }
-            "
-            x-swipe:left.threshold.100px="
-                if (!show_user_bar && !show_main_bar) {
-                    show_user_bar = true;
-                }
-            "
-
-
-        >
-<!--
-            :class="{ 
-                'pl-72': show_main_bar,
-                'pr-72': show_user_bar
-            }"
--->    
-            <?php $content() ?>
-
-        </div>
-
-        <!-- user sidebar -->
-        <div 
-            class="
-                h-[calc(100%-4rem)]
-                top-16 pb-2
-                right-0 fixed
-                overflow-y-auto 
-                z-10
-                w-64 lg:w-48 xl:w-64
-                scrollbar-thin
-            "
-
-            x-show="show_user_bar"
-            x-swipe:right="show_user_bar = false"
-            
-
-            x-transition:enter="transition duration-250"
-            x-transition:enter-start="transform translate-x-full opacity-0 scale-90"
-            x-transition:enter-end="transform translate-x-0 opacity-100 scale-100"
-            x-transition:leave="transition duration-250"
-            x-transition:leave-start="transform opacity-100 scale-100"
-            x-transition:leave-end="transform translate-x-full opacity-0 scale-90"
-        >
-            <div
-                id="user_bar"
-                hx-get="/components/user_bar"
-                hx-trigger="load"
-                hx-swap="outerHTML"
-            ></div>
-
-        </div>
-
-        <?php $page_footer() ?>
+        x-transition:enter="transition duration-250"
+        x-transition:enter-start="transform translate-x-full opacity-0 scale-90"
+        x-transition:enter-end="transform translate-x-0 opacity-100 scale-100"
+        x-transition:leave="transition duration-250"
+        x-transition:leave-start="transform opacity-100 scale-100"
+        x-transition:leave-end="transform translate-x-full opacity-0 scale-90"
+    >
+        <div
+            id="user_bar"
+            hx-get="/components/user_bar"
+            hx-trigger="load"
+            hx-swap="outerHTML"
+        ></div>
+    </div>
 
 </body>
 </html>

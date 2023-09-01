@@ -8,7 +8,7 @@ function user_icon(int $size=32) {
     <div class="
         inline-flex overflow-hidden 
         justify-center items-center 
-        w-[<?= $size ?>px] h-[<?= $size ?>px] 
+        w-[<?= $size ?>px] min-w-[<?= $size ?>px] h-[<?= $size ?>px] min-h-[<?= $size ?>px]
         text-<?= ($size > 40 ? '3xl' : 'lg') ?>
         text-white
         rounded-md

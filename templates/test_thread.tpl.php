@@ -128,7 +128,7 @@ $content = function() use ($title, $posts) { ?>
         <div class="flex flex-col pb-4">
             <div class="flex">
                 <div class="flex-grow">
-                    <p class="text-2xl lg:text-3xl pb-2">
+                    <p class="text-2xl lg:text-2xl pb-2">
                         <?= $title ?>
                     </p>
                 </div>

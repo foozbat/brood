@@ -80,8 +80,8 @@ function item_link(string $label, string $type, $posts) {
             hover:bg-zinc-200 hover:dark:bg-zinc-900 
             hover:text-black hover:dark:text-white
         "
-        href="/test_forum"
-        hx-get="/test_forum"
+        href="/test_<?= $type ?>"
+        hx-get="/test_<?= $type ?>"
         hx-target="#content_area"
         hx-replace-url="true"
         hx-push-url="true"
@@ -148,10 +148,9 @@ function dm_link($user) { ?>
 ?>
 
 <div 
-    id="main_bar"
     class="
         flex flex-col
-        space-y-1 m-1 p-2 mb-2
+        space-y-1 m-2 p-2
         rounded-md border-r-2 border-b-2 
         border-zinc-300 dark:border-black
         shadow-lg
@@ -165,8 +164,6 @@ function dm_link($user) { ?>
             flex flex-col
             rounded-md 
             p-2
-            bg-zinc-200 dark:bg-black
-            text-zinc-600 dark:text-zinc-400
         "
     >
         <div class="
@@ -216,7 +213,7 @@ function dm_link($user) { ?>
         <div class="flex w-full space-x-1 justify-center items-center">
             <button 
                 class="
-                    w-1/4
+                    w-1/3
                     bg-zinc-400 hover:bg-zinc-500
                     dark:bg-zinc-800 dark:hover:bg-zinc-700 
                     text-sm text-white font-bold 
@@ -231,7 +228,7 @@ function dm_link($user) { ?>
 
             <button
                 class="
-
+                    w-1/3
                     bg-zinc-400 hover:bg-zinc-500
                     dark:bg-zinc-800 dark:hover:bg-zinc-700 
                     text-sm text-white font-bold 
@@ -242,11 +239,9 @@ function dm_link($user) { ?>
             >
                 <i class="bx bx-list-ul text-lg"></i>
                 <span class="
-                    transform rounded-full
-                    px-1.5 py-0.5
-                    ml-1
-                    text-xs font-bold leading-none 
-                    text-white bg-red-700
+                    
+                    text-sm font-bold leading-none 
+                    
                 ">
                     103
                 </span>
@@ -254,6 +249,7 @@ function dm_link($user) { ?>
         
             <button
                 class="
+                w-1/3
                     bg-zinc-400 hover:bg-zinc-500
                     dark:bg-zinc-800 dark:hover:bg-zinc-700 
                     text-sm text-white font-bold 
@@ -264,11 +260,9 @@ function dm_link($user) { ?>
             >
                 <i class="bx bxs-message-rounded text-lg"></i>
                 <span class="
-                    transform rounded-full
-                    px-1.5 py-0.5
-                    ml-1
-                    text-xs font-bold leading-none 
-                    text-white bg-red-700
+                    
+                    text-sm font-bold leading-none 
+                    text-white
                 ">
                     15
                 </span>

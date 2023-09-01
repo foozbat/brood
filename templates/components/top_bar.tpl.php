@@ -6,12 +6,12 @@
 require_once("components/user_icon.tpl.php");
 
 $top_bar = function () { 
-    $top_bar_height = "32";
+    $top_bar_height = "64";
 
     ?>
     <div class="
         flex fixed 
-        w-full h-<?= $top_bar_height ?>
+        w-full h-[<?= $top_bar_height ?>px]
         items-center justify-between p-2
         shadow-lg
         text-zinc-100 bg-black
@@ -117,16 +117,11 @@ $top_bar = function () {
         </div>
 
         <!-- profile button -->
-        <div x-data="{ show_profile_menu: false }">
+        <div x-data="dropdown">
             <button 
                 type="button" 
-                @click="show_profile_menu = !show_profile_menu" 
-                @click.away="
-                    if (show_profile_menu) {
-                        await $store.htmx.snapshot_complete();
-                        show_profile_menu = false;
-                    }
-                "
+                @click="toggle()" 
+                @click.away="click_away()"
             >
                 <?php user_icon(size: 40) ?>
             </button>
@@ -142,10 +137,10 @@ $top_bar = function () {
                     bg-white dark:bg-zinc-800
                     text-md text-zinc-800 dark:text-zinc-200
                     shadow-lg
-                    z-50
+                    z-[100]
                 "
                 x-cloak
-                x-show="show_profile_menu" 
+                x-show="open" 
                 x-transition
             >
                 <div class="

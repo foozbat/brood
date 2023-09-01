@@ -4,6 +4,7 @@
  */
 
 require_once "components/user_icon.tpl.php";
+require_once "components/breadcrumb.tpl.php";
 
 Fzb\extend("layouts/app_main.tpl.php");
 
@@ -83,7 +84,7 @@ $content = function () use ($title, $threads, $forum_description) { ?>
         <div class="flex flex-col">
             <div class="flex">
                 <div class="flex-grow">
-                    <p class="text-2xl lg:text-3xl pb-2">
+                    <p class="text-2xl lg:text-2xl pb-2">
                         <i class="bx bx-conversation"></i>
                         <?= $title ?>
                     </p>
@@ -100,34 +101,7 @@ $content = function () use ($title, $threads, $forum_description) { ?>
                 </div>
             </div>
 
-            <div class="flex">
-                <button 
-                    class="
-                        py-1 px-4 mr-1
-                        rounded-full
-                        bg-zinc-100 dark:bg-zinc-950
-                        text-sm
-                        hover:bg-zinc-300 hover:text-black 
-                        hover:dark:bg-zinc-700 hover:dark:text-white
-                    "
-                >
-                    <i class="bx bx-home"></i>
-                    Home
-                </button>
-                <button
-                    class="
-                        py-1 px-4 mr-1
-                        rounded-full
-                        bg-zinc-100 dark:bg-zinc-950
-                        text-sm
-                        hover:bg-zinc-300 hover:text-black 
-                        hover:dark:bg-zinc-700 hover:dark:text-white
-                    "
-                >
-                    <i class="bx bx-list-ul"></i>
-                    General Discussion
-                </button>
-            </div>
+            <?php breadcrumb() ?>
 
             <div class="
                 p-4 mt-4 mb-4

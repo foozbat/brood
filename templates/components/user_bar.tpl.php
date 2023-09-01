@@ -21,10 +21,9 @@ function user_entry($username, $status) { ?>
 } ?>
 
 <div 
-    id="user_bar"
     class="
         flex flex-col
-        space-y-1 m-1 p-2 mb-2
+        space-y-1 m-2 p-2
         rounded-md border-r-2 border-b-2 
         border-zinc-300 dark:border-black
         shadow-lg
@@ -33,14 +32,12 @@ function user_entry($username, $status) { ?>
         
     "
 >
-
     <div
         class="
             flex justify-center items-center 
             w-full 
             space-x-3 pb-1 pt-1 px-2
             rounded-md 
-            bg-zinc-100 dark:bg-zinc-900
             hover:bg-zinc-200 hover:text-black 
             hover:dark:bg-zinc-800 hover:dark:text-white
             text-zinc-600 dark:text-zinc-400
@@ -61,7 +58,6 @@ function user_entry($username, $status) { ?>
             <i class="bx bxs-user z-20 absolute text-zinc-200 dark:text-black translate-x-1"></i> 
             <i class="bx bxs-user z-20 absolute translate-x-2"></i>
         </div>
-        
         <span
             class="
                 inline-block
