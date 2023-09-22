@@ -4,11 +4,9 @@ header("Content-Type: text/event-stream");
 
 while (true) {
 
-  echo "event: message\n";
+  echo "event: chat-message\n";
   echo "data: <div>something</div>\n\n";
 
-
-  ob_end_flush();
   flush();
 
 

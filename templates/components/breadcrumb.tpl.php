@@ -1,32 +1,29 @@
 <?php
 
 function breadcrumb() { ?>
-    <div class="flex">
-        <button 
+    <div class="flex space-x-2 pb-2">
+        <a 
+            href="#"
             class="
-                py-1 px-4 mr-1
-                rounded-full
-                bg-zinc-100 dark:bg-zinc-950
-                text-sm
-                hover:bg-zinc-300 hover:text-black 
-                hover:dark:bg-zinc-700 hover:dark:text-white
+                font-bold 
+                text-zinc-700 dark:text-zinc-400 text-sm
+                hover:text-black hover:dark:text-white hover:underline
             "
         >
             <i class="bx bx-home"></i>
-            <span class="hidden md:contents">Home</span>
+            <!--<span class="hidden md:contents">Home</span>-->
+            Home
         </button>
-        <button
+        <a
+            href="#"
             class="
-                py-1 px-4 mr-1
-                rounded-full
-                bg-zinc-100 dark:bg-zinc-950
-                text-sm
-                hover:bg-zinc-300 hover:text-black 
-                hover:dark:bg-zinc-700 hover:dark:text-white
+                font-bold hover:underline
+                text-zinc-700 dark:text-zinc-400 text-sm
+                hover:text-black hover:dark:text-white hover:underline
             "
         >
             <i class="bx bx-list-ul"></i>
             General Discussion
-        </button>
+        </a>
     </div><?php
 }

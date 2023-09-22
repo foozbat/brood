@@ -32,6 +32,7 @@ require "components/page_footer.tpl.php";
     <link rel="stylesheet" href="/static/app.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <script src="https://unpkg.com/htmx.org@1.9.4"></script>
+    <script src="https://unpkg.com/htmx.org/dist/ext/sse.js"></script>
     <script src="https://unpkg.com/alpinejs-swipe@1.0.2/dist/cjs.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/intersect@3.x.x/dist/cdn.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -45,14 +46,16 @@ require "components/page_footer.tpl.php";
         // move all this into a .js file
 
         document.addEventListener('alpine:init', () => {
+            console.log('Alpine Init');
+            
             Alpine.store('htmx', {
                 is_swapping: false,
                 is_snapshotting: false,
 
                 async swap_complete() {
-/*                    await new Promise(r => setTimeout(r, 50));
-                    return await this.is_swapping == false;
-*/
+                    await new Promise(r => setTimeout(r, 50));
+//                    return await this.is_swapping == false;
+
                 },
                 async snapshot_complete() {
                     /*
@@ -113,14 +116,12 @@ require "components/page_footer.tpl.php";
         show_user_bar: window.matchMedia('(min-width: 1024px)').matches,
         active_main_bar_menu: 'groups',
     }"
-
-    
 >
     <!-- header page -->
     <?php $top_bar() ?>
 
     <!-- main sidebar -->
-    <div
+    <nav
         id="main_bar"
         x-ref="main_bar"
 
@@ -144,23 +145,20 @@ require "components/page_footer.tpl.php";
             }
         "
 
-        x-transition:enter="transition duration-250"
-        x-transition:enter-start="transform -translate-x-full opacity-0 scale-90"
-        x-transition:enter-end="transform translate-x-0 opacity-100 scale-100"
-        x-transition:leave="transition duration-250"
-        x-transition:leave-start="transform opacity-100 scale-100"
-        x-transition:leave-end="transform -translate-x-full opacity-0 scale-90"
+        x-transition.delay.1000ms:enter="transition duration-250"
+        x-transition.delay.1000ms:enter-start="transform -translate-x-full opacity-0 scale-90"
+        x-transition.delay.1000ms.:enter-end="transform translate-x-0 opacity-100 scale-100"
+        x-transition.delay.1000ms:leave="transition duration-250"
+        x-transition.delay.1000ms:leave-start="transform opacity-100 scale-100"
+        x-transition.delay.1000ms:leave-end="transform -translate-x-full opacity-0 scale-90"
+
+        hx-get="/components/main_bar"
+        hx-trigger="load"
     >
-        <div 
-            id="main_bar"
-            hx-get="/components/main_bar"
-            hx-trigger="load"
-            hx-swap="outerHTML"
-        ></div>
-    </div>
+    </nav>
     
     <!-- main content area -->
-    <div 
+    <main 
         id="content_area"
         x-ref="content_area"
 
@@ -174,10 +172,10 @@ require "components/page_footer.tpl.php";
         "
         :class="{ 
             'lg:left-64 xl:left-72': show_main_bar,
-            'pl-0 lg:pl-32 xl:pl-48': !show_main_bar,
+            'pl-0 lg:pl-16 xl:pl-32': !show_main_bar,
 
             'lg:right-48 xl:right-64': show_user_bar,
-            'pr-0 lg:pr-32 xl:pr-48': !show_user_bar,
+            'pr-0 lg:pr-16 xl:pr-32': !show_user_bar,
         }"
 
         x-swipe:right.threshold.100px="
@@ -193,10 +191,10 @@ require "components/page_footer.tpl.php";
         x-on:htmx:after-swap="$el.scrollTop=0;"
     >
         <?php $content() ?>
-    </div>
+    </main>
 
     <!-- user sidebar -->
-    <div
+    <aside
         id="user_bar"
         x-ref="user_bar"
 
@@ -213,21 +211,17 @@ require "components/page_footer.tpl.php";
         x-show="show_user_bar"
         x-swipe:right="show_user_bar = false"
         
-
         x-transition:enter="transition duration-250"
         x-transition:enter-start="transform translate-x-full opacity-0 scale-90"
         x-transition:enter-end="transform translate-x-0 opacity-100 scale-100"
         x-transition:leave="transition duration-250"
         x-transition:leave-start="transform opacity-100 scale-100"
         x-transition:leave-end="transform translate-x-full opacity-0 scale-90"
+
+        hx-get="/components/user_bar"
+        hx-trigger="load"
     >
-        <div
-            id="user_bar"
-            hx-get="/components/user_bar"
-            hx-trigger="load"
-            hx-swap="outerHTML"
-        ></div>
-    </div>
+    </aside>
 
 </body>
 </html>

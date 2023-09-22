@@ -9,7 +9,7 @@ $top_bar = function () {
     $top_bar_height = "64";
 
     ?>
-    <div class="
+    <header class="
         flex fixed 
         w-full h-[<?= $top_bar_height ?>px]
         items-center justify-between p-2
@@ -191,5 +191,5 @@ $top_bar = function () {
                 </div>
             </div>
         </div>
-    </div>
+    </header>
 <?php } ?>

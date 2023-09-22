@@ -101,18 +101,31 @@ $content = function () use ($title, $threads, $forum_description) { ?>
                 </div>
             </div>
 
-            <?php breadcrumb() ?>
+            <!-- description block -->
+            <div 
+                class="
+                    bg-white dark:bg-zinc-800 
+                    text-zinc-950 dark:text-zinc-300
+                    border-r-2 border-zinc-300 dark:border-black
+                    px-2
+                "
 
-            <div class="
-                p-4 mt-4 mb-4
-                text-sm
-                bg-zinc-100 dark:bg-zinc-950 
-                text-zinc-950 dark:text-zinc-300
-                rounded-md
-                border-l-4 border-zinc-400 dark:border-zinc-600
-            ">
-                <?= $forum_description ?>
+            >
+                <div class="
+                        p-2 
+                        text-sm
+                        bg-zinc-100 dark:bg-zinc-950 
+                        text-zinc-950 dark:text-zinc-300
+                        rounded-md
+                        border-l-4 border-zinc-400 dark:border-zinc-600
+                ">
+                    <?php breadcrumb() ?>
+                                        
+                    <?= $forum_description ?>
+
+                </div>
             </div>
+
 
             <!-- Thread List -->
             <div id="threads">

@@ -6,6 +6,7 @@
 require_once "components/user_icon.tpl.php";
 
 ?>
+<!--
 <div
     hx-get="/test_chat/messages"
     hx-trigger="intersect once"
@@ -13,7 +14,7 @@ require_once "components/user_icon.tpl.php";
     hx-swap="afterbegin"
 
     x-init="$nextTick(() => { $refs.msg_<?= $chats[count($chats)-1]['chat_id'] ?>.scrollIntoView() })"
-></div>
+></div>-->
 
 <?php foreach ($chats as $message): ?>
 <div class="flex space-x-2" x-ref="msg_<?= $message['chat_id'] ?>">
