@@ -6,18 +6,21 @@
 require_once("components/user_icon.tpl.php");
 
 $top_bar = function () { 
-    $top_bar_height = "64";
+    $top_bar_height = "128";
 
     ?>
-    <header class="
-        flex fixed 
-        w-full h-[<?= $top_bar_height ?>px]
-        items-center justify-between p-2
-        shadow-lg
-        text-zinc-100 bg-black
-        z-20
-        space-x-2
-    ">
+    <header 
+        class="
+            flex
+            w-full
+            items-center justify-between p-2
+            shadow-lg
+            text-zinc-100 bg-black
+            z-20
+            space-x-2
+        "
+        style="height: <?= $top_bar_height ?>px;"
+    >
         <a 
             href="/"
             hx-get="/"
@@ -72,7 +75,7 @@ $top_bar = function () {
         </div>
         
         <!-- forum list button -->
-        <div class="flex">
+        <div class="flex items-end">
             <div 
                 class="
                     inline-flex overflow-hidden 

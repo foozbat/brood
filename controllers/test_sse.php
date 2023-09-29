@@ -6,10 +6,6 @@ header("Cache-Control: no-cache");
 
 
 while (!connection_aborted()) {
-    if (connection_aborted()) {
-        exit();
-    }
-
     echo "event: chat-message" . PHP_EOL;
     echo "id: " . rand(1000000,2000000) . PHP_EOL;
     echo "data: something" . PHP_EOL;
@@ -19,5 +15,5 @@ while (!connection_aborted()) {
     ob_end_flush();
     flush();
 
-    sleep(1);
+    sleep(rand(1, 10));
 }

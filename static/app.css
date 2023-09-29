@@ -859,10 +859,6 @@ pre {
   right: 16rem;
 }
 
-.top-16 {
-  top: 4rem;
-}
-
 .top-2 {
   top: 0.5rem;
 }
@@ -972,10 +968,6 @@ pre {
   height: 64px;
 }
 
-.h-\[calc\(100\%-4rem\)\] {
-  height: calc(100% - 4rem);
-}
-
 .h-full {
   height: 100%;
 }
@@ -983,6 +975,14 @@ pre {
 .h-min {
   height: -moz-min-content;
   height: min-content;
+}
+
+.h-screen {
+  height: 100vh;
+}
+
+.max-h-screen {
+  max-height: 100vh;
 }
 
 .min-h-\[32px\] {
@@ -1069,6 +1069,10 @@ pre {
   width: 100%;
 }
 
+.w-screen {
+  width: 100vw;
+}
+
 .min-w-\[32px\] {
   min-width: 32px;
 }
@@ -1090,6 +1094,10 @@ pre {
 }
 
 .flex-grow {
+  flex-grow: 1;
+}
+
+.grow {
   flex-grow: 1;
 }
 
@@ -1149,6 +1157,10 @@ pre {
 
 .list-disc {
   list-style-type: disc;
+}
+
+.flex-row {
+  flex-direction: row;
 }
 
 .flex-col {

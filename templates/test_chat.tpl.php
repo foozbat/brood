@@ -163,7 +163,7 @@ $content = function() use ($title, $description, $chats) { ?>
                             $refs.msg_anchor_newest.scrollIntoView();
                         }
                     "
-                >new message getter</div>
+                ></div>
 
                 <div 
                     x-ref="msg_anchor_newest" 

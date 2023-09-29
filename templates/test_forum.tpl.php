@@ -82,9 +82,9 @@ $content = function () use ($title, $threads, $forum_description) { ?>
     >
         <!-- Forum Header Bar -->
         <div class="flex flex-col">
-            <div class="flex">
+            <div class="flex mb-2">
                 <div class="flex-grow">
-                    <p class="text-2xl lg:text-2xl pb-2">
+                    <p class="text-lg lg:text-xl font-bold">
                         <i class="bx bx-conversation"></i>
                         <?= $title ?>
                     </p>
@@ -93,7 +93,7 @@ $content = function () use ($title, $threads, $forum_description) { ?>
                     <button class="
                         bg-blue-800 hover:bg-blue-700 
                         text-sm text-white font-bold 
-                        py-2 px-4 rounded-full
+                        py-1 px-4 rounded-full
                     ">
                         <i class='bx bxs-pencil' ></i>
                         New Thread
@@ -102,30 +102,17 @@ $content = function () use ($title, $threads, $forum_description) { ?>
             </div>
 
             <!-- description block -->
-            <div 
-                class="
-                    bg-white dark:bg-zinc-800 
-                    text-zinc-950 dark:text-zinc-300
-                    border-r-2 border-zinc-300 dark:border-black
-                    px-2
-                "
-
-            >
-                <div class="
-                        p-2 
-                        text-sm
-                        bg-zinc-100 dark:bg-zinc-950 
-                        text-zinc-950 dark:text-zinc-300
-                        rounded-md
-                        border-l-4 border-zinc-400 dark:border-zinc-600
-                ">
-                    <?php breadcrumb() ?>
-                                        
-                    <?= $forum_description ?>
-
-                </div>
+            <div class="
+                p-2 mb-2
+                text-sm
+                bg-zinc-100 dark:bg-zinc-950 
+                text-zinc-950 dark:text-zinc-300
+                rounded-md
+                border-l-4 border-zinc-400 dark:border-zinc-600
+            ">
+                <?php breadcrumb() ?>
+                <?= $forum_description ?>
             </div>
-
 
             <!-- Thread List -->
             <div id="threads">
