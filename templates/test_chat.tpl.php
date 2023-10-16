@@ -31,8 +31,7 @@ $content = function() use ($title, $description, $chats) { ?>
             </div>
 
             <div class="flex flex-grow justify-end space-x-4 pr-2">
-                <a 
-                    href="#"
+                <button 
                     class="
                         text-xl
                         hover:text-black hover:dark:text-white
@@ -48,10 +47,9 @@ $content = function() use ($title, $description, $chats) { ?>
 
                 >
                     <i class="bx bx-info-circle"></i>
-                </a>
+                </button>
 
-                <a 
-                    href="#"
+                <button 
                     class="
                         text-xl
                         hover:text-black hover:dark:text-white
@@ -67,7 +65,7 @@ $content = function() use ($title, $description, $chats) { ?>
 
                 >
                     <i class="bx bxs-bell"></i>
-                </a>
+                </button>
             </div>
         </div>
 

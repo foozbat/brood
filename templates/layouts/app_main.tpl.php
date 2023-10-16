@@ -3,8 +3,8 @@
  * Main Page Layout Template (extendable)
  */
 
-require "components/top_bar.tpl.php"; 
 require "components/page_footer.tpl.php"; 
+require "components/top_bar.tpl.php"; 
 
 ?>
 <?php if ($_SERVER['HTTP_HX_REQUEST']): ?>
@@ -106,6 +106,7 @@ require "components/page_footer.tpl.php";
 <!-- page -->
 <body 
     class="
+        min-h-screen w-full
         bg-zinc-200 dark:bg-zinc-900 
         text-zinc-700 dark:text-zinc-300
     "
@@ -127,20 +128,22 @@ require "components/page_footer.tpl.php";
         }
     "
 >
-    <div class="max-h-screen">
-        <div class="flex flex-col">
-
     <!-- header page -->
+    <!--<header
+        hx-get="/components/top_bar"
+        hx-trigger="load"
+        hx-swap="outerHTML">
+    </header>-->
     <?php $top_bar() ?>
 
     <!-- main sidebar -->
-    <div class="grow flex flex-row">
-
     <nav
         id="main_bar"
         x-ref="main_bar"
 
         class="
+            h-[calc(100%-<?= $top_bar_height ?>rem)]
+            fixed
             w-72 lg:w-64 xl:w-72
             overflow-y-auto
             z-20
@@ -177,13 +180,17 @@ require "components/page_footer.tpl.php";
         x-ref="content_area"
 
         class="
-            grow
+            h-[calc(100%-4rem)]
+            fixed
+            left-0 right-0 top-16
             overflow-y-auto
             z-10
             flex flex-col
         "
         :class="{ 
+            'lg:left-64 xl:left-72': show_main_bar,
             'pl-0 lg:pl-16 xl:pl-32': !show_main_bar,
+            'lg:right-48 xl:right-64': show_user_bar,
             'pr-0 lg:pr-16 xl:pr-32': !show_user_bar,
         }"
 
@@ -198,6 +205,9 @@ require "components/page_footer.tpl.php";
         x-ref="user_bar"
 
         class="
+            h-[calc(100%-4rem)]
+            top-16 pb-2
+            right-0 fixed
             w-64 lg:w-48 xl:w-64
             overflow-y-auto 
             z-10
@@ -220,10 +230,6 @@ require "components/page_footer.tpl.php";
             hx-swap="outerHTML">
         </div>
     </aside>
-
-    </div>
-    </div>
-    </div>
 
 </body>
 </html>
