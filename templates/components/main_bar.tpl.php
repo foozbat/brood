@@ -86,21 +86,13 @@ function item_link(string $label, string $type, $posts) {
         hx-replace-url="true"
         hx-push-url="true"
         
-
-        @click="$nextTick(() => { 
+        @click="$store.htmx.await_snapshot().then(() => { 
             if (show_main_bar && is_mobile) {
                 show_main_bar = false; 
             }
-        })"
+        });"
     >
-<!--
-        @click="
-            if (show_main_bar && is_mobile) {
-                await $store.htmx.snapshot_complete();
-                show_main_bar = false;
-            }
-        "
--->        
+     
         <span class="text-lg"><i class="<?= $icons[$type] ?>"></i></span>
         <span class="text-sm w-full"><?= $label ?></span>
         <?php if($posts > 0): ?>

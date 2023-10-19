@@ -37,6 +37,7 @@ require "components/top_bar.tpl.php";
     <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/intersect@3.x.x/dist/cdn.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
+    <script src="/static/brood-common.js"></script>
 
     <style>
         [x-cloak] { display: none !important; }
@@ -46,31 +47,7 @@ require "components/top_bar.tpl.php";
         // move all this into a .js file
 
         document.addEventListener('alpine:init', () => {
-            console.log('Alpine Init');
-            
-            Alpine.store('htmx', {
-                is_swapping: false,
-                is_snapshotting: false,
-
-                async swap_complete() {
-                    await new Promise(r => setTimeout(r, 50));
-//                    return await this.is_swapping == false;
-
-                },
-                async snapshot_complete() {
-                    /*
-                    if (this.is_snapshotting == false) {
-                        console.log("waiting for snapshot to start");
-                        await new Promise(r => setTimeout(r, 50));
-                        console.log("wait complete");
-                    }
-                    while (this.is_snapshotting) {
-                        console.log("we're snapshotting, now wait for complete");
-                    }
-                    console.log("snapshot complete!");
-*/
-                },
-            });
+            //console.log('Alpine Init');
 
             Alpine.data('dropdown', () => ({
                 open: false,
@@ -87,16 +64,6 @@ require "components/top_bar.tpl.php";
                     }
                 }
             }));
-        });
-
-        document.addEventListener('htmx:beforeHistorySave', () => {
-            //console.log('evt: htmx is snapshotting');
-            //Alpine.store('htmx').is_snapshotting = true;
-        });
-
-        document.addEventListener('htmx:pushedIntoHistory', async () => {
-            //console.log('evt: htmx is done snapshotting');
-            //Alpine.store('htmx').is_snapshotting = false;
         });
 
     </script>
@@ -141,6 +108,7 @@ require "components/top_bar.tpl.php";
         id="main_bar"
         x-ref="main_bar"
 
+
         class="
             h-[calc(100%-<?= $top_bar_height ?>rem)]
             fixed
@@ -153,19 +121,14 @@ require "components/top_bar.tpl.php";
         x-show="show_main_bar"
         x-swipe:left="show_main_bar = false"
 
-        @click.away="
-            if (show_main_bar && is_mobile) {
-                await $store.htmx.snapshot_complete();
-                show_main_bar = false;
-            }
-        "
-
-        x-transition.delay.1000ms:enter="transition duration-250"
-        x-transition.delay.1000ms:enter-start="transform -translate-x-full opacity-0 scale-90"
-        x-transition.delay.1000ms.:enter-end="transform translate-x-0 opacity-100 scale-100"
-        x-transition.delay.1000ms:leave="transition duration-250"
-        x-transition.delay.1000ms:leave-start="transform opacity-100 scale-100"
-        x-transition.delay.1000ms:leave-end="transform -translate-x-full opacity-0 scale-90"
+        @click.away="$store.htmx.await_snapshot().then(() => { show_main_bar = false })"
+    
+        x-transition:enter="transition duration-250"
+        x-transition:enter-start="transform -translate-x-full opacity-0 scale-90"
+        x-transition:enter-end="transform translate-x-0 opacity-100 scale-100"
+        x-transition:leave.delay="transition duration-250"
+        x-transition:leave-start="transform opacity-100 scale-100"
+        x-transition:leave-end="transform -translate-x-full opacity-0 scale-90"
     >
         <div
             hx-get="/components/main_bar"
