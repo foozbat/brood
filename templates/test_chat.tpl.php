@@ -125,7 +125,7 @@ $content = function() use ($title, $description, $chats) { ?>
                     hx-trigger="intersect"
                     hx-target="#old_chat_messages"
                     hx-swap="afterbegin"
-                >old message getter</div>
+                ></div>
 
                 <!-- old chat messages -->
                 <div
@@ -150,7 +150,7 @@ $content = function() use ($title, $description, $chats) { ?>
                 <!-- new chat messages -->
                 <div 
                     id="new_chat_messages"
-                    class="space-y-3"
+                    class="pt-3 space-y-3"
                     x-ref="new_chat_messages"
                     hx-get="test_chat/messages/1"
                     hx-trigger="sse:chat-message"
@@ -167,7 +167,7 @@ $content = function() use ($title, $description, $chats) { ?>
                     x-ref="msg_anchor_newest" 
                     x-intersect:enter="show_jump_latest_icon = false"
                     x-intersect:leave="show_jump_latest_icon = true"
-                >msg_anchor_newest</div>
+                ></div>
             </div>
 
             <!-- top fade out -->

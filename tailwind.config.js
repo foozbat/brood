@@ -16,6 +16,12 @@ module.exports = {
       {
          pattern: /bg-(zinc|red|orange|yellow|green|blue|purple|pink)-(700)/
       },
+      {
+        pattern: /from-(zinc|red|orange|yellow|green|blue|purple|pink)-(700)/
+      },
+      {
+        pattern: /to-(zinc|red|orange|yellow|green|blue|purple|pink)-(800)/
+      },
     ],
     theme: {
       extend: {},

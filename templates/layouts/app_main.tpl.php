@@ -55,12 +55,11 @@ require "components/top_bar.tpl.php";
                 toggle() {
                     this.open = !this.open;
                 },
-                async click_away() {
+                click_away() {
                     if (this.open) {
-                        // waiting for htmx history snapshot");
-                        await new Promise(r => setTimeout(r, 50));
-                        console.log("done");
-                        this.open = false;
+                        Alpine.store('htmx').await_snapshot().then(() => {
+                            this.open = false;
+                        });
                     }
                 }
             }));
@@ -85,11 +84,15 @@ require "components/top_bar.tpl.php";
     }"
 
     x-swipe:right.threshold.100px="
+        show_user_bar = false;
+
         if (!show_main_bar && !show_user_bar) {
             show_main_bar = true;
         }
     "
     x-swipe:left.threshold.100px="
+        show_main_bar = false;
+
         if (!show_user_bar && !show_main_bar) {
             show_user_bar = true;
         }
@@ -121,7 +124,11 @@ require "components/top_bar.tpl.php";
         x-show="show_main_bar"
         x-swipe:left="show_main_bar = false"
 
-        @click.away="$store.htmx.await_snapshot().then(() => { show_main_bar = false })"
+        @click.away="$store.htmx.await_snapshot().then(() => { 
+            if (show_main_bar && is_mobile) {
+                show_main_bar = false; 
+            }
+        })"
     
         x-transition:enter="transition duration-250"
         x-transition:enter-start="transform -translate-x-full opacity-0 scale-90"
@@ -180,6 +187,12 @@ require "components/top_bar.tpl.php";
         x-show="show_user_bar"
         x-swipe:right="show_user_bar = false"
         
+        @click.away="$store.htmx.await_snapshot().then(() => { 
+            if (show_user_bar && is_mobile) {
+                show_user_bar = false; 
+            }
+        })"
+
         x-transition:enter="transition duration-250"
         x-transition:enter-start="transform translate-x-full opacity-0 scale-90"
         x-transition:enter-end="transform translate-x-0 opacity-100 scale-100"

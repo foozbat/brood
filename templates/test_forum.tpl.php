@@ -91,7 +91,8 @@ $content = function () use ($title, $threads, $forum_description) { ?>
                 </div>
                 <div class="items-left whitespace-nowrap">
                     <button class="
-                        bg-blue-800 hover:bg-blue-700 
+                        bg-gradient-to-b from-blue-800 hover:from-blue-700 to-blue-900 hover:to-blue-800
+                        
                         text-sm text-white font-bold 
                         py-1 px-4 rounded-full
                     ">

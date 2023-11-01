@@ -12,7 +12,7 @@ function user_icon(int $size=32) {
         text-<?= ($size > 40 ? '3xl' : 'lg') ?>
         text-white
         rounded-md
-        bg-<?= $color ?>-700
+        bg-gradient-to-b from-<?= $color ?>-700 to-<?= $color ?>-800
     ">
         <i class='bx bx-user'></i>
     </div><?php

@@ -23,7 +23,7 @@ function user_entry($username, $status) { ?>
 <div 
     class="
         flex flex-col
-        space-y-1 m-2 p-2
+        space-y-1 m-2 mr-0 p-2
         rounded-md border-r-2 border-b-2 
         border-zinc-300 dark:border-black
         shadow-lg
@@ -79,7 +79,7 @@ function user_entry($username, $status) { ?>
         </span>
     </div>
     
-    <?php if (rand(0,1)): ?>
+    <?php if (0): ?>
         <div 
             class="
                 flex flex-col justify-center items-center 

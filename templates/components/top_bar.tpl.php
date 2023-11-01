@@ -14,7 +14,8 @@ $top_bar = function() use ($top_bar_height) { ?>
         w-full
         items-center justify-between p-2
         shadow-lg
-        text-zinc-100 bg-black
+        text-zinc-100 
+        bg-gradient-to-b from-black  to-transparent
         z-20
         space-x-2
     "

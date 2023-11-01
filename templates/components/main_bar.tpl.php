@@ -149,7 +149,7 @@ function dm_link($user) { ?>
 <div 
     class="
         flex flex-col
-        space-y-1 m-2 p-2
+        space-y-1 m-2 ml-0 p-2
         rounded-md border-r-2 border-b-2 
         border-zinc-300 dark:border-black
         shadow-lg
@@ -162,7 +162,6 @@ function dm_link($user) { ?>
         class="
             flex flex-col
             rounded-md 
-            p-2
         "
     >
         <div class="
@@ -196,7 +195,7 @@ function dm_link($user) { ?>
                     uppercase font-bold text-sm 
                 "
             >
-                Super Awesome Community
+                Community Index
             </span>
             <span
                 class="
@@ -209,7 +208,7 @@ function dm_link($user) { ?>
             </span>
         </div>
 
-        <div class="flex w-full space-x-1 justify-center items-center">
+        <div class="flex w-full p-2 space-x-1 justify-center items-center">
             <button 
                 class="
                     w-1/3
@@ -306,3 +305,4 @@ function dm_link($user) { ?>
             </div>
         <?php endforeach ?>
     </div>
+</div>
