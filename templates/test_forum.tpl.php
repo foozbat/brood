@@ -89,7 +89,7 @@ $content = function () use ($title, $threads, $forum_description) { ?>
                         <?= $title ?>
                     </p>
                 </div>
-                <div class="items-left whitespace-nowrap">
+                <div class="flex flex-grow justify-end space-x-4 pr-2">
                     <button class="
                         bg-gradient-to-b from-blue-800 hover:from-blue-700 to-blue-900 hover:to-blue-800
                         
@@ -98,6 +98,32 @@ $content = function () use ($title, $threads, $forum_description) { ?>
                     ">
                         <i class='bx bxs-pencil' ></i>
                         New Thread
+                    </button>
+                    <button 
+                        class="
+                            text-xl
+                            hover:text-black hover:dark:text-white
+                        "
+                        @click="
+                            scroll_bottom = show_jump_latest_icon == false;
+                            show_description_block = !show_description_block;
+                            //if (scroll_bottom) {
+                                console.log('resetting scrolltop');
+                                $refs.chat_container.scrollTop = $refs.msg_anchor_newest.offsetTop;
+                            //}
+                        "
+
+                    >
+                        <i class="bx bx-info-circle"></i>
+                    </button>
+
+                    <button 
+                        class="
+                            text-xl
+                            hover:text-black hover:dark:text-white
+                        "
+                    >
+                        <i class="bx bxs-bell"></i>
                     </button>
                 </div>
             </div>

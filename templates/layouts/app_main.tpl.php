@@ -5,6 +5,8 @@
 
 require "components/page_footer.tpl.php"; 
 require "components/top_bar.tpl.php"; 
+require "components/modal.tpl.php";
+require "components/flash_message.tpl.php";
 
 ?>
 <?php if ($_SERVER['HTTP_HX_REQUEST']): ?>
@@ -66,7 +68,6 @@ require "components/top_bar.tpl.php";
         });
 
     </script>
-
 </head>
 
 <!-- page -->
@@ -98,6 +99,13 @@ require "components/top_bar.tpl.php";
         }
     "
 >
+
+<script>
+            // test
+            document.body.addEventListener("flash_message", (event) => {
+            console.log(event.detail.value);
+        });
+</script>
     <!-- header page -->
     <!--<header
         hx-get="/components/top_bar"
@@ -144,13 +152,30 @@ require "components/top_bar.tpl.php";
         </div>
     </nav>
     
+    <!-- flash messages -->
+    <div
+        class="
+            fixed
+            left-0 right-0 top-24
+            z-50
+        "
+        :class="{ 
+            'lg:left-64 xl:left-72': show_main_bar,
+            'pl-0 lg:pl-16 xl:pl-32': !show_main_bar,
+            'lg:right-48 xl:right-64': show_user_bar,
+            'pr-0 lg:pr-16 xl:pr-32': !show_user_bar,
+        }"
+    >
+        <?php flash_message() ?>
+    </div>
+
     <!-- main content area -->
     <main 
         id="content_area"
         x-ref="content_area"
 
         class="
-            h-[calc(100%-4rem)]
+            h-[calc(100%-<?= $top_bar_height ?>rem)]
             fixed
             left-0 right-0 top-16
             overflow-y-auto
@@ -175,7 +200,7 @@ require "components/top_bar.tpl.php";
         x-ref="user_bar"
 
         class="
-            h-[calc(100%-4rem)]
+            h-[calc(100%-<?= $top_bar_height ?>rem)]    
             top-16 pb-2
             right-0 fixed
             w-64 lg:w-48 xl:w-64
@@ -206,6 +231,11 @@ require "components/top_bar.tpl.php";
             hx-swap="outerHTML">
         </div>
     </aside>
+
+    <div id="modal_container">
+        <?php //modal(); ?>
+
+    </div>
 
 </body>
 </html>

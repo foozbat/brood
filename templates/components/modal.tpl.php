@@ -1,3 +1,5 @@
+<?php function modal() { ?>
+
 <div
     class="
         flex
@@ -9,8 +11,9 @@
         absolute
         z-50
     "
-    x-data="{ show_modal: true }"
+    x-data="{ show_modal: false }"
     x-show="show_modal"
+    x-on:flash-message.window="show_modal = true"
     x-transition
     x-cloak
 >
@@ -38,3 +41,5 @@
         </button>
     </div>
 </div>
+
+<?php } ?>

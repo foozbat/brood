@@ -4,6 +4,7 @@
  */
 
 require_once "components/user_icon.tpl.php";
+require_once "components/breadcrumb.tpl.php";
 require_once "utils/bbcode.php";
 
 Fzb\extend("layouts/app_main.tpl.php");
@@ -53,7 +54,7 @@ function thread_post($post) { ?>
         text-zinc-950 dark:text-zinc-300
         rounded-md
         border-r-2 border-b-2 border-zinc-300 dark:border-black
-        p-3 mb-2
+        p-3
     ">
         <div class="w-full lg:w-48 h-min flex flex-nowrap lg:flex-wrap pb-4 lg:border-0 border-zinc-500">
             <div>
@@ -123,76 +124,118 @@ function thread_post($post) { ?>
 $content = function() use ($title, $posts) { ?>
     <div 
         id="forum_list"
-        class="w-full p-2"
+        class="h-full p-2 flex flex-col rounded-md"
     >
-        <div class="flex flex-col pb-4">
-            <div class="flex">
+        
+            <div class="flex mb-2">
                 <div class="flex-grow">
-                    <p class="text-2xl lg:text-2xl pb-2">
+                    <p class="text-lg lg:text-xl font-bold">
+                        
                         <?= $title ?>
                     </p>
                 </div>
-                <div class="items-left whitespace-nowrap">
-                    <button class="
-                        bg-blue-800 hover:bg-blue-700 
-                        text-sm text-white font-bold 
-                        py-2 px-4 rounded-full
-                    ">
-                        <i class='bx bx-plus' ></i>
-                        Follow
+                <div class="flex flex-grow justify-end space-x-4 pr-2">
+                    <div>
+                        paginate
+                    </div>
+                    <button 
+                        class="
+                            text-xl
+                            hover:text-black hover:dark:text-white
+                        "
+                    >
+                        <i class="bx bx-plus-circle"></i>
+                    </button>
+                    <button 
+                        class="
+                            text-xl
+                            hover:text-black hover:dark:text-white
+                        "
+                        @click="
+                            scroll_bottom = show_jump_latest_icon == false;
+                            show_description_block = !show_description_block;
+                            //if (scroll_bottom) {
+                                console.log('resetting scrolltop');
+                                $refs.chat_container.scrollTop = $refs.msg_anchor_newest.offsetTop;
+                            //}
+                        "
+
+                    >
+                        <i class="bx bx-info-circle"></i>
+                    </button>
+
+                    <button 
+                        class="
+                            text-xl
+                            hover:text-black hover:dark:text-white
+                        "
+                    >
+                        <i class="bx bxs-bell"></i>
                     </button>
                 </div>
-            </div>
-            <div class="flex">
-                <button 
-                    class="
-                        py-1 px-4 mr-1
-                        rounded-full
-                        bg-zinc-100 dark:bg-zinc-950
-                        text-sm
-                        hover:bg-zinc-300 hover:text-black 
-                        hover:dark:bg-zinc-700 hover:dark:text-white
-                    "
-                >
-                    <i class="bx bx-home"></i>
-                    Home
-                </button>
-                <button 
-                    class="
-                        py-1 px-4 mr-1
-                        rounded-full
-                        bg-zinc-100 dark:bg-zinc-950
-                        text-sm
-                        hover:bg-zinc-300 hover:text-black 
-                        hover:dark:bg-zinc-700 hover:dark:text-white
-                    "
-                >
-                    <i class="bx bx-list-ul"></i>
-                    General Discussion
-                </button>
-                <button 
-                    href="#"
-                    class="
-                        py-1 px-4 mr-1
-                        rounded-full
-                        bg-zinc-100 dark:bg-zinc-950
-                        text-sm
-                        hover:bg-zinc-300 hover:text-black 
-                        hover:dark:bg-zinc-700 hover:dark:text-white
-                    "
-                >
-                    <i class="bx bxs-conversation"></i>
-                    Programming
-                </button>
-            </div>
+            
         </div>
 
-        <div class="flex flex-col">
-            <div id="threads">
-                <?php foreach ($posts as $post): ?>
-                    <?php thread_post($post) ?>
-                <?php endforeach ?>
-            </div>
+        <div class="
+                p-2 mb-2
+                text-sm
+                bg-zinc-100 dark:bg-zinc-950 
+                text-zinc-950 dark:text-zinc-300
+                rounded-md
+                border-l-4 border-zinc-400 dark:border-zinc-600
+        ">
+            <?php breadcrumb() ?>
+            Lorem ipsum...
+        </div>
+
+        <div
+            id="threads"
+            class="
+                relative
+                w-full h-full
+                flex flex-col
+                overflow-y-auto
+                space-y-2 mb-2
+            "
+        >
+            <?php foreach ($posts as $post): ?>
+                <?php thread_post($post) ?>
+            <?php endforeach ?>
+        </div>
+
+        <!-- new message block -->
+        <div class="
+            w-full
+            flex flex-nowrap
+            items-center
+            bg-white dark:bg-zinc-800 
+            text-zinc-700 dark:text-zinc-400
+            rounded-md 
+            border-r-2 border-b-2 border-zinc-300 dark:border-black
+            p-1 px-2 space-x-2
+        ">
+            <a 
+                href="#"
+                class="bx bxs-smile text-2xl"
+            ></a>
+            <input 
+                type="text"
+                class="
+                    bg-white dark:bg-zinc-950
+                    rounded-md
+                    border-0
+                    w-full
+                "
+            />
+            <a
+                href="#"
+                class="bx bxs-camera text-2xl"
+            ></a>
+            <a
+                href="#"
+                class="bx bx-paperclip text-2xl"
+            >
+                </a>
         </div>
     </div><?php
 };
