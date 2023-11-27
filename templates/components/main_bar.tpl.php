@@ -149,7 +149,7 @@ function dm_link($user) { ?>
 <div 
     class="
         flex flex-col
-        space-y-1 m-2 ml-0 p-2
+        space-y-1 p-2
         rounded-md border-r-2 border-b-2 
         border-zinc-300 dark:border-black
         shadow-lg

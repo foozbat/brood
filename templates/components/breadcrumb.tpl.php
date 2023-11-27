@@ -1,7 +1,7 @@
 <?php
 
 function breadcrumb() { ?>
-    <div class="flex space-x-2 pb-2">
+    <div class="flex space-x-2">
         <a 
             href="#"
             class="

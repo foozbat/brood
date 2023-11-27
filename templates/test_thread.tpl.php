@@ -3,11 +3,12 @@
  * Thread View Template
  */
 
-require_once "components/user_icon.tpl.php";
-require_once "components/breadcrumb.tpl.php";
-require_once "utils/bbcode.php";
+require_once 'components/user_icon.tpl.php';
+require_once 'components/breadcrumb.tpl.php';
+require_once 'components/pagination.tpl.php';
+require_once 'utils/bbcode.php';
 
-Fzb\extend("layouts/app_main.tpl.php");
+Fzb\extend('layouts/app_main.tpl.php');
 
 function post_action_button(string $type) { 
     
@@ -126,54 +127,51 @@ $content = function() use ($title, $posts) { ?>
         id="forum_list"
         class="h-full p-2 flex flex-col rounded-md"
     >
-        
-            <div class="flex mb-2">
-                <div class="flex-grow">
-                    <p class="text-lg lg:text-xl font-bold">
-                        
-                        <?= $title ?>
-                    </p>
-                </div>
-                <div class="flex flex-grow justify-end space-x-4 pr-2">
-                    <div>
-                        paginate
-                    </div>
-                    <button 
-                        class="
-                            text-xl
-                            hover:text-black hover:dark:text-white
-                        "
-                    >
-                        <i class="bx bx-plus-circle"></i>
-                    </button>
-                    <button 
-                        class="
-                            text-xl
-                            hover:text-black hover:dark:text-white
-                        "
-                        @click="
-                            scroll_bottom = show_jump_latest_icon == false;
-                            show_description_block = !show_description_block;
-                            //if (scroll_bottom) {
-                                console.log('resetting scrolltop');
-                                $refs.chat_container.scrollTop = $refs.msg_anchor_newest.offsetTop;
-                            //}
-                        "
+        <div class="flex mb-2">
+            <div class="flex-grow">
+                <p class="text-lg lg:text-xl font-bold">
+                    
+                    <?= $title ?>
+                </p>
+            </div>
+            <div class="flex flex-grow justify-end space-x-4 pr-2">
+                <button 
+                    class="
+                        text-xl
+                        hover:text-black hover:dark:text-white
+                    "
+                >
+                    <i class="bx bx-plus-circle"></i>
+                </button>
+                <button 
+                    class="
+                        text-xl
+                        hover:text-black hover:dark:text-white
+                    "
+                    @click="show_description_block = !show_description_block"
+                >
+                    <i class="bx bx-info-circle"></i>
+                </button>
 
-                    >
-                        <i class="bx bx-info-circle"></i>
-                    </button>
+                <button 
+                    class="
+                        text-xl
+                        hover:text-black hover:dark:text-white
+                    "
+                >
+                    <i class="bx bxs-bell"></i>
+                </button>
 
-                    <button 
-                        class="
-                            text-xl
-                            hover:text-black hover:dark:text-white
-                        "
-                    >
-                        <i class="bx bxs-bell"></i>
-                    </button>
-                </div>
-            
+                <button class="
+                    bg-gradient-to-b from-blue-800 hover:from-blue-700 to-blue-900 hover:to-blue-800
+                    
+                    text-sm text-white font-bold 
+                    py-1 px-4 rounded-full
+                ">
+                    <i class='bx bxs-pencil' ></i>
+                    Reply
+                </button>
+            </div>
         </div>
 
         <div class="
@@ -204,38 +202,7 @@ $content = function() use ($title, $posts) { ?>
         </div>
 
         <!-- new message block -->
-        <div class="
-            w-full
-            flex flex-nowrap
-            items-center
-            bg-white dark:bg-zinc-800 
-            text-zinc-700 dark:text-zinc-400
-            rounded-md 
-            border-r-2 border-b-2 border-zinc-300 dark:border-black
-            p-1 px-2 space-x-2
-        ">
-            <a 
-                href="#"
-                class="bx bxs-smile text-2xl"
-            ></a>
-            <input 
-                type="text"
-                class="
-                    bg-white dark:bg-zinc-950
-                    rounded-md
-                    border-0
-                    w-full
-                "
-            />
-            <a
-                href="#"
-                class="bx bxs-camera text-2xl"
-            ></a>
-            <a
-                href="#"
-                class="bx bx-paperclip text-2xl"
-            >
-                </a>
-        </div>
+        <?php pagination_bar() ?>
+
     </div><?php
 };

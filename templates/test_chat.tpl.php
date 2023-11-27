@@ -23,7 +23,7 @@ $content = function() use ($title, $description, $chats) { ?>
         <div class="
             flex
             text-zinc-950 dark:text-zinc-300
-            pb-2
+            pb-1
         ">
             <div class="text-lg lg:text-xl font-bold">
                 <i class="bx bx-hash"></i>
@@ -37,12 +37,12 @@ $content = function() use ($title, $description, $chats) { ?>
                         hover:text-black hover:dark:text-white
                     "
                     @click="
-                        scroll_bottom = show_jump_latest_icon == false;
                         show_description_block = !show_description_block;
-                        //if (scroll_bottom) {
+                        if (!show_jump_latest_icon) {
                             console.log('resetting scrolltop');
-                            $refs.chat_container.scrollTop = $refs.msg_anchor_newest.offsetTop;
-                        //}
+                        $nextTick(() => { 
+                            $refs.chat_container.scrollTop = $refs.msg_anchor_newest.offsetTop; });
+                        }
                     "
 
                 >
@@ -54,15 +54,6 @@ $content = function() use ($title, $description, $chats) { ?>
                         text-xl
                         hover:text-black hover:dark:text-white
                     "
-                    @click="
-                        scroll_bottom = show_jump_latest_icon == false;
-                        show_description_block = !show_description_block;
-                        //if (scroll_bottom) {
-                            console.log('resetting scrolltop');
-                            $refs.chat_container.scrollTop = $refs.msg_anchor_newest.offsetTop;
-                        //}
-                    "
-
                 >
                     <i class="bx bxs-bell"></i>
                 </button>
@@ -75,8 +66,7 @@ $content = function() use ($title, $description, $chats) { ?>
                 text-zinc-950 dark:text-zinc-300
                 pb-2
             "
-            x-show="show_description_block"
-            x-transition
+
         >
             <div class="
                     p-3
@@ -85,10 +75,16 @@ $content = function() use ($title, $description, $chats) { ?>
                     text-zinc-950 dark:text-zinc-300
                     rounded-md
                     border-l-4 border-zinc-400 dark:border-zinc-600
+                    space-y-2
             ">
                 <?php breadcrumb() ?>
-                                    
-                <?= $description ?>
+                       
+                <div
+                    x-show="show_description_block"
+                    x-transition
+                >
+                    <?= $description ?>
+                </div>
 
             </div>
         </div>

@@ -79,6 +79,10 @@ $content = function () use ($title, $threads, $forum_description) { ?>
     <div 
         id="forum_list"
         class="w-full p-2"
+
+        x-data="{ 
+            show_description_block: true, 
+        }"
     >
         <!-- Forum Header Bar -->
         <div class="flex flex-col">
@@ -99,46 +103,51 @@ $content = function () use ($title, $threads, $forum_description) { ?>
                         <i class='bx bxs-pencil' ></i>
                         New Thread
                     </button>
-                    <button 
-                        class="
-                            text-xl
-                            hover:text-black hover:dark:text-white
-                        "
-                        @click="
-                            scroll_bottom = show_jump_latest_icon == false;
-                            show_description_block = !show_description_block;
-                            //if (scroll_bottom) {
-                                console.log('resetting scrolltop');
-                                $refs.chat_container.scrollTop = $refs.msg_anchor_newest.offsetTop;
-                            //}
-                        "
-
-                    >
-                        <i class="bx bx-info-circle"></i>
-                    </button>
-
-                    <button 
-                        class="
-                            text-xl
-                            hover:text-black hover:dark:text-white
-                        "
-                    >
-                        <i class="bx bxs-bell"></i>
-                    </button>
+                    
                 </div>
             </div>
 
             <!-- description block -->
             <div class="
-                p-2 mb-2
+                p-1 mb-2
                 text-sm
                 bg-zinc-100 dark:bg-zinc-950 
                 text-zinc-950 dark:text-zinc-300
                 rounded-md
                 border-l-4 border-zinc-400 dark:border-zinc-600
             ">
-                <?php breadcrumb() ?>
-                <?= $forum_description ?>
+                <div class="flex flex-row">
+                    <div class="flex-grow p-1">
+                        <?php breadcrumb() ?>
+                    </div>
+
+                    <div class="space-x-4 pr-2">
+                        <button 
+                            class="
+                                text-lg
+                                hover:text-black hover:dark:text-white
+                            "
+                            @click="show_description_block = !show_description_block"
+                        >
+                            <i class="bx bx-info-circle"></i>
+                        </button>
+
+                        <button class="
+                            text-lg
+                            hover:text-black hover:dark:text-white
+                        ">
+                            <i class="bx bxs-bell"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div 
+                    class="p-1"
+                    x-show="show_description_block"
+                    x-transition
+                >
+                    <?= $forum_description ?>
+                </div>
             </div>
 
             <!-- Thread List -->
