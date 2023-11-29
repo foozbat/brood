@@ -1,4 +1,4 @@
-# megaboardx
+# brood
 
 <p align="center">
   <a href="https://tailwindcss.com" target="_blank">
@@ -10,4 +10,4 @@
   </a>
 </p>
 
-Coming soon... megaboard.chat
+Coming soon...
