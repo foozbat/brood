@@ -157,7 +157,6 @@ function dm_link($user) { ?>
         text-zinc-800 dark:text-zinc-300
     "
 >
-
     <div
         class="
             flex flex-col
