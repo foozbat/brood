@@ -151,7 +151,6 @@ $content = function() use ($title, $description, $chats) { ?>
                     hx-get="test_chat/messages/1"
                     hx-trigger="sse:chat-message"
                     hx-swap="beforeend"
-                    x-on:sse:chat-message=""
                     x-on:htmx:after-swap="
                         if (!show_jump_latest_icon) {
                             $refs.msg_anchor_newest.scrollIntoView();
@@ -169,11 +168,13 @@ $content = function() use ($title, $description, $chats) { ?>
             <!-- top fade out -->
             <div 
                 class="
+                    flex
                     absolute
                     fixed
                     w-full h-8
                     bg-gradient-to-b from-white dark:from-zinc-800 to-transparent
                     top-2
+                    justify-center
                 "
                 x-cloak
                 x-transition
@@ -183,11 +184,13 @@ $content = function() use ($title, $description, $chats) { ?>
             <!-- bottom fade out -->
             <div 
                 class="
+                    flex
                     absolute
                     fixed
                     w-full h-8
                     bg-gradient-to-t from-white dark:from-zinc-800 to-transparent
                     bottom-2
+                    justify-center
                 "
                 x-show="show_jump_latest_icon"
                 x-cloak
@@ -239,6 +242,9 @@ $content = function() use ($title, $description, $chats) { ?>
                     border-0
                     w-full
                 "
+                hx-post="/test_chat/send"
+                hx-swap="none"
+                hx-on::after-request="this.value=''"
             />
             <a
                 href="#"

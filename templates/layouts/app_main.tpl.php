@@ -121,7 +121,7 @@ require "components/flash_message.tpl.php";
 
 
         class="
-            h-[calc(100%-<?= $top_bar_height ?>rem)]
+            h-[calc(100%-4rem)]
             fixed
             w-72 lg:w-64 xl:w-72
             overflow-y-auto
@@ -175,7 +175,7 @@ require "components/flash_message.tpl.php";
         x-ref="content_area"
 
         class="
-            h-[calc(100%-<?= $top_bar_height ?>rem)]
+            h-[calc(100%-4rem)]
             fixed
             left-0 right-0 top-16
             overflow-y-auto
@@ -200,7 +200,7 @@ require "components/flash_message.tpl.php";
         x-ref="user_bar"
 
         class="
-            h-[calc(100%-<?= $top_bar_height ?>rem)]    
+            h-[calc(100%-4rem)]    
             top-16 pb-2
             right-0 fixed
             w-64 lg:w-48 xl:w-64

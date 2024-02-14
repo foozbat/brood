@@ -2,7 +2,9 @@
 
 $renderer = new \Fzb\Renderer();
 
-$router->get("/test_chat", function () use ($renderer) {
+$router->use_controller_prefix();
+
+$router->get("/", function () use ($renderer) {
     $renderer->set("title", "General Chatroom");
     $renderer->set("description", "This is a description block for the chat room. It lets the users know what the topic of the chat room is, and perhaps rules if they so choose.");
         
@@ -10,8 +12,8 @@ $router->get("/test_chat", function () use ($renderer) {
 });
 
 $router->get(
-    "/test_chat/messages", 
-    "/test_chat/messages/{num}",
+    "/messages", 
+    "/messages/{num}",
     function () use ($renderer) {
         $inputs = new \Fzb\Input(
             num: "path validate:int default:25"
@@ -32,6 +34,12 @@ $router->get(
 
         $renderer->set("chats", $chats);
         $renderer->show("fragments/chat_message.tpl.php");
+});
+
+$router->post("/send", function () {
+    $pub = new Redis();
+    $pub->connect('127.0.0.1');
+    $pub->publish('chat', 'chat-message');
 });
 
 $router->route();
