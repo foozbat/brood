@@ -5,7 +5,6 @@
 
 require "components/page_footer.tpl.php"; 
 require "components/top_bar.tpl.php"; 
-require "components/modal.tpl.php";
 require "components/flash_message.tpl.php";
 
 ?>
@@ -233,7 +232,7 @@ require "components/flash_message.tpl.php";
     </aside>
 
     <div id="modal_container">
-        <?php //modal(); ?>
+        
 
     </div>
 

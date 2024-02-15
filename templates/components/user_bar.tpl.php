@@ -79,7 +79,7 @@ function user_entry($username, $status) { ?>
         </span>
     </div>
     
-    <?php if (0): ?>
+    <?php if (!$auth->is_authenticated): ?>
         <div 
             class="
                 flex flex-col justify-center items-center 
@@ -91,7 +91,7 @@ function user_entry($username, $status) { ?>
                 text-sm text-white font-bold 
                 py-2 px-4 rounded-full
             ">
-                <i class='bx bx-log-in' ></i>
+                <i class='bx bx-log-in-circle' ></i>
                 Login
             </button>
             <br />

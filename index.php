@@ -27,6 +27,19 @@ set_exception_handler(function ($e) {
 	exit;
 });
 
+ob_start("ob_gzhandler");
+
+// change to more secure
+$db = new Fzb\Database(
+    username: 'brood',
+    password: 'password',
+    driver: 'mysql',
+    host: 'localhost',
+    database: 'brood'
+);
+
+$auth = new Fzb\Auth();
+
 // router using controllers
 $router = new Fzb\Router();
 require_once $router->get_controller();

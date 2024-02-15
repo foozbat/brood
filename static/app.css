@@ -827,6 +827,10 @@ pre {
   position: relative;
 }
 
+.inset-0 {
+  inset: 0px;
+}
+
 .bottom-2 {
   bottom: 0.5rem;
 }
@@ -869,6 +873,10 @@ pre {
 
 .top-24 {
   top: 6rem;
+}
+
+.top-0 {
+  top: 0px;
 }
 
 .isolate {
@@ -1288,6 +1296,10 @@ pre {
 .divide-zinc-200 > :not([hidden]) ~ :not([hidden]) {
   --tw-divide-opacity: 1;
   border-color: rgb(228 228 231 / var(--tw-divide-opacity));
+}
+
+.overflow-auto {
+  overflow: auto;
 }
 
 .overflow-hidden {
@@ -1935,6 +1947,10 @@ pre {
 
 .bg-zinc-100\/75 {
   background-color: rgb(244 244 245 / 0.75);
+}
+
+.bg-zinc-800\/50 {
+  background-color: rgb(39 39 42 / 0.5);
 }
 
 .bg-gradient-to-b {
@@ -3261,6 +3277,10 @@ pre {
 
 .p-3 {
   padding: 0.75rem;
+}
+
+.p-10 {
+  padding: 2.5rem;
 }
 
 .px-1 {
