@@ -3,24 +3,24 @@
  * Page Header Component
  */
 
-$top_bar_height = "4";
+require_once("components/user_icon.tpl.php");
+require_once("components/modals/login.tpl.php");   
 
-$top_bar = function() use ($top_bar_height, $auth) { 
-    require_once("components/user_icon.tpl.php");
-    require_once("components/modals/login.tpl.php");    
+$top_bar_height = "4";
+ 
 ?>
-<header 
+<div 
     class="
-        flex
-        w-full
+        flex w-full
         items-center justify-between p-2
         shadow-lg
         text-zinc-100 
-        bg-gradient-to-b from-black  to-transparent
-        z-20
+        bg-gradient-to-b from-black to-transparent
         space-x-2
     "
-    style="height: <?= $top_bar_height ?>rem"
+    hx-get="/components/top_bar"
+    hx-trigger="user-login-success from:body, user-logout from:body"
+    hx-swap="outerHTML"
 >
     <a 
         href="/"
@@ -183,7 +183,8 @@ $top_bar = function() use ($top_bar_height, $auth) {
 
                 <div class="flex flex-col">
                     <a 
-                        href="/logout" 
+                        hx-get="/logout"
+                        hx-swap="none" 
                         class="
                             rounded-md p-2
                             transition
@@ -204,15 +205,13 @@ $top_bar = function() use ($top_bar_height, $auth) {
                     justify-center items-center 
                     cursor-pointer
                 "
-                x-data="login_modal"
+                
                 @click="$dispatch('toggle-login-modal')"
             >
                 <i class='bx bx-log-in-circle text-3xl' ></i>
             </div>
         </div>
     <?php endif ?>
-</header>
+</div>
 
 <?php $modal('login', $login_modal); ?>
-
-<?php } ?>

@@ -22,5 +22,3 @@ $router->get("/components/user_bar", function () use ($renderer) {
 
     $renderer->show('components/user_bar.tpl.php');
 });
-
-$router->route();

@@ -51,6 +51,4 @@ $renderer->set('title', 'Test Thread');
 $renderer->set('forum_description', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Tortor pretium viverra suspendisse potenti nullam. A arcu cursus vitae congue mauris rhoncus aenean vel elit. Enim facilisis gravida neque convallis');
 $renderer->set('posts', $posts);
 
-header('HX-Trigger: {"flash-message": "This is a test flash message."}');
-
 $renderer->show("test_thread.tpl.php");

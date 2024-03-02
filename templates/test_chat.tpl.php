@@ -20,11 +20,14 @@ $content = function() use ($title, $description, $chats) { ?>
         }"
     >
         <!-- header block -->
-        <div class="
-            flex
-            text-zinc-950 dark:text-zinc-300
-            pb-1
-        ">
+        <div 
+            x-show="!$store.device.mobile_keyboard_active"
+            class="
+                flex
+                text-zinc-950 dark:text-zinc-300
+                pb-1
+            "
+        >
             <div class="text-lg lg:text-xl font-bold">
                 <i class="bx bx-hash"></i>
                 <?= $title ?>
@@ -62,6 +65,7 @@ $content = function() use ($title, $description, $chats) { ?>
 
         <!-- description block -->
         <div 
+            x-show="!$store.device.mobile_keyboard_active"
             class="
                 text-zinc-950 dark:text-zinc-300
                 pb-2
@@ -109,8 +113,13 @@ $content = function() use ($title, $description, $chats) { ?>
                     overflow-y-auto
                     pr-3
                 "
+                x-data="{ scroll: 0 }"
                 x-ref="chat_container"
-                x-init="$el.scrollTop = $refs.msg_anchor_newest.offsetTop"
+                x-init="
+                    $el.scrollTop = $refs.msg_anchor_newest.offsetTop;
+                    
+                "
+                @resize.window="$el.scrollTop = scroll"
                 hx-ext="sse" 
                 sse-connect="/test_sse"
             >
@@ -235,6 +244,9 @@ $content = function() use ($title, $description, $chats) { ?>
                 class="bx bxs-smile text-2xl"
             ></a>
             <input 
+                x-data="text_field"
+                @focus="focus"
+                @blur="blur"
                 type="text"
                 class="
                     bg-white dark:bg-zinc-950
@@ -242,6 +254,7 @@ $content = function() use ($title, $description, $chats) { ?>
                     border-0
                     w-full
                 "
+
                 hx-post="/test_chat/send"
                 hx-swap="none"
                 hx-on::after-request="this.value=''"

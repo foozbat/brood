@@ -58,5 +58,3 @@ $router->get("/components/main_bar", function () use ($renderer) {
 
     $renderer->show('components/main_bar.tpl.php');
 });
-
-$router->route();

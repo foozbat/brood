@@ -29,8 +29,10 @@ function user_entry($username, $status) { ?>
         shadow-lg
         bg-zinc-100 dark:bg-zinc-950
         text-zinc-800 dark:text-zinc-300
-        
     "
+    hx-get="/components/user_bar"
+    hx-trigger="user-login-success from:body, user-logout from:body"
+    hx-swap="outerHTML"
 >
     <div
         class="
@@ -86,11 +88,14 @@ function user_entry($username, $status) { ?>
                 w-full h-96
             "
         >
-            <button class="
-                bg-blue-800 hover:bg-blue-700 
-                text-sm text-white font-bold 
-                py-2 px-4 rounded-full
-            ">
+            <button 
+                class="
+                    bg-blue-800 hover:bg-blue-700 
+                    text-sm text-white font-bold 
+                    py-2 px-4 rounded-full
+                "
+                @click="$dispatch('toggle-login-modal')"
+            >
                 <i class='bx bx-log-in-circle' ></i>
                 Login
             </button>

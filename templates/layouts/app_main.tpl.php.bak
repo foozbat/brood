@@ -4,6 +4,7 @@
  */
 
 require "components/page_footer.tpl.php"; 
+require "components/top_bar.tpl.php"; 
 require "components/flash_message.tpl.php";
 
 ?>
@@ -47,6 +48,8 @@ require "components/flash_message.tpl.php";
         // move all this into a .js file
 
         document.addEventListener('alpine:init', () => {
+            //console.log('Alpine Init');
+
             Alpine.data('dropdown', () => ({
                 open: false,
 
@@ -60,14 +63,6 @@ require "components/flash_message.tpl.php";
                         });
                     }
                 }
-            }));
-
-            Alpine.data('modal', () => ({
-                open: false,
-
-                toggle() {
-                    this.open = !this.open;
-                },
             }));
 
             Alpine.store('device', {
@@ -119,19 +114,20 @@ require "components/flash_message.tpl.php";
         }
     "
 >
+
+<script>
+            // test
+            document.body.addEventListener("flash_message", (event) => {
+            console.log(event.detail.value);
+        });
+</script>
     <!-- header page -->
-    <header 
-        class="w-full z-20"
-        style="height: <?= $top_bar_height ?>rem"
-    >
-        <div class=""
-            hx-get="/components/top_bar"
-            hx-trigger="load"
-            hx-swap="outerHTML"
-        >
-        </div>
-    </header>
-    <!---->
+    <!--<header
+        hx-get="/components/top_bar"
+        hx-trigger="load"
+        hx-swap="outerHTML">
+    </header>-->
+    <?php $top_bar() ?>
 
     <!-- main sidebar -->
     <nav
@@ -246,8 +242,7 @@ require "components/flash_message.tpl.php";
     >
         <div
             hx-get="/components/user_bar"
-            hx-trigger="load"
-            hx-swap="outerHTML"
+            hx-trigger="load, user-login-success from:body, user-logout from:body"
         >
         </div>
     </aside>

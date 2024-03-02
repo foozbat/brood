@@ -11,8 +11,8 @@
         "
         x-data="{ show_message: false }"
         x-show="show_message"
-        x-on:flash-message.window="show_message = true"
-        x-on:htmx:before-swap.window="show_message = false"
+        x-on:flash-message.document="show_message = true"
+        
         x-transition
         x-cloak
     >

@@ -6,6 +6,10 @@
 	description:  This is the main entry point for the application.
 */
 
+namespace Brood;
+
+use Fzb;
+
 if (!preg_match('/^8\.1/i', phpversion())) {
 	die("brood requires PHP version 8.1 or newer.");
 }
@@ -27,7 +31,7 @@ set_exception_handler(function ($e) {
 	exit;
 });
 
-ob_start("ob_gzhandler");
+//ob_start("ob_gzhandler");
 
 // change to more secure
 $db = new Fzb\Database(
@@ -38,8 +42,9 @@ $db = new Fzb\Database(
     database: 'brood'
 );
 
-$auth = new Fzb\Auth();
+$auth = new Fzb\Auth(User::class);
 
 // router using controllers
 $router = new Fzb\Router();
 require_once $router->get_controller();
+$router->route();

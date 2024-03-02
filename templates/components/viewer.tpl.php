@@ -30,7 +30,7 @@
     "
 >
     <div
-        hx-get="/components/<?= $component ?>"
+        hx-get="/"
         hx-trigger="load"
         hx-swap="outerHTML"
     >

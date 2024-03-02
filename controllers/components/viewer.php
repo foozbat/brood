@@ -2,11 +2,11 @@
 
 use Fzb\Input, Fzb\Renderer;
 
-$router->get("/components/viewer/{component}", function () {
-    $input = new Input(component: 'path');
+$router->get("/components/viewer/", function () {
+    $input = new Input(element: 'get');
     $renderer = new Renderer();
     
-    $renderer->set("component", $input['component']);
+    $renderer->set("element", $input['element']);
     $renderer->show("components/viewer.tpl.php");
 });
 

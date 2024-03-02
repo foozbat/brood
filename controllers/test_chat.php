@@ -41,5 +41,3 @@ $router->post("/send", function () {
     $pub->connect('127.0.0.1');
     $pub->publish('chat', 'chat-message');
 });
-
-$router->route();
