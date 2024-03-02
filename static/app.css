@@ -1177,6 +1177,10 @@ pre {
           user-select: none;
 }
 
+.resize {
+  resize: both;
+}
+
 .list-inside {
   list-style-position: inside;
 }
