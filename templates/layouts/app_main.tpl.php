@@ -4,10 +4,11 @@
  */
 
 require "components/page_footer.tpl.php"; 
-require "components/flash_message.tpl.php";
+
+use Fzb\Htmx;
 
 ?>
-<?php if ($_SERVER['HTTP_HX_REQUEST']): ?>
+<?php if (Htmx::is_htmx_request()): ?>
     <title>brood: <?= $title ?></title>
     <?php $content() ?>
 <?php else: ?>
@@ -65,8 +66,12 @@ require "components/flash_message.tpl.php";
             Alpine.data('modal', () => ({
                 open: false,
 
-                toggle() {
-                    this.open = !this.open;
+                show() {
+                    this.open = true;
+                },
+
+                close() {
+                    this.open = false;
                 },
             }));
 
@@ -121,7 +126,7 @@ require "components/flash_message.tpl.php";
 >
     <!-- header page -->
     <header 
-        class="w-full z-20"
+        class="w-full z-0"
         style="height: <?= $top_bar_height ?>rem"
     >
         <div class=""
@@ -144,7 +149,7 @@ require "components/flash_message.tpl.php";
             fixed
             w-72 lg:w-64 xl:w-72
             overflow-y-auto
-            z-20
+            z-10
             scrollbar-thin
         "
 
@@ -170,23 +175,6 @@ require "components/flash_message.tpl.php";
             hx-swap="outerHTML">
         </div>
     </nav>
-    
-    <!-- flash messages -->
-    <div
-        class="
-            fixed
-            left-0 right-0 top-24
-            z-50
-        "
-        :class="{ 
-            'lg:left-64 xl:left-72': show_main_bar,
-            'pl-0 lg:pl-16 xl:pl-32': !show_main_bar,
-            'lg:right-48 xl:right-64': show_user_bar,
-            'pr-0 lg:pr-16 xl:pr-32': !show_user_bar,
-        }"
-    >
-        <?php flash_message() ?>
-    </div>
 
     <!-- main content area -->
     <main 
@@ -198,7 +186,7 @@ require "components/flash_message.tpl.php";
             fixed
             left-0 right-0 top-16
             overflow-y-auto
-            z-10
+            z-0
             flex flex-col
         "
         :class="{ 

@@ -12,8 +12,8 @@ $login_modal = function () { ?>
         border-r-2 border-b-2 border-zinc-300 dark:border-black
         p-10 mb-2
     "
-    @click.away="toggle"
-    x-on:user-login-success.document="toggle"
+    @click.away="close"
+    x-on:user-login-success.document="close"
 >
     <h1 class="text-2xl pb-4">Log in</h1>
 

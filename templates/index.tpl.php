@@ -5,6 +5,8 @@
 
 Fzb\extend("layouts/app_main.tpl.php");
 
+require_once "components/flash_message.tpl.php";
+
 $content = function () use ($posts) { ?>
 <div 
     id="main_page"
@@ -14,6 +16,8 @@ $content = function () use ($posts) { ?>
         <p class="text-2xl lg:text-3xl pb-2">
             The Main Page
         </p>
+
+        <?php flash_message() ?>
 
         <div class="
             flex flex-wrap lg:flex-nowrap w-full space-x-3 

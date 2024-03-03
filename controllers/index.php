@@ -22,7 +22,7 @@ $router->post("/login", function () use ($auth) {
     $success = $auth->login($inputs['username'], $inputs['password']);
     
     if ($success) {
-        Htmx::trigger('user-login-success');
+        Htmx::trigger(['user-login-success', 'flash-message' => 'Login success.']);
     } else {
         Htmx::trigger(['user-login-failure', 'flash-message' => 'Login failure!']);
     }
@@ -31,5 +31,5 @@ $router->post("/login", function () use ($auth) {
 $router->get("/logout", function () use ($auth) {
     $auth->logout();
     
-    Htmx::trigger(['user-logout', 'flash-message' => 'Logged out']);
+    Htmx::trigger(['user-logout', 'flash-message' => 'Logged out.']);
 });

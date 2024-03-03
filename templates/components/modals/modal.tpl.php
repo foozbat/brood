@@ -10,7 +10,7 @@ $modal = function ($name, $content) { ?>
     "
     x-data="modal"
     x-show="open"
-    x-on:toggle-<?= $name ?>-modal.window="toggle"
+    x-on:toggle-<?= $name ?>-modal.window="show"
     x-transition
     x-cloak
 >
