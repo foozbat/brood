@@ -4,6 +4,7 @@ $modal = function ($name, $content) { ?>
 
 <div
     class="
+        w-full h-full
         fixed inset-0 z-50 overflow-auto
         backdrop-blur
         shadow-lg
@@ -18,7 +19,7 @@ $modal = function ($name, $content) { ?>
         flex
         justify-center
         items-center
-        h-full
+        w-full h-full
     ">
         <?php $content() ?>
     </div>

@@ -3,6 +3,7 @@
  * Main Forum Landing Template
  */
 
+require_once "components/flash_message.tpl.php";
 require_once "components/user_icon.tpl.php";
 require_once "components/breadcrumb.tpl.php";
 
@@ -107,6 +108,8 @@ $content = function () use ($title, $threads, $forum_description) { ?>
                 </div>
             </div>
 
+            <?php flash_message() ?>
+            
             <!-- description block -->
             <div class="
                 p-1 mb-2

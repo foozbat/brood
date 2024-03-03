@@ -1,10 +1,12 @@
 <?php
 
 require_once("components/modals/modal.tpl.php");
+require_once("components/flash_message.tpl.php");
 
 $login_modal = function () { ?>
 <div 
     class="
+        w-96 max-w-full
         flex flex-col
         bg-white dark:bg-zinc-950 
         text-zinc-950 dark:text-zinc-300
@@ -17,9 +19,10 @@ $login_modal = function () { ?>
 >
     <h1 class="text-2xl pb-4">Log in</h1>
 
+    <?php flash_message('login') ?>
 
-    <form action="/login" method="post">
-        <label for="username" class="block text-sm font-medium leading-6">Username</label>
+    <form action="/login" method="post" x-on:user-login-failure.document="$el.reset()">
+        <label for="username" class="block text-sm font-medium leading-6 pb-1">Username</label>
         <div class="flex rounded-md shadow-sm ring-1 ring-inset ring-zinc-400 focus-within:ring-2 focus-within:ring-inset focus-within:ring-blue-600 sm:max-w-md">
             <span class="flex select-none items-center pl-3">@</span>
             <input 
@@ -31,7 +34,7 @@ $login_modal = function () { ?>
             />
         </div>
 
-        <label for="password" class="block text-sm font-medium leading-6 pt-2">Password</label>
+        <label for="password" class="block text-sm font-medium leading-6 pt-3 pb-1">Password</label>
         <input 
             type="password" 
             class="block w-full rounded-md border-0 bg-transparent py-1.5 shadow-sm ring-1 ring-inset ring-zinc-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6" 
@@ -43,7 +46,7 @@ $login_modal = function () { ?>
                 bg-blue-800
                 text-white
                 font-bold
-                px-4 py-2 mt-2
+                px-4 py-2 mt-4
             "
             hx-post="/login"
             hx-swap="none"

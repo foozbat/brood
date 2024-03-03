@@ -3,6 +3,7 @@
  * Thread View Template
  */
 
+require_once "components/flash_message.tpl.php";
 require_once 'components/user_icon.tpl.php';
 require_once 'components/breadcrumb.tpl.php';
 require_once 'components/pagination.tpl.php';
@@ -173,6 +174,8 @@ $content = function() use ($title, $posts) { ?>
                 </button>
             </div>
         </div>
+
+        <?php flash_message() ?>
 
         <div class="
                 p-2 mb-2

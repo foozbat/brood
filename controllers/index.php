@@ -22,14 +22,32 @@ $router->post("/login", function () use ($auth) {
     $success = $auth->login($inputs['username'], $inputs['password']);
     
     if ($success) {
-        Htmx::trigger(['user-login-success', 'flash-message' => 'Login success.']);
+        Htmx::trigger([
+            'user-login-success', 
+            'flash-message' => [
+                'type' => 'success',
+                'message' => 'Login success.'
+            ]
+        ]);
     } else {
-        Htmx::trigger(['user-login-failure', 'flash-message' => 'Login failure!']);
+        Htmx::trigger([
+            'user-login-failure', 
+            'flash-message-login' => [
+                'type' => 'failure', 
+                'message' =>'Login failed: Invalid username or password.'
+            ]
+        ]);
     }
 });
 
 $router->get("/logout", function () use ($auth) {
     $auth->logout();
     
-    Htmx::trigger(['user-logout', 'flash-message' => 'Logged out.']);
+    Htmx::trigger([
+        'user-logout', 
+        'flash-message' => [
+            'type' => 'success',
+            'message' => 'Logged out.'
+        ]
+    ]);
 });

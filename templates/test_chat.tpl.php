@@ -4,6 +4,7 @@
  */
 
 require_once "components/breadcrumb.tpl.php";
+require_once "components/flash_message.tpl.php";
 
 Fzb\extend("layouts/app_main.tpl.php");
 
@@ -62,6 +63,8 @@ $content = function() use ($title, $description, $chats) { ?>
                 </button>
             </div>
         </div>
+
+        <?php flash_message() ?>
 
         <!-- description block -->
         <div 
