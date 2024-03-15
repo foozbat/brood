@@ -23,7 +23,7 @@ $sse = new Fzb\SSE(
                 // check for user hitting the refresh button, kill hanging event stream
                 if (str_contains($message, "client connected: $id_string")) {
                     //$pub->publish('chat', "PID: $pid saw reconnect.  Disconnecting...");
-                    die();
+                    //die();
                 }
 
                 if (str_contains($message, 'chat-message')) {
@@ -41,5 +41,6 @@ $sse = new Fzb\SSE(
         $pub->publish('chat', "client disconnected: $id_string, PID: $pid");
         $pub->close();
         $sub->close();
+        die();
     }
 );

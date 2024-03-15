@@ -51,6 +51,7 @@ $content = function () use ($posts) { ?>
         ">
             "Super Awesome Content Area" which will show featured streams.
         </div>
+
     </div>
 </div>
 <?php

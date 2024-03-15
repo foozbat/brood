@@ -126,7 +126,7 @@ function thread_post($post) { ?>
 $content = function() use ($title, $posts) { ?>
     <div 
         id="forum_list"
-        class="h-full p-2 flex flex-col rounded-md"
+        class="h-full p-2 pt-0 flex flex-col rounded-md"
     >
         <div class="flex mb-2">
             <div class="flex-grow">

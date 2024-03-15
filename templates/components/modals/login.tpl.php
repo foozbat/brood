@@ -1,10 +1,10 @@
 <?php
 
-require_once("components/modals/modal.tpl.php");
 require_once("components/flash_message.tpl.php");
 
-$login_modal = function () { ?>
+?>
 <div 
+    id="modal_content"
     class="
         w-96 max-w-full
         flex flex-col
@@ -14,14 +14,24 @@ $login_modal = function () { ?>
         border-r-2 border-b-2 border-zinc-300 dark:border-black
         p-10 mb-2
     "
-    @click.away="close"
-    x-on:user-login-success.document="close"
+    @click.away="
+        close();
+        $dispatch('flash-message-login-hide');
+    "
+    @user-login-success.document="
+        close();
+        $dispatch('flash-message-login-hide');
+    "
 >
     <h1 class="text-2xl pb-4">Log in</h1>
 
-    <?php flash_message('login') ?>
+    <?php flash_message('login', false, false) ?>
 
-    <form action="/login" method="post" x-on:user-login-failure.document="$el.reset()">
+    <form 
+        action="/login" method="post" 
+        @user-login-failure.document="$el.reset()"
+        @user-login-success.document="$el.reset()"
+    >
         <label for="username" class="block text-sm font-medium leading-6 pb-1">Username</label>
         <div class="flex rounded-md shadow-sm ring-1 ring-inset ring-zinc-400 focus-within:ring-2 focus-within:ring-inset focus-within:ring-blue-600 sm:max-w-md">
             <span class="flex select-none items-center pl-3">@</span>
@@ -55,5 +65,4 @@ $login_modal = function () { ?>
         </button>
 
     </form>
-</div><?php
-};
+</div>

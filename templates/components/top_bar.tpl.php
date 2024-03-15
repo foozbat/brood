@@ -4,7 +4,7 @@
  */
 
 require_once("components/user_icon.tpl.php");
-require_once("components/modals/login.tpl.php");   
+require_once("components/modal.tpl.php");
 
 $top_bar_height = "4";
  
@@ -18,15 +18,13 @@ $top_bar_height = "4";
         bg-gradient-to-b from-black to-transparent
         space-x-2
     "
-    hx-get="/components/top_bar"
-    hx-trigger="user-login-success from:body, user-logout from:body"
-    hx-swap="outerHTML"
 >
     <a 
         href="/"
         hx-get="/"
         hx-target="#content_area"
         hx-push-url="true"
+        hx-swap="innerHTML"
     >
         <div class="flex items-left">
             <div class="flex text-2xl lg:text-3xl">
@@ -85,12 +83,7 @@ $top_bar_height = "4";
                 text-3xl
                 cursor-pointer
             "
-            @click="
-                show_main_bar = !show_main_bar;
-                if (is_mobile) {
-                    show_user_bar = false;
-                }
-            "
+            @click="$dispatch('toggle-main-bar')"
         >
             <i class='bx bx-menu' ></i>
         </div>
@@ -107,12 +100,7 @@ $top_bar_height = "4";
                 cursor-pointer
             "
             
-            @click="
-                show_user_bar = !show_user_bar;
-                if (is_mobile) {
-                    show_main_bar = false;
-                }
-            "
+            @click="$dispatch('toggle-user-bar')"
         >
             <i class="bx bxs-user z-10 absolute text-zinc-400 -translate-x-1"></i> 
             <i class="bx bxs-user z-20 absolute text-black"></i> 
@@ -138,8 +126,8 @@ $top_bar_height = "4";
                     right-2 mt-1 w-48
                     divide-y divide-zinc-200 dark:divide-zinc-900
                     rounded-md 
-                    border border-zinc-200 dark:border-black
-                    bg-white dark:bg-zinc-800
+                    border border-zinc-200 dark:border-zinc-800
+                    bg-white dark:bg-black
                     text-md text-zinc-800 dark:text-zinc-200
                     shadow-lg
                     z-[100]
@@ -160,10 +148,10 @@ $top_bar_height = "4";
                     <a 
                         href="#" 
                         class="
-                            rounded-md p-2
+                            p-2
                             transition
                             hover:text-black hover:dark:text-white
-                            hover:bg-zinc-400 hover:dark:bg-zinc-700/50
+                            hover:bg-zinc-100 hover:dark:bg-zinc-900
                         "
                     >
                         <i class='bx bxs-user'></i> Profile
@@ -171,10 +159,10 @@ $top_bar_height = "4";
                     <a 
                         href="#" 
                         class="
-                            rounded-md p-2
+                            p-2
                             transition
                             hover:text-black hover:dark:text-white
-                            hover:bg-zinc-400 hover:dark:bg-zinc-700/50
+                            hover:bg-zinc-100 hover:dark:bg-zinc-950
                         "
                     >
                         <i class='bx bxs-cog' ></i> Settings
@@ -183,10 +171,11 @@ $top_bar_height = "4";
 
                 <div class="flex flex-col">
                     <a 
+                        href="#"
                         hx-get="/logout"
                         hx-swap="none" 
                         class="
-                            rounded-md p-2
+                            p-2
                             transition
                             hover:text-black hover:dark:text-white
                             hover:bg-zinc-400 hover:dark:bg-zinc-700/50
@@ -199,19 +188,17 @@ $top_bar_height = "4";
         </div>
     <?php else: ?>
         <div class="flex">
-            <div 
+            <a 
+                href="#"
                 class="
                     inline-flex overflow-hidden 
                     justify-center items-center 
-                    cursor-pointer
                 "
-                
-                @click="$dispatch('toggle-login-modal')"
+                <?php hx_modal("/login") ?>
+                @click="$nextTick(() => $dispatch('show-modal'))"
             >
                 <i class='bx bx-log-in-circle text-3xl' ></i>
-            </div>
+            </a>
         </div>
     <?php endif ?>
 </div>
-
-<?php $modal('login', $login_modal); ?>

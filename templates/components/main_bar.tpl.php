@@ -86,11 +86,7 @@ function item_link(string $label, string $type, $posts) {
         hx-replace-url="true"
         hx-push-url="true"
         
-        @click="$store.htmx.await_snapshot().then(() => { 
-            if (show_main_bar && is_mobile) {
-                show_main_bar = false; 
-            }
-        });"
+        @click="click_away()"
     >
      
         <span class="text-lg"><i class="<?= $icons[$type] ?>"></i></span>
@@ -156,6 +152,7 @@ function dm_link($user) { ?>
         bg-zinc-100 dark:bg-zinc-950
         text-zinc-800 dark:text-zinc-300
     "
+    x-data = "{ active_main_bar_menu: 'groups' }"
 >
     <div
         class="
@@ -173,7 +170,7 @@ function dm_link($user) { ?>
             hover:bg-zinc-200 hover:text-black 
             hover:dark:bg-zinc-800 hover:dark:text-white
         "
-            @click="show_main_bar = false"
+            @click="hide()"
         >
 
             <div 

@@ -3,7 +3,8 @@
  * Main Page Layout Template (extendable)
  */
 
-require "components/page_footer.tpl.php"; 
+require_once "components/page_footer.tpl.php"; 
+require_once "components/modal.tpl.php";
 
 use Fzb\Htmx;
 
@@ -43,55 +44,6 @@ use Fzb\Htmx;
     <style>
         [x-cloak] { display: none !important; }
     </style>
-
-    <script>
-        // move all this into a .js file
-
-        document.addEventListener('alpine:init', () => {
-            Alpine.data('dropdown', () => ({
-                open: false,
-
-                toggle() {
-                    this.open = !this.open;
-                },
-                click_away() {
-                    if (this.open) {
-                        Alpine.store('htmx').await_snapshot().then(() => {
-                            this.open = false;
-                        });
-                    }
-                }
-            }));
-
-            Alpine.data('modal', () => ({
-                open: false,
-
-                show() {
-                    this.open = true;
-                },
-
-                close() {
-                    this.open = false;
-                },
-            }));
-
-            Alpine.store('device', {
-                is_mobile: !window.matchMedia('(min-width: 1024px)').matches,
-                mobile_keyboard_active: false,
-            });
-
-            Alpine.data('text_field', () => ({
-                active: false,
-                focus() {
-                    Alpine.store("device").mobile_keyboard_active = Alpine.store("device").is_mobile;
-                },
-                blur() {
-                    Alpine.store("device").mobile_keyboard_active = false;
-                }
-            }));
-        });
-
-    </script>
 </head>
 
 <!-- page -->
@@ -102,47 +54,20 @@ use Fzb\Htmx;
         bg-zinc-200 dark:bg-zinc-900 
         text-zinc-700 dark:text-zinc-300
     "
-    x-data="{ 
-        is_mobile: !window.matchMedia('(min-width: 1024px)').matches,
-        show_main_bar: window.matchMedia('(min-width: 1024px)').matches,
-        show_user_bar: window.matchMedia('(min-width: 1024px)').matches,
-        active_main_bar_menu: 'groups',
-    }"
-
-    x-swipe:right.threshold.100px="
-        show_user_bar = false;
-
-        if (!show_main_bar && !show_user_bar) {
-            show_main_bar = true;
-        }
-    "
-    x-swipe:left.threshold.100px="
-        show_main_bar = false;
-
-        if (!show_user_bar && !show_main_bar) {
-            show_user_bar = true;
-        }
-    "
 >
     <!-- header page -->
     <header 
         class="w-full z-0"
         style="height: <?= $top_bar_height ?>rem"
-    >
-        <div class=""
-            hx-get="/components/top_bar"
-            hx-trigger="load"
-            hx-swap="outerHTML"
-        >
-        </div>
-    </header>
+
+        hx-get="/components/top_bar"
+        hx-trigger="load, user-login-success from:body, user-logout from:body"
+    ></header>
     <!---->
 
     <!-- main sidebar -->
     <nav
-        id="main_bar"
-        x-ref="main_bar"
-
+        x-data="side_bar"
 
         class="
             h-[calc(100%-4rem)]
@@ -153,14 +78,13 @@ use Fzb\Htmx;
             scrollbar-thin
         "
 
-        x-show="show_main_bar"
-        x-swipe:left="show_main_bar = false"
+        x-show="open"
 
-        @click.away="$store.htmx.await_snapshot().then(() => { 
-            if (show_main_bar && is_mobile) {
-                show_main_bar = false; 
-            }
-        })"
+        x-swipe:left="hide()"
+        @click.away="click_away()"
+        @show-main-bar.window="show()"
+        @hide-main-bar.window="hide()"
+        @toggle-main-bar.window="toggle()"
     
         x-transition:enter="transition duration-250"
         x-transition:enter-start="transform -translate-x-full opacity-0 scale-90"
@@ -168,43 +92,55 @@ use Fzb\Htmx;
         x-transition:leave.delay="transition duration-250"
         x-transition:leave-start="transform opacity-100 scale-100"
         x-transition:leave-end="transform -translate-x-full opacity-0 scale-90"
-    >
-        <div
-            hx-get="/components/main_bar"
-            hx-trigger="load"
-            hx-swap="outerHTML">
-        </div>
-    </nav>
+
+        hx-get="/components/main_bar"
+        hx-trigger="load"
+    ></nav>
 
     <!-- main content area -->
     <main 
         id="content_area"
         x-ref="content_area"
 
+        hx-history-elt
+
+        x-data="{
+            main_bar_shown: true,
+            user_bar_shown: true,
+        }"
+
         class="
             h-[calc(100%-4rem)]
             fixed
+            pl-0 pr-0
             left-0 right-0 top-16
             overflow-y-auto
             z-0
             flex flex-col
         "
+
         :class="{ 
-            'lg:left-64 xl:left-72': show_main_bar,
-            'pl-0 lg:pl-16 xl:pl-32': !show_main_bar,
-            'lg:right-48 xl:right-64': show_user_bar,
-            'pr-0 lg:pr-16 xl:pr-32': !show_user_bar,
+            'lg:left-64 xl:left-72': main_bar_shown,
+            'lg:pl-16 xl:pl-32': !main_bar_shown,
+            'lg:right-48 xl:right-64': user_bar_shown,
+            'lg:pr-16 xl:pr-32': !user_bar_shown,
         }"
 
-        x-on:htmx:after-swap="$el.scrollTop=0;"
+        @show-main-bar.window="main_bar_shown = true;"
+        @hide-main-bar.window="main_bar_shown = false;"
+        @toggle-main-bar.window="main_bar_shown = !main_bar_shown"
+        @show-user-bar.window="user_bar_shown = true;"
+        @hide-user-bar.window="user_bar_shown = false;"
+        @toggle-user-bar.window="user_bar_shown = !main_bar_shown"
+
+        
     >
         <?php $content() ?>
     </main>
 
     <!-- user sidebar -->
     <aside
-        id="user_bar"
-        x-ref="user_bar"
+        x-data="side_bar"
 
         class="
             h-[calc(100%-4rem)]    
@@ -216,14 +152,13 @@ use Fzb\Htmx;
             scrollbar-thin
         "
 
-        x-show="show_user_bar"
-        x-swipe:right="show_user_bar = false"
-        
-        @click.away="$store.htmx.await_snapshot().then(() => { 
-            if (show_user_bar && is_mobile) {
-                show_user_bar = false; 
-            }
-        })"
+        x-show="open"
+
+        x-swipe:right="hide()"
+        @click.away="click_away()"
+        @show-user-bar.window="show()"
+        @hide-user-bar.window="hide()"
+        @toggle-user-bar.window="toggle()"
 
         x-transition:enter="transition duration-250"
         x-transition:enter-start="transform translate-x-full opacity-0 scale-90"
@@ -231,20 +166,12 @@ use Fzb\Htmx;
         x-transition:leave="transition duration-250"
         x-transition:leave-start="transform opacity-100 scale-100"
         x-transition:leave-end="transform translate-x-full opacity-0 scale-90"
-    >
-        <div
-            hx-get="/components/user_bar"
-            hx-trigger="load"
-            hx-swap="outerHTML"
-        >
-        </div>
-    </aside>
 
-    <div id="modal_container">
-        
+        hx-get="/components/user_bar"
+        hx-trigger="load, user-login-success from:body, user-logout from:body"
+    ></aside>
 
-    </div>
-
+    <?php modal_container() ?>
 </body>
 </html>
 

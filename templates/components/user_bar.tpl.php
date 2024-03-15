@@ -1,6 +1,7 @@
 <?php 
 
 require_once("components/user_icon.tpl.php");
+require_once("components/modal.tpl.php");
 
 function user_entry($username, $status) { ?>
     <a href="#" class="
@@ -30,9 +31,6 @@ function user_entry($username, $status) { ?>
         bg-zinc-100 dark:bg-zinc-950
         text-zinc-800 dark:text-zinc-300
     "
-    hx-get="/components/user_bar"
-    hx-trigger="user-login-success from:body, user-logout from:body"
-    hx-swap="outerHTML"
 >
     <div
         class="
@@ -45,7 +43,7 @@ function user_entry($username, $status) { ?>
             text-zinc-600 dark:text-zinc-400
             cursor-pointer
         "
-        @click="show_user_bar = !show_user_bar"
+        @click="hide()"
     >
         <div 
             class="
@@ -94,7 +92,11 @@ function user_entry($username, $status) { ?>
                     text-sm text-white font-bold 
                     py-2 px-4 rounded-full
                 "
-                @click="$dispatch('toggle-login-modal')"
+                <?php hx_modal('/login') ?>
+                @click="
+                    $dispatch('show-modal');
+                    click_away();
+                "
             >
                 <i class='bx bx-log-in-circle' ></i>
                 Login

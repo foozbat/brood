@@ -12,7 +12,7 @@ $content = function() use ($title, $description, $chats) { ?>
     <div
         id="chat_room"
         class="
-            h-full p-2 flex flex-col
+            h-full p-2 pt-0 flex flex-col
         "
         x-data="{ 
             show_description_block: true, 
@@ -22,7 +22,7 @@ $content = function() use ($title, $description, $chats) { ?>
     >
         <!-- header block -->
         <div 
-            x-show="!$store.device.mobile_keyboard_active"
+            x-show="!$store.ui.mobile_keyboard_active"
             class="
                 flex
                 text-zinc-950 dark:text-zinc-300
@@ -68,7 +68,7 @@ $content = function() use ($title, $description, $chats) { ?>
 
         <!-- description block -->
         <div 
-            x-show="!$store.device.mobile_keyboard_active"
+            x-show="!$store.ui.mobile_keyboard_active"
             class="
                 text-zinc-950 dark:text-zinc-300
                 pb-2
@@ -149,8 +149,8 @@ $content = function() use ($title, $description, $chats) { ?>
                     class="space-y-3"
                     hx-get="/test_chat/messages"
                     hx-trigger="load"
-                    x-on:htmx:after-swap="
-                        $refs.msg_anchor_newest.scrollIntoView()
+                    @htmx:after-swap="
+                        $dispatch('chat-scroll-instant');
                         enable_old_messages_getter = true
                     "
                 ></div>
@@ -165,7 +165,7 @@ $content = function() use ($title, $description, $chats) { ?>
                     hx-swap="beforeend"
                     x-on:htmx:after-swap="
                         if (!show_jump_latest_icon) {
-                            $refs.msg_anchor_newest.scrollIntoView();
+                            $dispatch('chat-scroll-instant');
                         }
                     "
                 ></div>
@@ -174,6 +174,11 @@ $content = function() use ($title, $description, $chats) { ?>
                     x-ref="msg_anchor_newest" 
                     x-intersect:enter="show_jump_latest_icon = false"
                     x-intersect:leave="show_jump_latest_icon = true"
+                    @chat-scroll-instant.document="$el.scrollIntoView()"
+                    @chat-scroll-smooth.document="
+                        $el.scrollIntoView({ behavior: 'smooth' });
+                        $nextTick(() => $el.scrollIntoView({ behavior: 'smooth' }));
+                    "
                 ></div>
             </div>
 
@@ -224,7 +229,7 @@ $content = function() use ($title, $description, $chats) { ?>
                 href="#"
                 x-show="show_jump_latest_icon"
                 x-transition
-                @click="$refs.msg_anchor_newest.scrollIntoView({ behavior: 'smooth' })"
+                @click="$dispatch('chat-scroll-smooth')"
             >
                 <i class="bx bx-chevron-down text-xl md:text-sm"></i>
                 <span class="text-sm">Jump to Latest</span>
@@ -270,7 +275,7 @@ $content = function() use ($title, $description, $chats) { ?>
                 href="#"
                 class="bx bx-paperclip text-2xl"
             >
-                </a>
+            </a>
         </div>
    </div><?php
 };

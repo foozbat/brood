@@ -1,8 +1,7 @@
-<?php function flash_message($name = '') { ?>
+<?php function flash_message($name = '', $timeout=3000, $dismissable=true) { ?>
     <div
         class="
             flex
-            w-half
             p-2 mb-2
             text-md
             text-zinc-900 dark:text-zinc-300 font-bold
@@ -17,18 +16,24 @@
             'bg-red-100 dark:bg-red-950 border-red-400 dark:border-red-600': type == 'failure',
         }"
 
-        x-on:flash-message<?php if ($name) echo "-".$name; ?>.document="
+        @flash-message<?php if ($name) echo "-".$name; ?>.document="
             show = true; 
             type = $event.detail.type; 
             message = $event.detail.message;
-            setTimeout(() => show = false, 3000);
+            <?php if ($timeout): ?>
+                setTimeout(() => show = false, <?= $timeout ?>);
+            <?php endif ?>
         "
-        x-transition.enter.duration.100ms
+        @flash-message<?php if ($name) echo "-".$name; ?>-hide.document="$nextTick(() => show = false)";
+
+        x-transition.enter.duration.50ms
         x-transition.leave.duration.300ms
         x-cloak
     >
         <div class="flex-grow" x-text="message"></div>
-        <div class="text-xl cursor-pointer" @click="show = false"><i class="bx bx-x"></i></div>
+        <?php if ($dismissable): ?>
+            <div class="text-xl cursor-pointer" @click="show = false"><i class="bx bx-x"></i></div>
+        <?php endif ?>
         
     </div>
 

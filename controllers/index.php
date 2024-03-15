@@ -13,32 +13,41 @@ $router->get('/test_login', function () use ($auth) {
 
 });
 
-$router->post("/login", function () use ($auth) {
-    $inputs = new Input(
-        username: 'post required',
-        password: 'post required'
-    );
+$router->add(
+    ['GET', 'POST'],
+    "/login", 
+    function () use ($auth) {
+        $inputs = new Input(
+            username: 'post required',
+            password: 'post required'
+        );
 
-    $success = $auth->login($inputs['username'], $inputs['password']);
-    
-    if ($success) {
-        Htmx::trigger([
-            'user-login-success', 
-            'flash-message' => [
-                'type' => 'success',
-                'message' => 'Login success.'
-            ]
-        ]);
-    } else {
-        Htmx::trigger([
-            'user-login-failure', 
-            'flash-message-login' => [
-                'type' => 'failure', 
-                'message' =>'Login failed: Invalid username or password.'
-            ]
-        ]);
+        if ($inputs->is_post()) {
+            $success = $auth->login($inputs['username'], $inputs['password']);
+            
+            if ($success) {
+                Htmx::trigger([
+                    'user-login-success', 
+                    'flash-message' => [
+                        'type' => 'success',
+                        'message' => 'Login success.'
+                    ]
+                ]);
+            } else {
+                Htmx::trigger([
+                    'user-login-failure', 
+                    'flash-message-login' => [
+                        'type' => 'failure', 
+                        'message' =>'Login failed: Invalid username or password.'
+                    ]
+                ]);
+            }
+        } else {
+            $renderer = new Renderer();
+            $renderer->show('components/modals/login.tpl.php');
+        }
     }
-});
+);
 
 $router->get("/logout", function () use ($auth) {
     $auth->logout();
