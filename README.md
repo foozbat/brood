@@ -2,4 +2,4 @@
 
 # brood
 
-A next generation community management system.  Developed using PHP, htmx, and TailwindCSS.
+A next generation community management system developed using PHP, htmx, Alpine.js, and TailwindCSS.
