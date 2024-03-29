@@ -34,4 +34,8 @@
     .scrollbar-thin {
         scrollbar-width: thin;
     }
+
+    .font-logo {
+        font-family: 'ABeeZee';
+    }
 }

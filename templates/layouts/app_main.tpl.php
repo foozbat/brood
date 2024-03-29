@@ -33,6 +33,8 @@ use Fzb\Htmx;
 
     <link rel="stylesheet" href="/static/app.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link href="https://fonts.googleapis.com/css?family=ABeeZee" rel="stylesheet">
+
     <script src="https://unpkg.com/htmx.org@1.9.10" integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/htmx.org/dist/ext/sse.js"></script>
     <script src="https://unpkg.com/alpinejs-swipe@1.0.2/dist/cjs.js"></script>
@@ -53,6 +55,7 @@ use Fzb\Htmx;
         min-h-screen w-full
         bg-zinc-200 dark:bg-zinc-900 
         text-zinc-700 dark:text-zinc-300
+        bg-no-repeat
     "
 >
     <!-- header page -->
@@ -131,7 +134,7 @@ use Fzb\Htmx;
         @toggle-main-bar.window="main_bar_shown = !main_bar_shown"
         @show-user-bar.window="user_bar_shown = true;"
         @hide-user-bar.window="user_bar_shown = false;"
-        @toggle-user-bar.window="user_bar_shown = !main_bar_shown"
+        @toggle-user-bar.window="user_bar_shown = !user_bar_shown"
 
         
     >
@@ -144,7 +147,7 @@ use Fzb\Htmx;
 
         class="
             h-[calc(100%-4rem)]    
-            top-16 pb-2
+            
             right-0 fixed
             w-64 lg:w-48 xl:w-64
             overflow-y-auto 

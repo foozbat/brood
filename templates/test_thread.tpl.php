@@ -128,52 +128,44 @@ $content = function() use ($title, $posts) { ?>
         id="forum_list"
         class="h-full p-2 pt-0 flex flex-col rounded-md"
     >
-        <div class="flex mb-2">
-            <div class="flex-grow">
-                <p class="text-lg lg:text-xl font-bold">
-                    
-                    <?= $title ?>
-                </p>
-            </div>
-            <div class="flex flex-grow justify-end space-x-4 pr-2">
-                <button 
-                    class="
-                        text-xl
-                        hover:text-black hover:dark:text-white
-                    "
-                >
-                    <i class="bx bx-plus-circle"></i>
-                </button>
-                <button 
-                    class="
-                        text-xl
-                        hover:text-black hover:dark:text-white
-                    "
-                    @click="show_description_block = !show_description_block"
-                >
-                    <i class="bx bx-info-circle"></i>
-                </button>
-
-                <button 
-                    class="
-                        text-xl
-                        hover:text-black hover:dark:text-white
-                    "
-                >
-                    <i class="bx bxs-bell"></i>
-                </button>
-
-                <button class="
-                    bg-gradient-to-b from-blue-800 hover:from-blue-700 to-blue-900 hover:to-blue-800
-                    
-                    text-sm text-white font-bold 
-                    py-1 px-4 rounded-full
-                ">
-                    <i class='bx bxs-pencil' ></i>
-                    Reply
-                </button>
-            </div>
+    <div class="container relative">
+    <div class="absolute bottom-0 right-0">
+        <div class="flex flex-row space-y-4">
+            <button class="
+                text-xl
+                hover:text-black hover:dark:text-white
+            ">
+                <i class="bx bx-plus-circle"></i>
+            </button>
+            <button class="
+                text-xl
+                hover:text-black hover:dark:text-white
+            " @click="show_description_block = !show_description_block">
+                <i class="bx bx-info-circle"></i>
+            </button>
+            <button class="
+                text-xl
+                hover:text-black hover:dark:text-white
+            ">
+                <i class="bx bxs-bell"></i>
+            </button>
+            <button class="
+                bg-gradient-to-b from-blue-800 hover:from-blue-700 to-blue-900 hover:to-blue-800
+                text-sm text-white font-bold whitespace-nowrap
+                py-1 px-4 rounded-full
+            ">
+                <i class='bx bxs-pencil' ></i>
+                Reply
+            </button>
         </div>
+    </div>
+
+    <p class="text-lg lg:text-xl font-bold">
+        <?= $title ?>
+    </p>
+</div>
+
+
 
         <?php flash_message() ?>
 

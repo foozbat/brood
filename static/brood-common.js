@@ -34,10 +34,14 @@ document.addEventListener('alpine:init', () => {
     Alpine.store('ui', {
         is_mobile: false, 
         mobile_keyboard_active: false,
+        show_main_bar: true,
+        show_user_bar: true,
         active_main_bar_menu: 'groups',
 
         init() {
             this.is_mobile = !window.matchMedia('(min-width: 1024px)').matches;
+            this.show_main_bar = !this.is_mobile;
+            this.show_main_bar = !this.is_mobile;
         }
     });
 

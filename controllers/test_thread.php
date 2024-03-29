@@ -47,7 +47,7 @@ int main() {
     ];
 }
 
-$renderer->set('title', 'Test Thread');
+$renderer->set('title', 'Test Thread that is super long so long even longer still.');
 $renderer->set('forum_description', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Tortor pretium viverra suspendisse potenti nullam. A arcu cursus vitae congue mauris rhoncus aenean vel elit. Enim facilisis gravida neque convallis');
 $renderer->set('posts', $posts);
 

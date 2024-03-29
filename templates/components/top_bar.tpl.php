@@ -13,12 +13,13 @@ $top_bar_height = "4";
     class="
         flex w-full
         items-center justify-between p-2
-        shadow-lg
-        text-zinc-100 
-        bg-gradient-to-b from-black to-transparent
+        text-black dark:text-white
+        
         space-x-2
     "
 >
+
+<!--  bg-gradient-to-b from-white dark:from-black to-transparent -->
     <a 
         href="/"
         hx-get="/"
@@ -26,11 +27,10 @@ $top_bar_height = "4";
         hx-push-url="true"
         hx-swap="innerHTML"
     >
-        <div class="flex items-left">
-            <div class="flex text-2xl lg:text-3xl">
-                <i class='bx bx-layer pr-2' ></i>
-                brood</span>
-            </div>
+        <div class="flex items-left"">
+            <img src="static/brood_light.png" class="h-[40px] w-[40px] dark:hidden">
+            <img src="static/brood_dark.png" class="h-[40px] w-[40px] hidden dark:block">
+            <span class="text-2xl lg:text-3xl pl-2 font-logo"> brood</span>
         </div>
     </a>
 
@@ -60,7 +60,7 @@ $top_bar_height = "4";
                     divide-y divide-zinc-200 dark:divide-zinc-800
                     rounded-md 
                     border border-zinc-200 dark:border-black
-                    bg-white dark:bg-zinc-700
+                    
                     shadow-lg
                     z-50
                 "
@@ -83,6 +83,7 @@ $top_bar_height = "4";
                 text-3xl
                 cursor-pointer
             "
+            
             @click="$dispatch('toggle-main-bar')"
         >
             <i class='bx bx-menu' ></i>

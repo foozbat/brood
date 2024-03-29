@@ -88,7 +88,7 @@ function user_entry($username, $status) { ?>
         >
             <button 
                 class="
-                    bg-blue-800 hover:bg-blue-700 
+                    bg-gradient-to-b from-blue-800 hover:from-blue-700 to-blue-900 hover:to-blue-800
                     text-sm text-white font-bold 
                     py-2 px-4 rounded-full
                 "
