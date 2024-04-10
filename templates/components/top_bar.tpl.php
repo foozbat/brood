@@ -5,18 +5,18 @@
 
 require_once("components/user_icon.tpl.php");
 require_once("components/modal.tpl.php");
+require_once("components/breadcrumb.tpl.php");
 
-$top_bar_height = "4";
- 
 ?>
 <div 
     class="
-        flex w-full
-        items-center justify-between p-2
+        flex w-full h-16 lg:h-24
+        items-end justify-between p-2
+        bg-gradient-to-b from-black to-transparent
         text-black dark:text-white
-        
         space-x-2
     "
+    x-show="!$store.ui.mobile_keyboard_active"
 >
 
 <!--  bg-gradient-to-b from-white dark:from-black to-transparent -->
@@ -27,7 +27,7 @@ $top_bar_height = "4";
         hx-push-url="true"
         hx-swap="innerHTML"
     >
-        <div class="flex items-left"">
+        <div class="flex items-end">
             <img src="static/brood_light.png" class="h-[40px] w-[40px] dark:hidden">
             <img src="static/brood_dark.png" class="h-[40px] w-[40px] hidden dark:block">
             <span class="text-2xl lg:text-3xl pl-2 font-logo"> brood</span>
@@ -48,28 +48,9 @@ $top_bar_height = "4";
                 text-2xl
                 cursor-pointer
             "
-            @click="show_search_box = !show_search_box" 
-            @click.away="show_search_box = false"
+            @click="$dispatch('toggle-search-bar')"
         >
             <i class='bx bx-search' ></i>
-
-            <div 
-                class="
-                    absolute 
-                    right-2 mt-1 w-96 p-2
-                    divide-y divide-zinc-200 dark:divide-zinc-800
-                    rounded-md 
-                    border border-zinc-200 dark:border-black
-                    
-                    shadow-lg
-                    z-50
-                "
-                x-cloak
-                x-show="show_search_box" 
-                x-transition
-            >
-                <input type="text" class="bg-black rounded-md"></input>
-            </div>
         </div>
     </div>
     
@@ -97,15 +78,13 @@ $top_bar_height = "4";
                 inline-flex overflow-hidden 
                 justify-center items-center 
                 w-[40px] h-[40px] 
-                text-xl
+                text-2xl
                 cursor-pointer
             "
             
             @click="$dispatch('toggle-user-bar')"
         >
-            <i class="bx bxs-user z-10 absolute text-zinc-400 -translate-x-1"></i> 
-            <i class="bx bxs-user z-20 absolute text-black"></i> 
-            <i class="bx bxs-user z-20 absolute translate-x-1"></i>
+        <i class='bx bx-group' ></i>
         </div>
     </div>
 
@@ -131,7 +110,7 @@ $top_bar_height = "4";
                     bg-white dark:bg-black
                     text-md text-zinc-800 dark:text-zinc-200
                     shadow-lg
-                    z-[100]
+                    z-50
                 "
                 x-cloak
                 x-show="open" 
@@ -192,6 +171,7 @@ $top_bar_height = "4";
             <a 
                 href="#"
                 class="
+                    w-[40px] h-[40px] 
                     inline-flex overflow-hidden 
                     justify-center items-center 
                 "

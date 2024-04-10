@@ -7,6 +7,7 @@ require_once "components/flash_message.tpl.php";
 require_once 'components/user_icon.tpl.php';
 require_once 'components/breadcrumb.tpl.php';
 require_once 'components/pagination.tpl.php';
+require_once 'components/wysiwyg_editor.tpl.php';
 require_once 'utils/bbcode.php';
 
 Fzb\extend('layouts/app_main.tpl.php');
@@ -55,7 +56,7 @@ function thread_post($post) { ?>
         bg-white dark:bg-zinc-800 
         text-zinc-950 dark:text-zinc-300
         rounded-md
-        border-r-2 border-b-2 border-zinc-300 dark:border-black
+        border-t border-l border-r-2 border-b-2 border-zinc-300 dark:border-black dark:border-t-zinc-900 dark:border-l-zinc-900
         p-3
     ">
         <div class="w-full lg:w-48 h-min flex flex-nowrap lg:flex-wrap pb-4 lg:border-0 border-zinc-500">
@@ -123,72 +124,64 @@ function thread_post($post) { ?>
     </div><?php
 }
 
-$content = function() use ($title, $posts) { ?>
+$content = function() use ($title, $posts, $auth) { ?>
     <div 
-        id="forum_list"
-        class="h-full p-2 pt-0 flex flex-col rounded-md"
+        class="p-2 h-full flex flex-col rounded-md"
     >
-    <div class="container relative">
-    <div class="absolute bottom-0 right-0">
-        <div class="flex flex-row space-y-4">
-            <button class="
-                text-xl
-                hover:text-black hover:dark:text-white
-            ">
-                <i class="bx bx-plus-circle"></i>
-            </button>
-            <button class="
-                text-xl
-                hover:text-black hover:dark:text-white
-            " @click="show_description_block = !show_description_block">
-                <i class="bx bx-info-circle"></i>
-            </button>
-            <button class="
-                text-xl
-                hover:text-black hover:dark:text-white
-            ">
-                <i class="bx bxs-bell"></i>
-            </button>
-            <button class="
-                bg-gradient-to-b from-blue-800 hover:from-blue-700 to-blue-900 hover:to-blue-800
-                text-sm text-white font-bold whitespace-nowrap
-                py-1 px-4 rounded-full
-            ">
-                <i class='bx bxs-pencil' ></i>
-                Reply
-            </button>
+            <!-- header block -->
+            <div 
+            x-show="!$store.ui.mobile_keyboard_active"
+            class="
+                flex
+                text-zinc-950 dark:text-zinc-300
+                pb-1
+            "
+        >
+            <h1 class="text-lg lg:text-xl">
+                <!--<i class="bx bx-chat"></i>-->
+                <?= $title ?>
+            </h1>
+
+            <div class="flex flex-grow justify-end items-end space-x-4 pr-2">
+                <button 
+                    class="
+                        text-xl
+                        hover:text-black hover:dark:text-white
+                    "
+                    @click="
+                        show_description_block = !show_description_block;
+                        if (!show_jump_latest_icon) {
+                            console.log('resetting scrolltop');
+                        $nextTick(() => { 
+                            $refs.chat_container.scrollTop = $refs.msg_anchor_newest.offsetTop; });
+                        }
+                    "
+
+                >
+                    <i class="bx bx-info-circle"></i>
+                </button>
+
+                <button 
+                    class="
+                        text-xl
+                        hover:text-black hover:dark:text-white
+                    "
+                >
+                    <i class="bx bxs-bell"></i>
+                </button>
+            </div>
         </div>
-    </div>
-
-    <p class="text-lg lg:text-xl font-bold">
-        <?= $title ?>
-    </p>
-</div>
-
-
 
         <?php flash_message() ?>
 
-        <div class="
-                p-2 mb-2
-                text-sm
-                bg-zinc-100 dark:bg-zinc-950 
-                text-zinc-950 dark:text-zinc-300
-                rounded-md
-                border-l-4 border-zinc-400 dark:border-zinc-600
-        ">
-            <?php breadcrumb() ?>
-            Lorem ipsum...
-        </div>
-
+        <!-- messages -->
         <div
-            id="threads"
             class="
-                relative
                 w-full h-full
                 flex flex-col
                 overflow-y-auto
-                space-y-2 mb-2
+                space-y-2
+                
             "
         >
             <?php foreach ($posts as $post): ?>
@@ -196,8 +189,103 @@ $content = function() use ($title, $posts) { ?>
             <?php endforeach ?>
         </div>
 
-        <!-- new message block -->
-        <?php pagination_bar() ?>
+        <!-- pagination/reply block -->
+        <div 
+            class="
+                w-full
+                bg-zinc-100 dark:bg-zinc-950 
+                        text-zinc-950 dark:text-zinc-300
+                        rounded-md
+                        border border-zinc-200 dark:border-black
+                mt-2
+            "
+            x-data="editor"
+        >
+            <div 
+                class="flex items-start p-2"
+                x-show="open"
+
+            >
+                <?php wysiwyg_editor(placeholder: "Reply") ?>
+                
+                <button 
+                    class="text-2xl"
+                    @click="hide()"
+                >
+                    <i class="bx bx-x"></i>
+                </button>
+
+            </div>
+
+            <div 
+                class="
+                    flex w-full
+                    p-1 px-2 space-x-2
+                    items-center text-xs
+                "
+                x-show="!(open && $store.ui.is_mobile)"
+            >
+                    
+                <span>1-20 of 129084 posts</span>
+
+                <nav 
+                    class="
+                        flex-grow justify-center align-center 
+                        text-sm isolate inline-flex -space-x-px rounded-md shadow-sm
+                    " 
+                    aria-label="Pagination"
+                    
+                    x-show="!(open && $store.ui.is_mobile)"
+                >
+
+                    <a href="#" class="relative inline-flex items-center rounded-md px-2 py-2 hover:bg-zinc-200 dark:hover:bg-zinc-700 focus:outline-offset-0">
+                        <i class="bx bx-chevron-left"></i>
+                    </a>
+
+                    <!--<a href="#" aria-current="page" class="relative z-10 inline-flex items-center bg-indigo-600 px-4 py-2 text-sm font-semibold text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">1</a>-->
+                    <a href="#" class="relative inline-flex items-center px-3 py-1 rounded-md  hover:bg-zinc-200 dark:hover:bg-zinc-700 focus:outline-offset-0">
+                        1
+                    </a>
+                    <a href="#" class="relative inline-flex whitespace-nowrap items-center px-3 py-1 rounded-md  bg-zinc-200 dark:bg-zinc-700 focus:outline-offset-0">
+                        2 of 500
+                    </a>
+                    <a href="#" class="relative inline-flex items-center px-3 py-1 rounded-md  hover:bg-zinc-200 dark:hover:bg-zinc-700 focus:outline-offset-0">
+                        500
+                    </a>
+
+                    <a href="#" class="relative inline-flex items-center rounded-md px-2 py-2 hover:bg-zinc-200 dark:hover:bg-zinc-700 focus:outline-offset-0">
+                        <i class="bx bx-chevron-right"></i>
+                    </a>
+                </nav>
+
+                <button 
+                    class="
+                        bg-gradient-to-b from-blue-800 to-blue-900 
+                        hover:from-blue-700 hover:to-blue-800
+                        text-sm text-white font-bold whitespace-nowrap
+                        py-1 px-4 rounded-full
+                        w-24
+                    "
+                    x-show="!open"
+
+                    <?php if ($auth->is_authenticated): ?>
+                        @click="show()"
+                    <?php else: ?>
+                        <?php hx_modal("/login") ?>
+                        @click="$nextTick(() => $dispatch('show-modal'))"
+                    <?php endif; ?>
+                >
+                    <i class='bx bxs-pencil' ></i>
+                    Reply
+                </button>
+
+ 
+
+                <div class="w-24" x-show="open"></div>
+
+            </div>
+        </div>
+
 
     </div><?php
 };

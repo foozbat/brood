@@ -79,7 +79,7 @@ function forum_thread(array $thread) {
 $content = function () use ($title, $threads, $forum_description) { ?>
     <div 
         id="forum_list"
-        class="w-full p-2 pt-0"
+        class="p-2"
 
         x-data="{ 
             show_description_block: true, 

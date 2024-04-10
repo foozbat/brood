@@ -289,10 +289,6 @@ function dm_link($user) { ?>
                 class="
                     flex flex-col 
                     space-y-1 m-1 pb-4
-                    
-                    border-zinc-300 dark:border-black
-                    bg-zinc-100 dark:bg-zinc-950
-                    text-zinc-800 dark:text-zinc-300
                 "
             >
                 <?php foreach ($section_data as $section_item): ?>

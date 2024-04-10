@@ -5,12 +5,14 @@
 
 require_once "components/page_footer.tpl.php"; 
 require_once "components/modal.tpl.php";
+require_once "components/breadcrumb.tpl.php";
 
 use Fzb\Htmx;
 
 ?>
 <?php if (Htmx::is_htmx_request()): ?>
     <title>brood: <?= $title ?></title>
+
     <?php $content() ?>
 <?php else: ?>
 
@@ -40,7 +42,8 @@ use Fzb\Htmx;
     <script src="https://unpkg.com/alpinejs-swipe@1.0.2/dist/cjs.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/intersect@3.x.x/dist/cdn.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/gh/maxeckel/alpine-editor@0.3.1/dist/alpine-editor.min.js"></script>
+    
     <script src="/static/brood-common.js"></script>
 
     <style>
@@ -52,7 +55,8 @@ use Fzb\Htmx;
 <body 
     x-ref="body"
     class="
-        min-h-screen w-full
+        h-screen w-full
+        flex flex-col
         bg-zinc-200 dark:bg-zinc-900 
         text-zinc-700 dark:text-zinc-300
         bg-no-repeat
@@ -68,13 +72,14 @@ use Fzb\Htmx;
     ></header>
     <!---->
 
+    <div class="flex-1 h-full overflow-hidden">
+
     <!-- main sidebar -->
     <nav
         x-data="side_bar"
 
         class="
-            h-[calc(100%-4rem)]
-            fixed
+            fixed h-full
             w-72 lg:w-64 xl:w-72
             overflow-y-auto
             z-10
@@ -100,55 +105,12 @@ use Fzb\Htmx;
         hx-trigger="load"
     ></nav>
 
-    <!-- main content area -->
-    <main 
-        id="content_area"
-        x-ref="content_area"
-
-        hx-history-elt
-
-        x-data="{
-            main_bar_shown: true,
-            user_bar_shown: true,
-        }"
-
-        class="
-            h-[calc(100%-4rem)]
-            fixed
-            pl-0 pr-0
-            left-0 right-0 top-16
-            overflow-y-auto
-            z-0
-            flex flex-col
-        "
-
-        :class="{ 
-            'lg:left-64 xl:left-72': main_bar_shown,
-            'lg:pl-16 xl:pl-32': !main_bar_shown,
-            'lg:right-48 xl:right-64': user_bar_shown,
-            'lg:pr-16 xl:pr-32': !user_bar_shown,
-        }"
-
-        @show-main-bar.window="main_bar_shown = true;"
-        @hide-main-bar.window="main_bar_shown = false;"
-        @toggle-main-bar.window="main_bar_shown = !main_bar_shown"
-        @show-user-bar.window="user_bar_shown = true;"
-        @hide-user-bar.window="user_bar_shown = false;"
-        @toggle-user-bar.window="user_bar_shown = !user_bar_shown"
-
-        
-    >
-        <?php $content() ?>
-    </main>
-
     <!-- user sidebar -->
     <aside
         x-data="side_bar"
 
         class="
-            h-[calc(100%-4rem)]    
-            
-            right-0 fixed
+            right-0 fixed h-full
             w-64 lg:w-48 xl:w-64
             overflow-y-auto 
             z-10
@@ -173,6 +135,59 @@ use Fzb\Htmx;
         hx-get="/components/user_bar"
         hx-trigger="load, user-login-success from:body, user-logout from:body"
     ></aside>
+
+    <div 
+        class="
+            w-full
+            
+            text-center
+
+        "
+        x-data="{ show: false }"
+        x-show="show"
+        @toggle-search-bar.window = "show = !show"
+    >
+        <input type="text" class="bg-black rounded-md"></input>
+    </div>
+
+    <!-- main content area -->
+    <main 
+        id="content_area"
+        x-ref="content_area"
+
+        hx-history-elt
+
+        x-data="{
+            main_bar_shown: true,
+            user_bar_shown: true,
+        }"
+
+        class="
+            pl-0 pr-0
+            overflow-y-auto
+            flex flex-col h-full
+        "
+
+        :class="{ 
+            'lg:pl-64 xl:pl-72': main_bar_shown,
+            'lg:pl-16 xl:pl-32': !main_bar_shown,
+            'lg:pr-48 xl:pr-64': user_bar_shown,
+            'lg:pr-16 xl:pr-32': !user_bar_shown,
+        }"
+
+        @show-main-bar.window="main_bar_shown = true;"
+        @hide-main-bar.window="main_bar_shown = false;"
+        @toggle-main-bar.window="main_bar_shown = !main_bar_shown"
+        @show-user-bar.window="user_bar_shown = true;"
+        @hide-user-bar.window="user_bar_shown = false;"
+        @toggle-user-bar.window="user_bar_shown = !user_bar_shown"
+
+        
+    >
+        <?php $content() ?>
+    </main>
+
+    </div>
 
     <?php modal_container() ?>
 </body>

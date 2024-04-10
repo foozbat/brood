@@ -5,8 +5,7 @@ function breadcrumb() { ?>
         <a 
             href="#"
             class="
-                font-bold 
-                text-zinc-700 dark:text-zinc-400 text-sm
+                font-normal text-zinc-700 dark:text-zinc-400 text-sm
                 hover:text-black hover:dark:text-white hover:underline
             "
         >
@@ -17,7 +16,7 @@ function breadcrumb() { ?>
         <a
             href="#"
             class="
-                font-bold hover:underline
+                font-normal hover:underline
                 text-zinc-700 dark:text-zinc-400 text-sm
                 hover:text-black hover:dark:text-white hover:underline
             "

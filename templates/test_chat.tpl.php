@@ -5,6 +5,7 @@
 
 require_once "components/breadcrumb.tpl.php";
 require_once "components/flash_message.tpl.php";
+require_once 'components/wysiwyg_editor.tpl.php';
 
 Fzb\extend("layouts/app_main.tpl.php");
 
@@ -12,7 +13,7 @@ $content = function() use ($title, $description, $chats) { ?>
     <div
         id="chat_room"
         class="
-            h-full p-2 pt-0 flex flex-col
+            h-full p-2 flex flex-col
         "
         x-data="{ 
             show_description_block: true, 
@@ -29,7 +30,7 @@ $content = function() use ($title, $description, $chats) { ?>
                 pb-1
             "
         >
-            <div class="text-lg lg:text-xl font-bold">
+            <div class="text-lg lg:text-xl">
                 <i class="bx bx-hash"></i>
                 <?= $title ?>
             </div>
@@ -84,7 +85,7 @@ $content = function() use ($title, $description, $chats) { ?>
                     border-l-4 border-zinc-400 dark:border-zinc-600
                     space-y-2
             ">
-                <?php breadcrumb() ?>
+                
                        
                 <div
                     x-show="show_description_block"
@@ -101,7 +102,7 @@ $content = function() use ($title, $description, $chats) { ?>
             class="
                 relative
                 w-full h-full
-                bg-white dark:bg-zinc-800 
+                bg-zinc-100 dark:bg-zinc-800 
                 text-zinc-950 dark:text-zinc-300
                 rounded-md
                 overflow-x-hidden
@@ -237,6 +238,7 @@ $content = function() use ($title, $description, $chats) { ?>
         </div>
 
         <!-- new message block -->
+<!--        
         <div class="
             w-full
             flex flex-nowrap
@@ -277,5 +279,20 @@ $content = function() use ($title, $description, $chats) { ?>
             >
             </a>
         </div>
+-->
+        <div 
+            class="
+                w-full
+                bg-zinc-100 dark:bg-zinc-950 
+                text-zinc-950 dark:text-zinc-300
+                rounded-md
+                border-l-4 border-zinc-400 dark:border-zinc-600
+                p-2
+            "
+            x-data="editor"
+        >
+            <?php wysiwyg_editor(placeholder: "Message #chat", slim: true) ?>
+        </div>
+
    </div><?php
 };

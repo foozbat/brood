@@ -51,12 +51,10 @@ function user_entry($username, $status) { ?>
                 justify-center items-center 
                 w-[32px] h-[32px] 
                 text-2xl
-                pr-3
+                
             "
         >
-            <i class="bx bxs-user z-10 absolute"></i> 
-            <i class="bx bxs-user z-20 absolute text-zinc-200 dark:text-black translate-x-1"></i> 
-            <i class="bx bxs-user z-20 absolute translate-x-2"></i>
+            <i class='bx bx-group' ></i>
         </div>
         <span
             class="
