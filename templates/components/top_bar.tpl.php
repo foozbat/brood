@@ -12,7 +12,7 @@ require_once("components/breadcrumb.tpl.php");
     class="
         flex w-full h-16 lg:h-24
         items-end justify-between p-2
-        bg-gradient-to-b from-black to-transparent
+        bg-gradient-to-b from-blue-200 dark:from-black to-transparent
         text-black dark:text-white
         space-x-2
     "

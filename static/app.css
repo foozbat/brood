@@ -722,8 +722,16 @@ pre {
   z-index: 50;
 }
 
+.z-\[100\] {
+  z-index: 100;
+}
+
 .m-1 {
   margin: 0.25rem;
+}
+
+.m-2 {
+  margin: 0.5rem;
 }
 
 .mx-6 {
@@ -913,6 +921,10 @@ pre {
   width: 18rem;
 }
 
+.w-8 {
+  width: 2rem;
+}
+
 .w-80 {
   width: 20rem;
 }
@@ -943,14 +955,6 @@ pre {
 
 .w-full {
   width: 100%;
-}
-
-.w-16 {
-  width: 4rem;
-}
-
-.w-8 {
-  width: 2rem;
 }
 
 .min-w-\[32px\] {
@@ -1142,12 +1146,6 @@ pre {
   --tw-space-y-reverse: 0;
   margin-top: calc(1.5rem * calc(1 - var(--tw-space-y-reverse)));
   margin-bottom: calc(1.5rem * var(--tw-space-y-reverse));
-}
-
-.space-x-0 > :not([hidden]) ~ :not([hidden]) {
-  --tw-space-x-reverse: 0;
-  margin-right: calc(0px * var(--tw-space-x-reverse));
-  margin-left: calc(0px * calc(1 - var(--tw-space-x-reverse)));
 }
 
 .divide-y > :not([hidden]) ~ :not([hidden]) {
@@ -1844,6 +1842,38 @@ pre {
 
 .bg-zinc-700\/95 {
   background-color: rgb(63 63 70 / 0.95);
+}
+
+.bg-black\/25 {
+  background-color: rgb(0 0 0 / 0.25);
+}
+
+.bg-white\/25 {
+  background-color: rgb(255 255 255 / 0.25);
+}
+
+.bg-gray-500\/25 {
+  background-color: rgb(107 114 128 / 0.25);
+}
+
+.bg-gray-800\/25 {
+  background-color: rgb(31 41 55 / 0.25);
+}
+
+.bg-zinc-800\/25 {
+  background-color: rgb(39 39 42 / 0.25);
+}
+
+.bg-zinc-900\/25 {
+  background-color: rgb(24 24 27 / 0.25);
+}
+
+.bg-zinc-200\/25 {
+  background-color: rgb(228 228 231 / 0.25);
+}
+
+.bg-zinc-200\/50 {
+  background-color: rgb(228 228 231 / 0.5);
 }
 
 .bg-gradient-to-b {
@@ -2640,6 +2670,12 @@ pre {
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
 
+.from-blue-200 {
+  --tw-gradient-from: #bfdbfe var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(191 219 254 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
 .to-blue-800 {
   --tw-gradient-to: #1e40af var(--tw-gradient-to-position);
 }
@@ -3235,11 +3271,6 @@ pre {
   padding-bottom: 0.5rem;
 }
 
-.px-0 {
-  padding-left: 0px;
-  padding-right: 0px;
-}
-
 .pb-1 {
   padding-bottom: 0.25rem;
 }
@@ -3734,6 +3765,10 @@ pre {
     background-color: rgb(9 9 11 / var(--tw-bg-opacity));
   }
 
+  .dark\:bg-zinc-900\/25 {
+    background-color: rgb(24 24 27 / 0.25);
+  }
+
   .dark\:from-black {
     --tw-gradient-from: #000 var(--tw-gradient-from-position);
     --tw-gradient-to: rgb(0 0 0 / 0) var(--tw-gradient-to-position);
@@ -3769,6 +3804,11 @@ pre {
   .dark\:text-zinc-400 {
     --tw-text-opacity: 1;
     color: rgb(161 161 170 / var(--tw-text-opacity));
+  }
+
+  .dark\:text-zinc-500 {
+    --tw-text-opacity: 1;
+    color: rgb(113 113 122 / var(--tw-text-opacity));
   }
 
   .dark\:placeholder\:text-zinc-400::-moz-placeholder {

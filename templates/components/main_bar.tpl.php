@@ -19,7 +19,7 @@ function heading_link(string $label, string $type, $href='', $unread=0, $target=
             w-full 
             space-x-2 pb-2 pt-1 px-2
             rounded-md 
-            text-zinc-600 dark:text-zinc-400
+            text-zinc-600 dark:text-zinc-500
             hover:bg-zinc-200 hover:text-black 
             hover:dark:bg-zinc-900 hover:dark:text-white
             cursor-pointer
@@ -30,7 +30,7 @@ function heading_link(string $label, string $type, $href='', $unread=0, $target=
             hx-swap="<?= $swap ?>"
         <?php endif ?>
     >
-        <div 
+        <!--<div 
             class="
                 inline-flex overflow-hidden 
                 justify-center items-center 
@@ -39,7 +39,7 @@ function heading_link(string $label, string $type, $href='', $unread=0, $target=
             "
         >
             <i class='<?= $icons[$type] ?>' ></i>
-        </div>
+        </div>-->
         <span
             class="
                 inline-block
@@ -86,7 +86,7 @@ function item_link(string $label, string $type, $posts) {
         hx-replace-url="true"
         hx-push-url="true"
         
-        @click="click_away()"
+        @click="$store.ui.main_bar.click_away()"
     >
      
         <span class="text-lg"><i class="<?= $icons[$type] ?>"></i></span>
@@ -145,7 +145,7 @@ function dm_link($user) { ?>
 <div 
     class="
         flex flex-col
-        space-y-1 p-2
+        space-y-1 p-2 mt-2
         rounded-md border-r-2 border-b-2 
         border-zinc-300 dark:border-black
         shadow-lg

@@ -24,7 +24,7 @@ function user_entry($username, $status) { ?>
 <div 
     class="
         flex flex-col
-        space-y-1 p-2
+        space-y-1 p-2 mt-2
         rounded-md border-r-2 border-b-2 
         border-zinc-300 dark:border-black
         shadow-lg

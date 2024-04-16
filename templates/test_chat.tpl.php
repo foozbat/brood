@@ -65,8 +65,6 @@ $content = function() use ($title, $description, $chats) { ?>
             </div>
         </div>
 
-        <?php flash_message() ?>
-
         <!-- description block -->
         <div 
             x-show="!$store.ui.mobile_keyboard_active"

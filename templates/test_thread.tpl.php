@@ -128,6 +128,15 @@ $content = function() use ($title, $posts, $auth) { ?>
     <div 
         class="p-2 h-full flex flex-col rounded-md"
     >
+        <div
+            class="
+                w-full h-full
+                flex flex-col
+                overflow-y-auto
+                space-y-2
+                
+            "
+        >
             <!-- header block -->
             <div 
             x-show="!$store.ui.mobile_keyboard_active"
@@ -172,18 +181,10 @@ $content = function() use ($title, $posts, $auth) { ?>
             </div>
         </div>
 
-        <?php flash_message() ?>
+
 
         <!-- messages -->
-        <div
-            class="
-                w-full h-full
-                flex flex-col
-                overflow-y-auto
-                space-y-2
-                
-            "
-        >
+
             <?php foreach ($posts as $post): ?>
                 <?php thread_post($post) ?>
             <?php endforeach ?>

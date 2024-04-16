@@ -108,8 +108,6 @@ $content = function () use ($title, $threads, $forum_description) { ?>
                 </div>
             </div>
 
-            <?php flash_message() ?>
-            
             <!-- description block -->
             <div class="
                 p-1 mb-2

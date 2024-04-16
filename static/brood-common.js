@@ -34,22 +34,17 @@ document.addEventListener('alpine:init', () => {
     Alpine.store('ui', {
         is_mobile: false, 
         mobile_keyboard_active: false,
-        show_main_bar: true,
-        show_user_bar: true,
-        active_main_bar_menu: 'groups',
 
         init() {
             this.is_mobile = !window.matchMedia('(min-width: 1024px)').matches;
-            this.show_main_bar = !this.is_mobile;
-            this.show_main_bar = !this.is_mobile;
-        }
+        },
     });
 
-    Alpine.data('side_bar', () => ({
+    Alpine.store('main_bar', {
         open: true,
 
         init() {
-            this.open = !Alpine.store("ui").is_mobile;
+            this.open = !Alpine.store('ui').is_mobile
         },
         show() {
             this.open = true;
@@ -67,7 +62,31 @@ document.addEventListener('alpine:init', () => {
                 });
             }
         },
-    }));
+    });
+
+    Alpine.store('user_bar', {
+        open: true,
+
+        init() {
+            this.open = !Alpine.store('ui').is_mobile
+        },
+        show() {
+            this.open = true;
+        },
+        hide() {
+            this.open = false;
+        },
+        toggle() {
+            this.open = !this.open;
+        },
+        click_away() {
+            if (Alpine.store('ui').is_mobile && this.open) {
+                Alpine.store('htmx').await_snapshot().then(() => {
+                    this.open = false;
+                });
+            }
+        },
+    });
 
     Alpine.data('dropdown', () => ({
         open: false,
@@ -127,6 +146,7 @@ document.addEventListener('alpine:init', () => {
         }
     }));
 
+    // detect resize from desktop to mobile view
     window.addEventListener('resize', (event) => {
         let is_mobile = !window.matchMedia('(min-width: 1024px)').matches;
         let was_mobile = Alpine.store("ui").is_mobile;
@@ -142,6 +162,7 @@ document.addEventListener('alpine:init', () => {
         }
     });
 
+    // detect mobile keyboard activation/deactivation
     if ('visualViewport' in window && Alpine.store("ui").is_mobile) {
         console.log("VVP detected");
         const VIEWPORT_VS_CLIENT_HEIGHT_RATIO = 0.75;

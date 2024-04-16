@@ -76,8 +76,6 @@ use Fzb\Htmx;
 
     <!-- main sidebar -->
     <nav
-        x-data="side_bar"
-
         class="
             fixed h-full
             w-72 lg:w-64 xl:w-72
@@ -86,13 +84,14 @@ use Fzb\Htmx;
             scrollbar-thin
         "
 
-        x-show="open"
+        x-data
+        x-show="$store.main_bar.open"
 
-        x-swipe:left="hide()"
-        @click.away="click_away()"
-        @show-main-bar.window="show()"
-        @hide-main-bar.window="hide()"
-        @toggle-main-bar.window="toggle()"
+        x-swipe:left="$store.main_bar.hide()"
+        @click.away="$store.main_bar.click_away()"
+        @show-main-bar.window="$store.main_bar.show()"
+        @hide-main-bar.window="$store.main_bar.hide()"
+        @toggle-main-bar.window="$store.main_bar.toggle()"
     
         x-transition:enter="transition duration-250"
         x-transition:enter-start="transform -translate-x-full opacity-0 scale-90"
@@ -107,23 +106,22 @@ use Fzb\Htmx;
 
     <!-- user sidebar -->
     <aside
-        x-data="side_bar"
 
         class="
             right-0 fixed h-full
-            w-64 lg:w-48 xl:w-64
+            w-72 lg:w-48 xl:w-64
             overflow-y-auto 
             z-10
             scrollbar-thin
         "
+        x-data
+        x-show="$store.user_bar.open"
 
-        x-show="open"
-
-        x-swipe:right="hide()"
-        @click.away="click_away()"
-        @show-user-bar.window="show()"
-        @hide-user-bar.window="hide()"
-        @toggle-user-bar.window="toggle()"
+        x-swipe:right="$store.user_bar.hide()"
+        @click.away="$store.user_bar.click_away()"
+        @show-user-bar.window="$store.user_bar.show()"
+        @hide-user-bar.window="$store.user_bar.hide()"
+        @toggle-user-bar.window="$store.user_bar.toggle()"
 
         x-transition:enter="transition duration-250"
         x-transition:enter-start="transform translate-x-full opacity-0 scale-90"
@@ -150,6 +148,8 @@ use Fzb\Htmx;
         <input type="text" class="bg-black rounded-md"></input>
     </div>
 
+    <?php flash_message(floating: true) ?>
+
     <!-- main content area -->
     <main 
         id="content_area"
@@ -169,20 +169,11 @@ use Fzb\Htmx;
         "
 
         :class="{ 
-            'lg:pl-64 xl:pl-72': main_bar_shown,
-            'lg:pl-16 xl:pl-32': !main_bar_shown,
-            'lg:pr-48 xl:pr-64': user_bar_shown,
-            'lg:pr-16 xl:pr-32': !user_bar_shown,
+            'lg:pl-64 xl:pl-72': $store.main_bar.open,
+            'lg:pl-16 xl:pl-32': !$store.main_bar.open,
+            'lg:pr-48 xl:pr-64': $store.user_bar.open,
+            'lg:pr-16 xl:pr-32': !$store.user_bar.open,
         }"
-
-        @show-main-bar.window="main_bar_shown = true;"
-        @hide-main-bar.window="main_bar_shown = false;"
-        @toggle-main-bar.window="main_bar_shown = !main_bar_shown"
-        @show-user-bar.window="user_bar_shown = true;"
-        @hide-user-bar.window="user_bar_shown = false;"
-        @toggle-user-bar.window="user_bar_shown = !user_bar_shown"
-
-        
     >
         <?php $content() ?>
     </main>

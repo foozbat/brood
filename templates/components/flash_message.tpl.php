@@ -1,4 +1,11 @@
-<?php function flash_message($name = '', $timeout=3000, $dismissable=true) { ?>
+<?php function flash_message($name = '', $timeout=3000, $dismissable=true, $floating=false) { ?>
+    <?php if ($floating): ?>
+    <div class="
+        absolute z-[100]
+        w-full 
+        flex justify-center
+    ">
+    <?php endif; ?>
     <div
         class="
             flex
@@ -33,8 +40,11 @@
         <div class="flex-grow" x-text="message"></div>
         <?php if ($dismissable): ?>
             <div class="text-xl cursor-pointer" @click="show = false"><i class="bx bx-x"></i></div>
-        <?php endif ?>
-        
+        <?php endif ?>        
     </div>
+
+    <?php if ($floating): ?>
+    </div>
+    <?php endif; ?>
 
 <?php } ?>
