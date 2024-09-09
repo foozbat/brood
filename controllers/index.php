@@ -19,7 +19,8 @@ $router->add(
     function () use ($auth) {
         $inputs = new Input(
             username: 'post required',
-            password: 'post required'
+            password: 'post required',
+            next_url: 'post'
         );
 
         if ($inputs->is_post()) {
@@ -33,6 +34,13 @@ $router->add(
                         'message' => 'Login success.'
                     ]
                 ]);
+
+                if ($inputs['next_url']) {
+                    Htmx::location([
+                        'path' => (string) $inputs['next_url'],
+                        'target' => '#content_area'
+                    ]);
+                }
             } else {
                 Htmx::trigger([
                     'user-login-failure', 
@@ -42,6 +50,8 @@ $router->add(
                     ]
                 ]);
             }
+
+            Htmx::no_content();
         } else {
             $renderer = new Renderer();
             $renderer->show('components/modals/login.tpl.php');
@@ -59,4 +69,11 @@ $router->get("/logout", function () use ($auth) {
             'message' => 'Logged out.'
         ]
     ]);
+    
+    Htmx::location([
+        'path' => '/',
+        'target' => '#content_area'
+    ]);
+
+    Htmx::no_content();
 });

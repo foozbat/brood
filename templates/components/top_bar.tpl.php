@@ -4,7 +4,6 @@
  */
 
 require_once("components/user_icon.tpl.php");
-require_once("components/modal.tpl.php");
 require_once("components/breadcrumb.tpl.php");
 
 ?>
@@ -28,8 +27,8 @@ require_once("components/breadcrumb.tpl.php");
         hx-swap="innerHTML"
     >
         <div class="flex items-end">
-            <img src="static/brood_light.png" class="h-[40px] w-[40px] dark:hidden">
-            <img src="static/brood_dark.png" class="h-[40px] w-[40px] hidden dark:block">
+            <img src="/static/brood_light.png" class="h-[40px] w-[40px] dark:hidden">
+            <img src="/static/brood_dark.png" class="h-[40px] w-[40px] hidden dark:block">
             <span class="text-2xl lg:text-3xl pl-2 font-logo"> brood</span>
         </div>
     </a>
@@ -175,8 +174,7 @@ require_once("components/breadcrumb.tpl.php");
                     inline-flex overflow-hidden 
                     justify-center items-center 
                 "
-                <?php hx_modal("/login") ?>
-                @click="$nextTick(() => $dispatch('show-modal'))"
+                @click="$dispatch('show-login-modal')"
             >
                 <i class='bx bx-log-in-circle text-3xl' ></i>
             </a>

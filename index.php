@@ -8,7 +8,7 @@
 
 namespace Brood;
 
-use Fzb;
+use Fzb\Auth, Fzb\Database, Fzb\Router, Fzb\Htmx;
 
 if (!preg_match('/^8\.1/i', phpversion())) {
 	die("brood requires PHP version 8.1 or newer.");
@@ -34,7 +34,7 @@ set_exception_handler(function ($e) {
 //ob_start("ob_gzhandler");
 
 // change to more secure
-$db = new Fzb\Database(
+$db = new Database(
     username: 'brood',
     password: 'password',
     driver: 'mysql',
@@ -42,9 +42,24 @@ $db = new Fzb\Database(
     database: 'brood'
 );
 
-$auth = new Fzb\Auth(User::class);
+$auth = new Auth(User::class);
+
+$auth->on_failure(function (string $next_url) {
+    if (Htmx::is_htmx_request()) {
+        Htmx::trigger([
+            'show-login-modal' => [
+				'next_url' => $next_url
+			]
+        ]);
+        Htmx::no_content();
+    } else {
+        header("Location: /");
+    }
+
+    exit();
+});
 
 // router using controllers
-$router = new Fzb\Router();
+$router = new Router();
 require_once $router->get_controller();
 $router->route();

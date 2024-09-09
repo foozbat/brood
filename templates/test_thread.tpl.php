@@ -127,6 +127,9 @@ function thread_post($post) { ?>
 $content = function() use ($title, $posts, $auth) { ?>
     <div 
         class="p-2 h-full flex flex-col rounded-md"
+        hx-get="/test_thread/"
+        hx-target="#content_area"
+        hx-trigger="user-login-success from:body, user-logout from:body"
     >
         <div
             class="
@@ -272,8 +275,7 @@ $content = function() use ($title, $posts, $auth) { ?>
                     <?php if ($auth->is_authenticated): ?>
                         @click="show()"
                     <?php else: ?>
-                        <?php hx_modal("/login") ?>
-                        @click="$nextTick(() => $dispatch('show-modal'))"
+                        @click="$dispatch('show-login-modal')"
                     <?php endif; ?>
                 >
                     <i class='bx bxs-pencil' ></i>

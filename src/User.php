@@ -6,5 +6,5 @@ use Fzb;
 
 class User extends Fzb\User
 {
-    public string $my_field;
+    public ?string $my_field;
 }

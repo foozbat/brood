@@ -9,27 +9,27 @@ $renderer = new Renderer();
 $router->get("/components/main_bar", function () use ($renderer) {
     $renderer->set('forum_index', [
         "Welcome" => [
-            ["Announcements", "pin", 3],
-            ["Community Rules", "pin", 0]
+            ["Announcements", "/announcements", "pin", 3],
+            ["Community Rules", "/rules", "pin", 0]
         ],
         "General Discussion" => [
-            ["General Chat", "chat", 0],
-            ["Programming", "forum", 323],
-            ["Graphic Design", "forum", 123],
-            ["Web Development", "forum", "2.1K"],
-            ["API Design Super Long API Name That is so Long", "forum", 21]
+            ["General Chat", "/test_chat", "chat", 0],
+            ["Programming", "/test_forum", "forum", 323],
+            ["Login Required", "/login_required", "forum", 123],
+            ["Web Development", "/test_forum", "forum", "2.1K"],
+            ["API Design Super Long API Name That is so Long", "/test_forum", "forum", 21]
         ],
         "More Groups" => [
-            ["Interesting Chat", "chat", 0],
-            ["Uniteresting Chat", "chat", 0],
-            ["Meme Links", "links", 0],
-            ["Streaming Cat Videos", "video", "LIVE"],
+            ["Interesting Chat", "/test_chat", "chat", 0],
+            ["Uniteresting Chat", "/test_chat", "chat", 0],
+            ["Meme Links", "/test_links", "links", 0],
+            ["Streaming Cat Videos", "/test_video", "video", "LIVE"],
         ],
         "More More Groups" => [
-            ["More Interesting Links", "links", 0],
-            ["More Uniteresting Links", "links", 0],
-            ["More Meme Contest", "chat", 0],
-            ["More Streaming Cat Videos", "video", "LIVE"],
+            ["More Interesting Links", "/test_links", "links", 0],
+            ["More Uniteresting Links", "/test_links", "links", 0],
+            ["More Meme Contest", "/test_chat", "chat", 0],
+            ["More Streaming Cat Videos", "/test_video", "video", "LIVE"],
         ]
     ]);
 

@@ -1,15 +1,17 @@
 <?php
 
-$renderer = new \Fzb\Renderer();
+use Fzb\Htmx, Fzb\HtmxSwap;
 
 $auth->login_required();
+
+$renderer = new \Fzb\Renderer();
 
 $threads = [];
 
 for ($i=0; $i<rand(1,25); $i++) {
     $threads[$i] = [
         'poster' => 'Poster ' . $i, 
-        'title' => "Tortor pretium viverra suspendisse potenti nullam"
+        'title' => "Secret! Tortor pretium viverra suspendisse potenti nullam"
     ];
 }
 

@@ -4,8 +4,6 @@
  */
 
 require_once "components/page_footer.tpl.php"; 
-require_once "components/modal.tpl.php";
-require_once "components/breadcrumb.tpl.php";
 
 use Fzb\Htmx;
 
@@ -61,6 +59,7 @@ use Fzb\Htmx;
         text-zinc-700 dark:text-zinc-300
         bg-no-repeat
     "
+    hx-ignore="location"
 >
     <!-- header page -->
     <header 
@@ -106,7 +105,6 @@ use Fzb\Htmx;
 
     <!-- user sidebar -->
     <aside
-
         class="
             right-0 fixed h-full
             w-72 lg:w-48 xl:w-64
@@ -153,14 +151,9 @@ use Fzb\Htmx;
     <!-- main content area -->
     <main 
         id="content_area"
-        x-ref="content_area"
 
         hx-history-elt
-
-        x-data="{
-            main_bar_shown: true,
-            user_bar_shown: true,
-        }"
+        x-data
 
         class="
             pl-0 pr-0
@@ -180,7 +173,13 @@ use Fzb\Htmx;
 
     </div>
 
-    <?php modal_container() ?>
+    <div id="modal_container">
+        <div 
+            hx-get="/login"
+            hx-swap="outerHTML"
+            hx-trigger="load"
+        ></div>
+    </div>
 </body>
 </html>
 

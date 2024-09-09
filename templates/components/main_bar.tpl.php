@@ -64,7 +64,7 @@ function heading_link(string $label, string $type, $href='', $unread=0, $target=
     </div><?php
 }
 
-function item_link(string $label, string $type, $posts) { 
+function item_link(string $label, string $href, string $type, $posts) { 
     $icons = [
         "pin" => "bx bxs-pin",
         "forum" => "bx bxs-conversation",
@@ -80,13 +80,13 @@ function item_link(string $label, string $type, $posts) {
             hover:bg-zinc-200 hover:dark:bg-zinc-900 
             hover:text-black hover:dark:text-white
         "
-        href="/test_<?= $type ?>"
-        hx-get="/test_<?= $type ?>"
+        href="<?= $href ?>"
+        hx-get="<?= $href ?>"
         hx-target="#content_area"
         hx-replace-url="true"
         hx-push-url="true"
         
-        @click="$store.ui.main_bar.click_away()"
+        @click="$store.main_bar.click_away()"
     >
      
         <span class="text-lg"><i class="<?= $icons[$type] ?>"></i></span>

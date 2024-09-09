@@ -1,15 +1,16 @@
 <?php function wysiwyg_editor($placeholder="", $slim=false) { ?>
 
-    <div class="
-        w-full flex 
-        <?php if ($slim): ?>
-            flex-row
-            items-center
-            space-x-2
-        <?php else: ?>
-            flex-col
-        <?php endif; ?>
-    ">
+    <div 
+        x-data="{ slim: <?= json_encode($slim) ?> }"
+        class="
+            w-full flex 
+
+        "
+        :class="{
+            'flex-row items-center space-x-2': slim,
+            'flex-col': !slim
+        }"
+    >
         <a 
             href="#"
             class="bx bx-dots-vertical-rounded text-xl"

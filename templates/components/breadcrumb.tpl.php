@@ -10,7 +10,6 @@ function breadcrumb() { ?>
             "
         >
             <i class="bx bx-home"></i>
-            <!--<span class="hidden md:contents">Home</span>-->
             Home
         </button>
         <a

@@ -2,9 +2,11 @@
 
 require_once("components/flash_message.tpl.php");
 
-?>
+Fzb\extend("components/modal.tpl.php");
+
+$name = "login";
+$content = function () { ?>
 <div 
-    id="modal_content"
     class="
         w-96 max-w-full
         flex flex-col
@@ -15,6 +17,8 @@ require_once("components/flash_message.tpl.php");
         border-r-2 border-b-2 border-zinc-300 dark:border-black
         p-4
     "
+    x-data = "{ message: '', next_url: '' }"
+    @show-login-modal.document="next_url = $event.detail.next_url"
     @click.away="
         close();
         $dispatch('flash-message-login-hide');
@@ -59,6 +63,8 @@ require_once("components/flash_message.tpl.php");
                 type="password" 
                 class="block w-full rounded-md border-0 bg-transparent py-1.5 shadow-sm ring-1 ring-inset ring-zinc-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6" 
                 name="password" />
+
+            <input type="hidden" name="next_url" :value="next_url">
             
             <button 
                 class="
@@ -81,3 +87,4 @@ require_once("components/flash_message.tpl.php");
         </span>
     </div>
 </div>
+<?php } ?>

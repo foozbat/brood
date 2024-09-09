@@ -1,7 +1,6 @@
 <?php 
 
 require_once("components/user_icon.tpl.php");
-require_once("components/modal.tpl.php");
 
 function user_entry($username, $status) { ?>
     <a href="#" class="
@@ -90,9 +89,8 @@ function user_entry($username, $status) { ?>
                     text-sm text-white font-bold 
                     py-2 px-4 rounded-full
                 "
-                <?php hx_modal('/login') ?>
                 @click="
-                    $dispatch('show-modal');
+                    $dispatch('show-login-modal');
                     click_away();
                 "
             >
