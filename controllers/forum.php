@@ -18,7 +18,7 @@ $router->get('/new', function () use ($renderer) {
 $router->get('/{url_id}', function () use ($renderer) {
     list($url_id, $validation) = Input::from_request(url_id: 'required path');
 
-    $channel = Channel::get_by(url_id: $url_id);
+    /*$channel = Channel::get_by(url_id: $url_id);
 
     if (!$channel) {
         Common::flash_message('Channel not found.', 'failure');
@@ -26,14 +26,18 @@ $router->get('/{url_id}', function () use ($renderer) {
         return;
     }
 
-    $threads = Thread::get_by(channel_id: $channel->id);
+    $threads = Thread::get_by(channel_id: $channel->id);*/
 
-    //list($threads, $posters, $reply) = Model::from_sql("SELECT threads.*")
+    $forum = Forum::get_by(url_id: $url_id);
 
-    //$arr = 
+    if (!$forum) {
+        Common::flash_message('Forum not found.', 'failure');
+        Common::no_content();
+        return;
+    }
 
-    $renderer->set('channel', $channel);
-    $renderer->set('threads', $threads);
+    $renderer->set('forum', $forum);
+    //$renderer->set('threads', $threads);
 
     $renderer->show("forum.tpl.php");
 });

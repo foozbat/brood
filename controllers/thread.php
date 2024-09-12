@@ -9,18 +9,58 @@ $router->use_controller_prefix();
 
 $router->add(
     ['GET', 'POST'],
-    '/new', 
-    function () use ($renderer, $router) {
-        
-        if (false) {
-            Common::flash_message(message: 'Invalid parameters', type: 'failure');
+    '/new/{channel_id}', 
+    function () use ($renderer, $router, $auth) {
+        if ($router->is_post()) {
+            $auth->login_required();
             
-            // if success
-                Htmx::redirect("/thread/$thread_id");
-        } else {
-            //
+            list($channel_id, $title, $content, $validation) = Input::from_request(
+                channel_id: 'path required validate:int',
+                title: 'post required',
+                content: 'post required'
+            );
+
+            if ($validation->is_missing()) {
+                Common::flash_message(message: 'Required fields missing.', type: 'failure');
+                Htmx::trigger('missing-values');
+            }
+
+            // check if channel exists
+
+            // check if user authorized to post in channel
+
+            // more checks
+            
+            $thread = new Thread(
+                channel_id: $channel_id,
+                user_id: $auth->user->id, 
+                title: $title
+            );
+            $thread->save();
+
+            $message = new Message(
+                thread_id: $thread->id, 
+                channel_id: $channel_id,
+                user_id: $auth->user->id,
+                content: $content
+            );
+            $message->save();
+
+            // success
+            Htmx::location([
+                'path' => "/thread/$thread->url_id",
+                'target' => '#'.Htmx::target_id()
+            ]);
+            Htmx::no_content();
+            return;
         }
-        $renderer->show('fragments/thread_new.tpl.php');
+        
+        list($channel_id, $validation) = Input::from_request(
+            channel_id: 'path validate:int required'
+        );
+
+        $renderer->set('channel_id', $channel_id);
+        $renderer->show('components/modals/thread_new.tpl.php');
     }
 );
 
@@ -43,20 +83,13 @@ $router->get(
             return;
         }
         
-        $thread = Thread::get_by(url_id: $url_id);
+        $thread = Thread::get_content(
+            url_id: $url_id,
+            _page: $page,
+            _per_page: 10, // change
+        );
 
-        if (!$thread) {
-            $renderer->set('thread_not_found', true);
-        } else {
-            $messages = Message::get_by(
-                thread_id: $thread->id,
-                _page: $page,
-                _per_page: 10, // change
-            );
-
-            $renderer->set('thread', $thread);
-            $renderer->set('messages', $messages);
-        }
+        $renderer->set('thread', $thread);
 
         $renderer->show('thread.tpl.php');
     }

@@ -29,8 +29,8 @@ $content = function () { ?>
     "
 >
     <div class="flex justify-center items-center">
-            <img src="static/brood_light.png" class="h-[48px] w-[48px] dark:hidden">
-            <img src="static/brood_dark.png" class="h-[48px] w-[48px] hidden dark:block">
+            <img src="/static/brood_light.png" class="h-[48px] w-[48px] dark:hidden">
+            <img src="/static/brood_dark.png" class="h-[48px] w-[48px] hidden dark:block">
             <span class="text-2xl lg:text-3xl pl-2 font-logo"> brood</span>
             
     </div>

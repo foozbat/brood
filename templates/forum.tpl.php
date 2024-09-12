@@ -77,10 +77,10 @@ function forum_thread($thread) {
 };
 
 // Page Title
-$title = $channel->title;
+$title = $forum->title;
 
 // Content Pane
-$content = function () use ($channel, $threads) { ?>
+$content = function () use ($forum, $auth) { ?>
     <div 
         id="forum_list"
         class="p-2"
@@ -95,16 +95,23 @@ $content = function () use ($channel, $threads) { ?>
                 <div class="flex-grow">
                     <p class="text-lg lg:text-xl font-bold">
                         <i class="bx bx-conversation"></i>
-                        <?= $channel->title ?>
+                        <?= $forum->title ?>
                     </p>
                 </div>
                 <div class="flex flex-grow justify-end space-x-4 pr-2">
-                    <button class="
-                        bg-gradient-to-b from-blue-800 hover:from-blue-700 to-blue-900 hover:to-blue-800
-                        
-                        text-sm text-white font-bold 
-                        py-1 px-4 rounded-full
-                    ">
+                    <button 
+                        class="
+                            bg-gradient-to-b from-blue-800 hover:from-blue-700 to-blue-900 hover:to-blue-800
+                            
+                            text-sm text-white font-bold 
+                            py-1 px-4 rounded-full
+                        "
+                        <?php if ($auth->is_authenticated): ?>
+                            @click="$dispatch('show-thread-new-modal')"
+                        <?php else: ?>
+                            @click="$dispatch('show-login-modal')"
+                        <?php endif; ?>
+                    >
                         <i class='bx bxs-pencil' ></i>
                         New Thread
                     </button>
@@ -151,16 +158,24 @@ $content = function () use ($channel, $threads) { ?>
                     x-show="show_description_block"
                     x-transition
                 >
-                    <?= $channel->description ?>
+                    <?= $forum->description ?>
                 </div>
             </div>
 
             <!-- Thread List -->
             <div id="threads">
-                <?php foreach ($threads as $thread): ?>
+                <?php foreach ($forum->threads as $thread): ?>
                     <?php forum_thread($thread) ?>
                 <?php endforeach ?>
             </div>
         </div>
-    </div><?php
+    </div>
+    
+    <!-- new thread modal -->
+    <div 
+        hx-get="/thread/new/<?= $forum->id ?>"
+        hx-swap="outerHTML"
+        hx-trigger="load"
+    ></div>
+    <?php
 };

@@ -121,7 +121,7 @@ function thread_post($message) { ?>
     </div><?php
 }
 
-$content = function() use ($thread, $messages, $auth, $thread_not_found) { ?>
+$content = function() use ($thread, $messages, $auth) { ?>
     <div 
         class="p-2 h-full flex flex-col rounded-md"
         hx-get="/test_thread/"
@@ -137,9 +137,7 @@ $content = function() use ($thread, $messages, $auth, $thread_not_found) { ?>
                 
             "
         >
-            <?php var_dump($thread_not_found) ?>
-
-            <?php if ($thread_not_found): ?>
+            <?php if (!$thread): ?>
                 Thread not found.
             <?php else: ?>
             <!-- header block -->
@@ -190,7 +188,7 @@ $content = function() use ($thread, $messages, $auth, $thread_not_found) { ?>
 
             <!-- messages -->
 
-                <?php foreach ($messages as $message): ?>
+                <?php foreach ($thread->messages as $message): ?>
                     <?php thread_post($message) ?>
                 <?php endforeach ?>
             </div>
