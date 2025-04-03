@@ -1,5 +1,4 @@
-<?php function wysiwyg_editor($placeholder="", $slim=false) { ?>
-
+<?php function wysiwyg_editor($placeholder="", $slim=false, $form_name=null) { ?>
     <div 
         x-data="{ slim: <?= json_encode($slim) ?> }"
         class="
@@ -16,8 +15,13 @@
             class="bx bx-dots-vertical-rounded text-xl"
         ></a>
 
+
         <textarea
-            id="editor"
+
+
+            id="<?= $form_name ?>_editor"
+            x-ref="<?= $form_name ?>_editor"
+            name="content"
             class="
                 grow
                 <?php if ($slim): ?>
@@ -28,16 +32,13 @@
                 text-sm
                 bg-transparent
                 without-ring resize-none
+                scrollbar-thin
             "
 
             <?php if (!$slim): ?>
                 :class="{ 'h-48': !$store.ui.is_mobile }"
             <?php endif; ?>
 
-            x-data="text_field"
-
-            @focus="focus"
-            @blur="blur"
             @input="
                 max_height = $store.ui.is_mobile ? 100 : 200;
                 $el.style.height = ($el.scrollHeight < max_height ? $el.scrollHeight : max_height) + 'px';
@@ -45,8 +46,19 @@
             placeholder="<?= $placeholder ?>"
 
             <?php if ($slim): ?>
-                @keydown.enter.shift="console.log('shift+enter');";
-                @keydown.enter.prevent="console.log('enter');";
+                @keydown.enter="
+                    if ($event.shiftKey) {
+                        console.log('shift+enter');
+                        $el.classList.remove('h-6');
+                        $el.classList.add('h-24');
+                    } else {
+                        console.log('enter');
+                        $event.preventDefault();
+                        $el.classList.remove('h-24');
+                        $el.classList.add('h-6');                        
+                        $refs.<?= $form_name ?>_send_message.click();
+                    }
+                "
             <?php endif; ?>
         ></textarea>
 
@@ -64,12 +76,19 @@
                 class="bx bx-paperclip text-2xl pr-2"
             >
             </a>
-            <button 
+            <button
+                x-ref="<?= $form_name ?>_send_message"
                 class="
                     bg-gradient-to-b from-blue-800 to-blue-900
                     hover:from-blue-700 hover:to-blue-800
                     text-sm text-white font-bold flex-nowrap whitespace-nowrap
                     rounded-full w-8 h-8
+                "
+                @click="
+                    if ($refs.<?= $form_name ?>_editor.value == '')
+                        $event.preventDefault();
+                    else
+                        $nextTick(() => { $refs.<?= $form_name ?>.reset() });
                 "
             >
                 <i class='bx bxs-send' ></i>
@@ -145,7 +164,8 @@
                 >
                 </a>
 
-                <button 
+                <button
+                    x-ref="<?= $form_name ?>_send_message"
                     class="
                         bg-gradient-to-b from-blue-800 to-blue-900
                         hover:from-blue-700 hover:to-blue-800
@@ -158,6 +178,4 @@
             </div>
         <?php endif; ?>
     </div>
-
-
 <?php }

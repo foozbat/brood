@@ -24,11 +24,7 @@ class Thread extends Fzb\Model
             $temp_url_id = preg_replace('/[^a-z0-9\-]/', '', $temp_url_id);
             $temp_url_id = trim($temp_url_id, '-');
 
-            // change to something more sane
-            $url_id_matches = Fzb\Database::get_instance()->selectrow_array(
-                "SELECT COUNT(*) FROM ".$this::__table__." WHERE url_id LIKE ?", 
-                "$temp_url_id%"
-            )[0]; 
+            $url_id_matches = Thread::get_count_by(url_id: $temp_url_id);
 
             var_dump($url_id_matches);
 
@@ -50,9 +46,11 @@ class Thread extends Fzb\Model
             return null;
         }
 
-        $params['thread_id'] = $thread->id;
-
-        $thread->messages = Message::get_by(...$params);
+        $thread->messages = Message::get_by(
+            ...$params,
+            thread_id: $thread->id,
+            _get_user_info: true
+        );
 
         return $thread;
     } 

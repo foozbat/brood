@@ -121,6 +121,7 @@ function thread_post($message) { ?>
     </div><?php
 }
 
+$title = $thread->title;
 $content = function() use ($thread, $messages, $auth) { ?>
     <div 
         class="p-2 h-full flex flex-col rounded-md"

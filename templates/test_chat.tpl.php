@@ -287,9 +287,14 @@ $content = function() use ($title, $description, $chats) { ?>
                 border-l-4 border-zinc-400 dark:border-zinc-600
                 p-2
             "
-            x-data="editor"
         >
-            <?php wysiwyg_editor(placeholder: "Message #chat", slim: true) ?>
+            <form
+                x-ref="chat_box"
+                hx-post="/test_chat/send"
+                hx-swap="none"
+            >
+                <?php wysiwyg_editor(placeholder: "Message #chat", slim: true, form_name: "chat_box") ?>
+            </form>
         </div>
 
    </div><?php
