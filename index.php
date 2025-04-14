@@ -8,7 +8,7 @@
 
 namespace Brood;
 
-use Fzb\Auth, Fzb\Database, Fzb\Router, Fzb\Htmx;
+use Fzb\Auth, Fzb\Database, Fzb\Router, Fzb\Htmx, Fzb\Benchmark;
 
 if (!preg_match('/^8\.1/i', phpversion())) {
 	die("brood requires PHP version 8.1 or newer.");

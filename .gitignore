@@ -1,5 +1,6 @@
 *.ini
 vendor/
+orm_cache/*.php
 composer.lock
 .phpunit*
 phpunit
