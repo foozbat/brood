@@ -15,7 +15,10 @@ class Forum extends Channel
             return null;
         }
     
-        $forum->threads = Thread::get_by(channel_id: $forum->id);
+        $forum->threads = Thread::get_by(
+            channel_id: $forum->id,
+            _order_by: [ "created_at" => "DESC" ]
+        );
 
         return $forum;
     }

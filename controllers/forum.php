@@ -28,7 +28,9 @@ $router->get('/{url_id}', function () use ($renderer) {
 
     $threads = Thread::get_by(channel_id: $channel->id);*/
 
-    $forum = Forum::get_by(url_id: $url_id);
+    $forum = Forum::get_by(
+        url_id: $url_id,
+    );
 
     if (!$forum) {
         Common::flash_message('Forum not found.', 'failure');
