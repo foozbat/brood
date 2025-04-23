@@ -17,9 +17,9 @@ class Message extends Fzb\Model
 
     public static function get_by(mixed ...$params): mixed
     {
-        if ($params['_get_user_info']) {
-            $params['_left_join'] = [User::class, 'user_id'];
-            unset($params['_get_user_info']);
+        if ($params['_user_data']) {
+            $params['_left_join'] = [User::class => ['user_id', 'id', 'user']];
+            unset($params['_user_data']);
         }
         
         return parent::get_by(...$params);

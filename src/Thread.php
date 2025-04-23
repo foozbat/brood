@@ -47,10 +47,11 @@ class Thread extends Fzb\Model
         }
 
         $thread->messages = Message::get_by(
-            ...$params,
             thread_id: $thread->id,
-            _get_user_info: true
+            _user_data: true
         );
+
+        //var_dump($thread);
 
         return $thread;
     } 

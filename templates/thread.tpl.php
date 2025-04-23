@@ -69,7 +69,7 @@ function thread_post($message) { ?>
                         href="#"
                         class="text-blue-500 hover:text-blue-400 hover:underline font-bold"
                     >
-                        <?= $message->user_id ?>
+                        <?= $message->user->username ?>
                     </a>
                 </p>
                 <p class="text-sm">
