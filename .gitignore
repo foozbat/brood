@@ -5,3 +5,4 @@ composer.lock
 .phpunit*
 phpunit
 tailwindcss
+controllers/test*.php
