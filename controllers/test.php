@@ -2,7 +2,7 @@
 
 namespace Brood;
 
-use Fzb\TOTP;
+use Fzb\Database2;
 
 /*$sql = "
     SELECT ".Thread::get_sql_fields().", COUNT(messages.id) as total_messages2
@@ -28,7 +28,7 @@ foreach ($threads as $thread) {
 
 //var_dump($threads);
 
-echo "THREAD";
+/*echo "THREAD";
 
 $rslt = Thread::get_by(
     channel_id: 1,
@@ -49,3 +49,15 @@ var_dump($rslt);
 
 //$totp = new TOTP('JBSWY3DPEHPK3PXP');
 //echo 'Current TOTP uode: ' . $totp->get_code();
+
+*/
+
+$test_db = new Database2(
+    username: 'brood',
+    password: 'password',
+    driver: 'mysql',
+    host: 'localhost',
+    database: 'brood'
+);
+
+$sth = $db->
