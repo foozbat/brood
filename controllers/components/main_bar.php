@@ -1,6 +1,6 @@
 <?php
 
-namespace Megaboard;
+namespace Brood;
 
 use Fzb\Input, Fzb\Renderer;
 
