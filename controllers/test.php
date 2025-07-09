@@ -3,6 +3,7 @@
 namespace Brood;
 
 use Fzb\Database2;
+use PDO;
 
 /*$sql = "
     SELECT ".Thread::get_sql_fields().", COUNT(messages.id) as total_messages2
@@ -52,6 +53,7 @@ var_dump($rslt);
 
 */
 
+/*
 $test_db = new Database2(
     username: 'brood',
     password: 'password',
@@ -60,4 +62,27 @@ $test_db = new Database2(
     database: 'brood'
 );
 
-$sth = $db->
+$instance = Database2::get_instance();
+
+$sth = $instance->prepare("SELECT * FROM threads");
+$sth->execute();
+$rslt = $sth->fetch(Database2::FETCH_NUM);
+
+var_dump($rslt);
+
+
+$options = [
+    PDO::ATTR_EMULATE_PREPARES   => false, // turn off emulation mode for "real" prepared statements
+    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION, //turn on errors in the form of exceptions
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, //make the default fetch be an associative array
+];
+
+$db = new \Fzb\Database(
+    username: 'brood',
+    password: 'password',
+    driver: 'mysql',
+    host: 'localhost',
+    database: 'brood'
+);
+*/
+//$db = new PDO()
