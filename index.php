@@ -10,7 +10,7 @@ namespace Brood;
 
 use Fzb\Auth, Fzb\Database, Fzb\Router, Fzb\Htmx, Fzb\Benchmark;
 
-if (!preg_match('/^8\.1/i', phpversion())) {
+if (!preg_match('/^8\.*/i', phpversion())) {
 	die("brood requires PHP version 8.1 or newer.");
 }
 
@@ -38,7 +38,7 @@ $db = new Database(
     username: 'brood',
     password: 'password',
     driver: 'mysql',
-    host: 'localhost',
+    host: '127.0.0.1',
     database: 'brood'
 );
 

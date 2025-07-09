@@ -1,5 +1,7 @@
 <?php
 
+namespace Brood;
+
 use Fzb\Input, Fzb\Renderer;
 
 $router->get("/components/viewer/", function () {
