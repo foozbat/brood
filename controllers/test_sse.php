@@ -1,4 +1,5 @@
 <?php
+ini_set('max_execution_time', 0);
 
 //require_once("../vendor/autoload.php");
 
@@ -10,9 +11,9 @@ $pub->connect('127.0.0.1');
 $sub->connect('127.0.0.1');
 $sub->setOption(Redis::OPT_READ_TIMEOUT, 10);
 
-$session_id = $auth->user_session->id;
+$session_id = $auth->user_session->id ?? 'n/a';
 $pid = getmypid();
-$id_string = sprintf("IP: %s (%s), SID: %s", $_SERVER['REMOTE_ADDR'], $_SERVER['HTTP_X_FORWARDED_FOR'], $session_id);
+$id_string = sprintf("IP: %s (%s), SID: %s", $_SERVER['REMOTE_ADDR'], $_SERVER['HTTP_X_FORWARDED_FOR'] ?? 'n/a', $session_id);
 
 $pub->publish('chat', "client connected: $id_string, PID: $pid");
 
