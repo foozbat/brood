@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - 80:80
+      - 443:443
+      - 443:443/udp
+    depends_on:
+      - redis
+    networks:
+      - app-network
+    environment:
+      DB_USER: brood # CHANGE TO SECRET
+      DB_PASSWORD: password # CHANGE TO SECRET
+
+  redis:
+    image: redis:alpine3.22
+    networks:
+      - app-network
+
+  mysql:
+    image: mysql:8.0.43-debian
+    environment:
+      MYSQL_DATABASE: brood 
+      MYSQL_USER: brood # CHANGE TO SECRET
+      MYSQL_PASSWORD: password # CHANGE TO SECRET
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mysql-data:

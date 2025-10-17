@@ -38,6 +38,6 @@ $router->get(
 
 $router->post("/send", function () {
     $pub = new Redis();
-    $pub->connect('127.0.0.1');
+    $pub->connect($_ENV['REDIS_HOST'], $_ENV['REDIS_PORT']);
     $pub->publish('chat', 'chat-message');
 });

@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev 
+    ports:
+      - 80:80
+      - 443:443
+      - 443:443/udp
+    depends_on:
+      - redis
+    networks:
+      - app-network
+    environment:
+      DB_HOST: mysql
+      DB_USER: brood
+      DB_PASSWORD: password
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    # mount . to /app/public
+    volumes:
+      - .:/app/public
+
+  redis:
+    image: redis:alpine3.22
+    ports:
+      - 6379:6379
+    networks:
+      - app-network
+
+  mysql:
+    image: mysql:8.0.43-debian
+    environment:
+      MYSQL_DATABASE: brood 
+      MYSQL_USER: brood # CHANGE TO SECRET
+      MYSQL_PASSWORD: password # CHANGE TO SECRET
+    ports:
+      - 3306:3306
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mysql-data:

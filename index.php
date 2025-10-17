@@ -35,10 +35,10 @@ set_exception_handler(function ($e) {
 
 // change to more secure
 $db = new Database(
-    username: 'brood',
-    password: 'password',
+    host: $_ENV['DB_HOST'],
+    username: $_ENV['DB_USER'],
+    password: $_ENV['DB_PASSWORD'],
     driver: 'mysql',
-    host: '127.0.0.1',
     database: 'brood'
 );
 

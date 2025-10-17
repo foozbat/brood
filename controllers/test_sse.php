@@ -1,15 +1,12 @@
 <?php
 ini_set('max_execution_time', 0);
+ini_set('error_log', __DIR__ . '/php_errors.log');
 
 //require_once("../vendor/autoload.php");
 
-use Fzb;
-
 $pub = new Redis();
 $sub = new Redis();
-$pub->connect('127.0.0.1');
-$sub->connect('127.0.0.1');
-$sub->setOption(Redis::OPT_READ_TIMEOUT, 10);
+$pub->connect('redis', 6379);
 
 $session_id = $auth->user_session->id ?? 'n/a';
 $pid = getmypid();
@@ -20,7 +17,11 @@ $pub->publish('chat', "client connected: $id_string, PID: $pid");
 $sse = new Fzb\SSE(
     event_stream: function ($sse) use ($pub, $sub, $id_string, $pid) {
         try {
-            $sub->subscribe(['chat'], function ($sub, $channel, $message) use ($pub, $sse, $id_string, $pid) {
+            // connect/reconnect subscriber
+            $sub->connect('redis', 6379, 0);
+            $sub->setOption(Redis::OPT_READ_TIMEOUT, 10);
+
+            $return = $sub->subscribe(['chat'], function ($sub, $channel, $message) use ($pub, $sse, $id_string, $pid) {
                 // check for user hitting the refresh button, kill hanging event stream
                 if (str_contains($message, "client connected: $id_string")) {
                     //$pub->publish('chat', "PID: $pid saw reconnect.  Disconnecting...");
@@ -31,10 +32,13 @@ $sse = new Fzb\SSE(
                     $sse->message($message, "something");
                 }
             });
+            $sse->message('return', "Return: " . print_r($return, true));
         } catch (RedisException $e) {
             // on sub read timeout, send ping
-            $pub->publish('chat', "ping: $id_string, PID: $pid");
             $sse->message('ping', 'ping');
+        } catch (Exception $e) {
+            $sse->message('error', 'Error occurred: ' . $e->getMessage());
+            exit();
         }
     },
 
