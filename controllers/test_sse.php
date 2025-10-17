@@ -6,7 +6,7 @@ ini_set('error_log', __DIR__ . '/php_errors.log');
 
 $pub = new Redis();
 $sub = new Redis();
-$pub->connect('redis', 6379);
+$pub->connect($_ENV['REDIS_HOST'], $_ENV['REDIS_PORT']);
 
 $session_id = $auth->user_session->id ?? 'n/a';
 $pid = getmypid();
@@ -18,7 +18,7 @@ $sse = new Fzb\SSE(
     event_stream: function ($sse) use ($pub, $sub, $id_string, $pid) {
         try {
             // connect/reconnect subscriber
-            $sub->connect('redis', 6379, 0);
+            $sub->connect($_ENV['REDIS_HOST'], $_ENV['REDIS_PORT']);
             $sub->setOption(Redis::OPT_READ_TIMEOUT, 10);
 
             $return = $sub->subscribe(['chat'], function ($sub, $channel, $message) use ($pub, $sse, $id_string, $pid) {
