@@ -4,6 +4,7 @@
  */
 
 require_once "components/page_footer.tpl.php"; 
+require_once "components/debug_message.tpl.php";
 
 use Fzb\Htmx;
 
@@ -172,6 +173,8 @@ use Fzb\Htmx;
     </main>
 
     </div>
+
+    <?php debug_message() ?>
 
     <div id="modal_container">
         <div 

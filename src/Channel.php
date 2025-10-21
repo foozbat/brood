@@ -7,6 +7,7 @@ class Channel extends Fzb\Model
 {
     const __table__ = 'channels';
     public string $title;
-    public ?string $description;
     public int $type;
+    public string $url_id;
+    public ?string $description;
 }

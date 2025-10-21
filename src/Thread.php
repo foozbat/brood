@@ -40,7 +40,7 @@ class Thread extends Fzb\Model
     public static function get_content(...$params): ?Thread
     {
         $thread = parent::get_by(url_id: $params['url_id']);
-        unset($params['url_id']);
+        //unset($params['url_id']);
 
         if (!$thread) {
             return null;

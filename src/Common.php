@@ -15,6 +15,15 @@ class Common {
         ]);
     }
 
+    static function debug_message(string $message)
+    {
+        Htmx::trigger([
+            'debug-message' => [
+                'message' => $message
+            ]
+        ]);
+    }
+
     static function no_content()
     {
         Htmx::no_content();

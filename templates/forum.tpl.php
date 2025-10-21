@@ -91,33 +91,7 @@ $content = function () use ($forum, $auth) { ?>
     >
         <!-- Forum Header Bar -->
         <div class="flex flex-col">
-            <div class="flex mb-2">
-                <div class="flex-grow">
-                    <p class="text-lg lg:text-xl font-bold">
-                        <i class="bx bx-conversation"></i>
-                        <?= $forum->title ?>
-                    </p>
-                </div>
-                <div class="flex flex-grow justify-end space-x-4 pr-2">
-                    <button 
-                        class="
-                            bg-gradient-to-b from-blue-800 hover:from-blue-700 to-blue-900 hover:to-blue-800
-                            
-                            text-sm text-white font-bold 
-                            py-1 px-4 rounded-full
-                        "
-                        <?php if ($auth->is_authenticated): ?>
-                            @click="$dispatch('show-thread-new-modal')"
-                        <?php else: ?>
-                            @click="$dispatch('show-login-modal')"
-                        <?php endif; ?>
-                    >
-                        <i class='bx bxs-pencil' ></i>
-                        New Thread
-                    </button>
-                    
-                </div>
-            </div>
+
 
             <!-- description block -->
             <div class="
@@ -128,6 +102,34 @@ $content = function () use ($forum, $auth) { ?>
                 rounded-md
                 border-l-4 border-zinc-400 dark:border-zinc-600
             ">
+                <div class="flex mb-2">
+                    <div class="flex-grow">
+                        <p class="text-lg lg:text-xl font-bold">
+                            <i class="bx bx-conversation"></i>
+                            <?= $forum->title ?>
+                        </p>
+                    </div>
+                    <div class="flex flex-grow justify-end space-x-4 pr-2">
+                        <button 
+                            class="
+                                bg-gradient-to-b from-blue-800 hover:from-blue-700 to-blue-900 hover:to-blue-800
+                                
+                                text-sm text-white font-bold 
+                                py-1 px-4 rounded-full
+                            "
+                            <?php if ($auth->is_authenticated): ?>
+                                @click="$dispatch('show-thread-new-modal')"
+                            <?php else: ?>
+                                @click="$dispatch('show-login-modal')"
+                            <?php endif; ?>
+                        >
+                            <i class='bx bxs-pencil' ></i>
+                            New Thread
+                        </button>
+                        
+                    </div>
+            </div>
+
                 <div class="flex flex-row">
                     <div class="flex-grow p-1">
                         <?php breadcrumb() ?>

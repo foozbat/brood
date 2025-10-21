@@ -8,7 +8,7 @@
 
 namespace Brood;
 
-use Fzb\Auth, Fzb\Database, Fzb\Router, Fzb\Htmx, Fzb\Benchmark;
+use Fzb\Auth, Fzb\Database, Fzb\Router, Fzb\Htmx, Fzb\Benchmark, \Redis;
 
 if (!preg_match('/^8\.*/i', phpversion())) {
 	die("brood requires PHP version 8.1 or newer.");
@@ -25,15 +25,21 @@ require_once __DIR__."/init.php";
 require_once __DIR__."/vendor/autoload.php";
 
 set_exception_handler(function ($e) {
-	print("<pre>");
-	print($e);
-	print("</pre>");
+    if (Htmx::is_htmx_request()) {
+	    Common::debug_message($e->getMessage()."\n".$e->getTraceAsString());
+    } else {
+        echo "<h1>Application Error</h1>";
+        echo "<pre>".$e->getMessage()."\n\n";
+        echo $e->getTraceAsString();
+        echo "</pre>";
+    }
+
 	exit;
 });
 
 //ob_start("ob_gzhandler");
 
-// change to more secure
+// create database connection
 $db = new Database(
     host: $_ENV['DB_HOST'],
     username: $_ENV['DB_USER'],
@@ -42,8 +48,12 @@ $db = new Database(
     database: 'brood'
 );
 
-$auth = new Auth(User::class);
+// create Redis connection
+$redis = new Redis();
+$redis->connect($_ENV['REDIS_HOST'], $_ENV['REDIS_PORT']);
 
+// authenticate user
+$auth = new Auth(User::class);
 $auth->on_failure(function (string $next_url) {
     if (Htmx::is_htmx_request()) {
         Htmx::trigger([
@@ -56,7 +66,7 @@ $auth->on_failure(function (string $next_url) {
         header("Location: /");
     }
 
-    exit();
+    exit;
 });
 
 // router using controllers

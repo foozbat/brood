@@ -21,7 +21,27 @@ $content = function() use ($title, $description, $chats) { ?>
             enable_old_messages_getter: false
         }"
     >
-        <!-- header block -->
+
+
+        <!-- description block -->
+        <div 
+            x-show="!$store.ui.mobile_keyboard_active"
+            class="
+                text-zinc-950 dark:text-zinc-300
+                pb-2
+            "
+
+        >
+            <div class="
+                    p-3
+                    text-sm
+                    bg-zinc-100 dark:bg-zinc-950 
+                    text-zinc-950 dark:text-zinc-300
+                    rounded-md
+                    border-l-4 border-zinc-400 dark:border-zinc-600
+                    space-y-2
+            ">
+                        <!-- header block -->
         <div 
             x-show="!$store.ui.mobile_keyboard_active"
             class="
@@ -64,26 +84,6 @@ $content = function() use ($title, $description, $chats) { ?>
                 </button>
             </div>
         </div>
-
-        <!-- description block -->
-        <div 
-            x-show="!$store.ui.mobile_keyboard_active"
-            class="
-                text-zinc-950 dark:text-zinc-300
-                pb-2
-            "
-
-        >
-            <div class="
-                    p-3
-                    text-sm
-                    bg-zinc-100 dark:bg-zinc-950 
-                    text-zinc-950 dark:text-zinc-300
-                    rounded-md
-                    border-l-4 border-zinc-400 dark:border-zinc-600
-                    space-y-2
-            ">
-                
                        
                 <div
                     x-show="show_description_block"
