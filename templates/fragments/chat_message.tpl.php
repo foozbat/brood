@@ -8,7 +8,7 @@ require_once "components/user_icon.tpl.php";
 ?>
 <!--
 <div
-    hx-get="/test_chat/messages"
+    hx-get="/chat/asdfasdf/messages"
     hx-trigger="intersect once"
     hx-target="#chat_messages"
     hx-swap="afterbegin"

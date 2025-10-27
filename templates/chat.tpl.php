@@ -9,7 +9,7 @@ require_once 'components/wysiwyg_editor.tpl.php';
 
 Fzb\extend("layouts/app_main.tpl.php");
 
-$content = function() use ($title, $description, $chats) { ?>
+$content = function() use ($title, $description, $chats, $url_id) { ?>
     <div
         id="chat_room"
         class="
@@ -128,7 +128,7 @@ $content = function() use ($title, $description, $chats) { ?>
                 <!-- scroll up old message getter -->
                 <div
                     x-show="enable_old_messages_getter"
-                    hx-get="/test_chat/messages"
+                    hx-get="/chat/<?= $url_id ?>/messages"
                     hx-trigger="intersect"
                     hx-target="#old_chat_messages"
                     hx-swap="afterbegin"
@@ -146,7 +146,7 @@ $content = function() use ($title, $description, $chats) { ?>
                 <div 
                     id="chat_messages"
                     class="space-y-3"
-                    hx-get="/test_chat/messages"
+                    hx-get="/chat/<?= $url_id ?>/messages"
                     hx-trigger="load"
                     @htmx:after-swap="
                         $dispatch('chat-scroll-instant');
@@ -159,7 +159,7 @@ $content = function() use ($title, $description, $chats) { ?>
                     id="new_chat_messages"
                     class="pt-3 space-y-3"
                     x-ref="new_chat_messages"
-                    hx-get="test_chat/messages/1"
+                    hx-get="/chat/<?= $url_id ?>/messages/1"
                     hx-trigger="sse:chat-message"
                     hx-swap="beforeend"
                     x-on:htmx:after-swap="
@@ -263,7 +263,7 @@ $content = function() use ($title, $description, $chats) { ?>
                     w-full
                 "
 
-                hx-post="/test_chat/send"
+                hx-post="/chat/<?= $url_id ?>/send"
                 hx-swap="none"
                 hx-on::after-request="this.value=''"
             />
@@ -290,7 +290,7 @@ $content = function() use ($title, $description, $chats) { ?>
         >
             <form
                 x-ref="chat_box"
-                hx-post="/test_chat/send"
+                hx-post="/chat/<?= $url_id ?>/send"
                 hx-swap="none"
             >
                 <?php wysiwyg_editor(placeholder: "Message #chat", slim: true, form_name: "chat_box") ?>

@@ -13,22 +13,22 @@ $router->get("/components/main_bar", function () use ($renderer) {
             ["Community Rules", "/rules", "pin", 0]
         ],
         "General Discussion" => [
-            ["General Chat", "/test_chat", "chat", 0],
+            ["General Chat", "/chat/general-chat", "chat", 0],
             ["Programming", "/test_forum", "forum", 323],
             ["Login Required", "/login_required", "forum", 123],
             ["Web Development", "/test_forum", "forum", "2.1K"],
             ["API Design Super Long API Name That is so Long", "/test_forum", "forum", 21]
         ],
         "More Groups" => [
-            ["Interesting Chat", "/test_chat", "chat", 0],
-            ["Uniteresting Chat", "/test_chat", "chat", 0],
-            ["Meme Links", "/test_links", "links", 0],
-            ["Streaming Cat Videos", "/test_video", "video", "LIVE"],
+            ["Interesting Chat", "/chat/interesting-chat", "chat", 0],
+            ["Uniteresting Chat", "/chat/uniteresting-chat", "chat", 0],
+            ["Meme Links", "/chat/meme-links", "links", 0],
+            ["Streaming Cat Videos", "/chat/streaming-cat-videos", "video", "LIVE"],
         ],
         "More More Groups" => [
             ["More Interesting Links", "/test_links", "links", 0],
             ["More Uniteresting Links", "/test_links", "links", 0],
-            ["More Meme Contest", "/test_chat", "chat", 0],
+            ["More Meme Contest", "/chat/more-meme-contest", "chat", 0],
             ["More Streaming Cat Videos", "/test_video", "video", "LIVE"],
         ]
     ]);

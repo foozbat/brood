@@ -1,27 +1,20 @@
 <?php
 ini_set('max_execution_time', 0);
-ini_set('error_log', __DIR__ . '/php_errors.log');
-
-//require_once("../vendor/autoload.php");
-
-$pub = new Redis();
-$sub = new Redis();
-$pub->connect($_ENV['REDIS_HOST'], $_ENV['REDIS_PORT']);
 
 $session_id = $auth->user_session->id ?? 'n/a';
 $pid = getmypid();
 $id_string = sprintf("IP: %s (%s), SID: %s", $_SERVER['REMOTE_ADDR'], $_SERVER['HTTP_X_FORWARDED_FOR'] ?? 'n/a', $session_id);
 
-$pub->publish('chat', "client connected: $id_string, PID: $pid");
+$redis->publish('chat', "client connected: $id_string, PID: $pid");
 
 $sse = new Fzb\SSE(
-    event_stream: function ($sse) use ($pub, $sub, $id_string, $pid) {
+    event_stream: function ($sse) use ($redis, $id_string, $pid) {
         try {
             // connect/reconnect subscriber
-            $sub->connect($_ENV['REDIS_HOST'], $_ENV['REDIS_PORT']);
-            $sub->setOption(Redis::OPT_READ_TIMEOUT, 10);
+            $redis->connect($_ENV['REDIS_HOST'], $_ENV['REDIS_PORT']);
+            $redis->setOption(Redis::OPT_READ_TIMEOUT, 10);
 
-            $return = $sub->subscribe(['chat'], function ($sub, $channel, $message) use ($pub, $sse, $id_string, $pid) {
+            $return = $redis->subscribe(['chat'], function ($redis, $channel, $message) use ($sse, $id_string, $pid) {
                 // check for user hitting the refresh button, kill hanging event stream
                 if (str_contains($message, "client connected: $id_string")) {
                     //$pub->publish('chat', "PID: $pid saw reconnect.  Disconnecting...");
@@ -42,10 +35,9 @@ $sse = new Fzb\SSE(
         }
     },
 
-    shutdown: function () use ($pub, $sub, $id_string, $pid) {
-        $pub->publish('chat', "client disconnected: $id_string, PID: $pid");
-        $pub->close();
-        $sub->close();
+    shutdown: function () use ($redis, $id_string, $pid) {
+        $redis->publish('chat', "client disconnected: $id_string, PID: $pid");
+        $redis->close();
         die();
     }
 );
