@@ -38,10 +38,17 @@ $router->get(
 $router->post("/{url_id}/send", function () use ($redis, $auth) {
     $auth->login_required();
     
-    list($url_id, $message, $validation) = Input::from_request(
+    list($url_id, $content, $validation) = Input::from_request(
         url_id: 'path required',
-        message: 'post required'
+        content: 'post required'
     );
+
+    $message = new Message(
+        channel_id: $channel_id,
+        user_id: $auth->user->id,
+        content: $content
+    );
+    $message->save();
 
     $redis->publish('chat', 'chat-message');
 });
@@ -106,9 +113,12 @@ $router->get("/{url_id}", function () use ($renderer) {
         url_id: 'path required'
     );
 
-    $renderer->set("title", "General Chatroom");
-    $renderer->set("description", "This is a description block for the chat room. It lets the users know what the topic of the chat room is, and perhaps rules if they so choose.");
-        
-    $renderer->set("url_id", $url_id);
+    if (!Channel::exists($url_id)) {
+        $renderer->set("error", "Channel Not Found");
+    } else {
+        $channel = Channel::get_by(url_id: $url_id);
+        $renderer->set('channel', $channel);
+    }
+    
     $renderer->show("chat.tpl.php");
 });

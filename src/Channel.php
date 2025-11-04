@@ -10,4 +10,9 @@ class Channel extends Fzb\Model
     public int $type;
     public string $url_id;
     public ?string $description;
+
+    public static function exists(string $url_id): bool
+    {
+        return Channel::get_count_by(url_id: $url_id) != 0;
+    }
 }

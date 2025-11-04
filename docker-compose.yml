@@ -16,6 +16,7 @@ services:
       DB_PASSWORD: password
       REDIS_HOST: redis
       REDIS_PORT: 6379
+      FRANKENPHP_CONFIG: "worker ./public/worker.php"
     # mount . to /app/public
     volumes:
       - .:/app/public
