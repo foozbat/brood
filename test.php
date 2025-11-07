@@ -56,4 +56,6 @@ $messages = new Message2();
 
 Message2::migrate();
 
+echo "Done.\n";
+
 ?>
