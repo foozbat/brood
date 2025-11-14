@@ -5,7 +5,7 @@ namespace Brood;
 
 require_once __DIR__."/vendor/autoload.php";
 
-//define('ORM_CACHE_DIR', __DIR__ . '/orm_cache');
+define('ORM_CACHE_DIR', __DIR__ . '/orm_cache');
 
 use Fzb\Database;
 use Fzb\Model\Base;
@@ -52,10 +52,12 @@ echo "Testing...\n";
 
 // get all attributes with reflection
 
-$messages = new Message2();
-
 Message2::migrate();
 
-echo "Done.\n";
+$message = new Message2(id: 2, user_id: 1, channel_id: 1, thread_id: 1, content: "Hello, world!", total_views: 10);
 
-?>
+var_dump($message);
+
+echo ":" . $message->save();
+
+echo "Done.\n";
