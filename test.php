@@ -25,11 +25,15 @@ class Message2 extends Base
 	public int $user_id;
 
 	#[Column(type: Type::INT, unsigned: true, null: false)]
-	#[ForeignKey(references: 'channels', reference_column: 'id')]
+	#[Index]
+	public int $another_user_id;
+
+	#[Column(type: Type::INT, unsigned: true, null: false)]
+	#[ForeignKey(references: 'users', reference_column: 'id')]
 	public int $channel_id;
 
 	#[Column(type: Type::INT, unsigned: true)]
-	#[ForeignKey(references: 'threads', reference_column: 'id', on_delete: ReferentialAction::CASCADE)]
+	#[ForeignKey(references: 'threads', reference_column: 'id')]
 	public int $thread_id;
 
 	#[Column(type: Type::TEXT)]
@@ -38,6 +42,26 @@ class Message2 extends Base
 	#[Column(type: Type::INT, unsigned: true, null: false)]
 	public int $total_views = 0;
 
+}
+
+class Controller
+{
+	// Make this class static-only
+	private function __construct() { }
+
+	public function test_attrs()
+	{
+		return "test_attrs";
+	}
+}
+
+class TestController extends Controller
+{
+    #[Route]
+    public static function test()
+    {
+        // Example method content
+    }
 }
 
 $db = new Database(
@@ -54,10 +78,10 @@ echo "Testing...\n";
 
 Message2::migrate();
 
-$message = new Message2(id: 2, user_id: 1, channel_id: 1, thread_id: 1, content: "Hello, world!", total_views: 10);
+//$message = new Message2(user_id: 1, channel_id: 1, thread_id: 1, content: "Hello, world!", total_views: 10);
 
-var_dump($message);
+//var_dump($message);
 
-echo ":" . $message->save();
+//echo ":" . $message->save();
 
 echo "Done.\n";
