@@ -1,11 +1,19 @@
 <?php
 
-use Fzb\Input, Fzb\Renderer;
+namespace Brood;
+
+use Fzb\Input;
+use Fzb\Renderer;
 
 $renderer = new Renderer();
 
 $router->use_controller_prefix();
 
+/**
+ * Gets chat messages.
+ * Implemented using dummy data
+ * @todo pull messages from DB
+ */
 $router->get(
     "/{url_id}/messages", 
     "/{url_id}/messages/{num}",
@@ -43,12 +51,14 @@ $router->post("/{url_id}/send", function () use ($redis, $auth) {
         content: 'post required'
     );
 
-    $message = new Message(
+    /*$message = new Message(
         channel_id: $channel_id,
         user_id: $auth->user->id,
         content: $content
     );
     $message->save();
+
+    echo "test response";*/
 
     $redis->publish('chat', 'chat-message');
 });

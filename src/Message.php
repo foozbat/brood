@@ -1,16 +1,27 @@
 <?php
 namespace Brood;
 
-use Fzb;
+use Fzb\Model\Base;
+use Fzb\Model\Table;
+use Fzb\Model\Column;
+use Fzb\Model\Type;
 
-class Message extends Fzb\Model
+#[Table('messages')]
+class Message extends Base
 {
-    const __table__ = 'messages';
-    
+    #[Column(type: Type::INT, unsigned: true)]
     public int $user_id;
+
+    #[Column(type: Type::INT, unsigned: true)]
     public int $channel_id;
+
+    #[Column(type: Type::INT, unsigned: true)]
     public ?int $thread_id;
+
+    #[Column(type: Type::TEXT)]
     public string $content;
+
+    #[Column(type: Type::INT, unsigned: true, default: 0)]
     public int $total_views;
 
     public ?User $user;

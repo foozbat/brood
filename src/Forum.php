@@ -1,8 +1,6 @@
 <?php
 namespace Brood;
 
-use Fzb;
-
 class Forum extends Channel
 {
     public Thread|array $threads;

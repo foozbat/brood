@@ -1,17 +1,30 @@
 <?php
 namespace Brood;
 
-use Fzb;
+use Fzb\Model\Base;
+use Fzb\Model\Table;
+use Fzb\Model\Column;
+use Fzb\Model\Type;
 
-class Thread extends Fzb\Model
+#[Table('threads')]
+class Thread extends Base
 {
-    const __table__ = 'threads';
-
+    #[Column(type: Type::INT, unsigned: true)]
     public int $user_id;
+
+    #[Column(type: Type::INT, unsigned: true)]
     public int $channel_id;
+
+    #[Column(type: Type::VARCHAR, length: 255)]
     public string $title;
+
+    #[Column(type: Type::VARCHAR, length: 255)]
     public string $url_id;
+
+    #[Column(type: Type::INT, unsigned: true, default: 0)]
     public int $total_messages;
+
+    #[Column(type: Type::INT, unsigned: true, default: 0)]
     public int $total_views;
 
     public Message|array|null $messages;
