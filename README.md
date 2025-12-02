@@ -17,6 +17,9 @@
 
 ## Overview
 
+> **⚠️ Experimental Project**  
+> This project is in active development and highly experimental. Expect broken features, incomplete functionality, and frequent breaking changes. Not recommended for production use.
+
 Brood is a modern community management system built with a focus on performance and developer experience. It leverages the power of server-side PHP with htmx for dynamic interactions, Alpine.js for reactive components, and TailwindCSS for beautiful, responsive design.
 
 ## Features
