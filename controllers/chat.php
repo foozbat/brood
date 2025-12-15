@@ -4,6 +4,8 @@ namespace Brood;
 
 use Fzb\Input;
 use Fzb\Renderer;
+use Fzb\Htmx;
+use Fzb\JWT; // remove
 
 $renderer = new Renderer();
 
@@ -23,7 +25,7 @@ $router->get(
             num: 'path validate:int default:25'
         );
 
-        $lorem = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Posuere lorem ipsum dolor sit amet consectetur adipiscing elit. Enim facilisis gravida neque convallis a cras semper auctor neque. Vel eros donec ac odio tempor orci. Donec pretium vulputate sapien nec sagittis aliquam malesuada. Vitae suscipit tellus mauris a diam. Vitae semper quis lectus nulla at volutpat diam. Scelerisque varius morbi enim nunc faucibus a pellentesque. At urna condimentum mattis pellentesque id nibh tortor id aliquet. Suspendisse faucibus interdum posuere lorem ipsum dolor sit. In hac habitasse platea dictumst quisque sagittis purus sit amet. Porttitor lacus luctus accumsan tortor posuere ac ut consequat. Maecenas accumsan lacus vel facilisis volutpat est velit. Pharetra vel turpis nunc eget. Auctor augue mauris augue neque gravida. Nunc mattis enim ut tellus. Ipsum a arcu cursus vitae congue mauris rhoncus aenean.";
+        /*$lorem = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Posuere lorem ipsum dolor sit amet consectetur adipiscing elit. Enim facilisis gravida neque convallis a cras semper auctor neque. Vel eros donec ac odio tempor orci. Donec pretium vulputate sapien nec sagittis aliquam malesuada. Vitae suscipit tellus mauris a diam. Vitae semper quis lectus nulla at volutpat diam. Scelerisque varius morbi enim nunc faucibus a pellentesque. At urna condimentum mattis pellentesque id nibh tortor id aliquet. Suspendisse faucibus interdum posuere lorem ipsum dolor sit. In hac habitasse platea dictumst quisque sagittis purus sit amet. Porttitor lacus luctus accumsan tortor posuere ac ut consequat. Maecenas accumsan lacus vel facilisis volutpat est velit. Pharetra vel turpis nunc eget. Auctor augue mauris augue neque gravida. Nunc mattis enim ut tellus. Ipsum a arcu cursus vitae congue mauris rhoncus aenean.";
         $lorems = explode(". ", $lorem);
 
         $chats = [];
@@ -34,16 +36,34 @@ $router->get(
                 'poster' => 'Poster ' . $i, 
                 'content' => join(". ", array_slice($lorems, rand(0,5), rand(1,6)))
             ];
+        }*/
+
+        if (!Htmx::is_htmx_request()) {
+            return;
         }
 
-        $renderer->set("chats", $chats);
+        $channel = Channel::get_by(url_id: $url_id);
+
+        if (!$channel) {
+            Common::flash_message("Channel not found.");
+            Htmx::no_content();
+            return;
+        }
+
+        $messages = Message::get_by(
+            channel_id: $channel->id//,
+            //_order_by: 'created_at ASC',
+            //_limit: $num
+        );
+
+        $renderer->set("messages", $messages);
         $renderer->show("fragments/chat_message.tpl.php");
 });
 
 /**
  * Send a chat message
  */
-$router->post("/{url_id}/send", function () use ($redis, $auth) {
+$router->post("/{url_id}/send", function () use ($auth, $mercure) {
     $auth->login_required();
     
     list($url_id, $content, $validation) = Input::from_request(
@@ -51,23 +71,39 @@ $router->post("/{url_id}/send", function () use ($redis, $auth) {
         content: 'post required'
     );
 
-    /*$message = new Message(
-        channel_id: $channel_id,
+    /*
+
+    echo "test response";*/
+
+    if (!Htmx::is_htmx_request()) {
+        return;
+    }
+
+    $channel = Channel::get_by(url_id: $url_id);
+
+    if (!$channel) {
+        Htmx::flash_message("Channel not found.");
+        Htmx::no_content();
+        return;
+    }
+
+    // more validation
+
+    $message = new Message(
+        channel_id: $channel->id,
         user_id: $auth->user->id,
         content: $content
     );
     $message->save();
 
-    echo "test response";*/
-
-    $redis->publish('chat', 'chat-message');
+    $mercure->publish("chat:room", "chat-message", "something");
 });
 
 /**
  * Event stream for chat room
  */
 $router->get("/{url_id}/stream", function () use ($redis, $auth) {
-    ini_set('max_execution_time', 0);
+    //ini_set('max_execution_time', 0);
 
     list($url_id, $validation) = Input::from_request(
         url_id: 'path required'
@@ -129,6 +165,19 @@ $router->get("/{url_id}", function () use ($renderer) {
         $channel = Channel::get_by(url_id: $url_id);
         $renderer->set('channel', $channel);
     }
-    
+
+    // change to cookie
+    $jwt = JWT::encode(
+        payload: [
+            'mercure' => [
+                'subscribe' => ['chat:room'],
+                'exp' => time() + 3600
+            ]
+        ],
+        secret: $_ENV['MERCURE_SUBSCRIBER_JWT_KEY']
+    );
+    $renderer->set("mercure_url", "/.well-known/mercure?topic=chat:room&authorization={$jwt}");
+
+    $renderer->set('url_id', $url_id);
     $renderer->show("chat.tpl.php");
 });

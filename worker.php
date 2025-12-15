@@ -5,10 +5,11 @@
 	written by:   Aaron Bishop
 	description:  This is the main entry point for the application.
 */
-
 namespace Brood;
 
-use Fzb\Auth, Fzb\Database, Fzb\Router, Fzb\Htmx, Fzb\Benchmark, \Redis;
+use Fzb\Auth, Fzb\Database, Fzb\Router, Fzb\Htmx, Fzb\Benchmark, Fzb\JWT, \Redis;
+
+error_log("Worker script starting...");
 
 // Prevent worker script termination when a client connection is interrupted
 ignore_user_abort(true);
@@ -29,8 +30,10 @@ require __DIR__.'/vendor/autoload.php';
 
 // Handler outside the loop for better performance (doing less work)
 $handler = static function () {
+    error_log("Worker handler called for: " . $_SERVER['REQUEST_URI']);
     try {
         // create database connection
+        error_log("Creating database connection...");
         $db = new Database(
             host: $_ENV['DB_HOST'],
             username: $_ENV['DB_USER'],
@@ -40,11 +43,12 @@ $handler = static function () {
         );
 
         // create Redis connection
+        error_log("Creating Redis connection...");
         $redis = new Redis();
         $redis->connect($_ENV['REDIS_HOST'], $_ENV['REDIS_PORT']);
 
         // authenticate user
-        $auth = new Auth(User::class);
+        error_log("Authenticating user...");
         $auth->on_failure(function (string $next_url) {
             if (Htmx::is_htmx_request()) {
                 Htmx::trigger([
@@ -60,10 +64,34 @@ $handler = static function () {
             exit;
         });
 
+        // Create Mercure publisher
+        error_log("Creating Mercure publisher...");
+        $jwt =  JWT::encode(
+            payload: [
+                'mercure' => [
+                    'publish' => ['*'],
+                    'exp' => time() + 3600
+                ]
+                ],
+            secret: $_ENV['MERCURE_PUBLISHER_JWT_KEY']
+        );
+        $mercure = new Mercure('http://mercure', $jwt);
+
+        // testing
+        //setcookie('mercureAuthorization', $jwt, [
+        //    'path' => '/',
+        //    'secure' => false,
+        //    'httponly' => false,
+        //    'samesite' => 'None'
+        //]);
+
         // router using controllers
         $router = new Router();
+        error_log("Getting controller...");
         require_once $router->get_controller();
-        $router->route();        
+        error_log("Routing...");
+        $router->route();
+        error_log("Route completed");
         // end brood boilerplate
     } catch (\Throwable $exception) {
         // `set_exception_handler` is called only when the worker script ends,
@@ -71,6 +99,8 @@ $handler = static function () {
         if (Htmx::is_htmx_request()) {
             Common::debug_message($exception->getMessage()."\n".$exception->getTraceAsString());
         } else {
+            error_log("Application error: " . $exception->getMessage());
+
             echo "<h1>Application Error</h1>";
             echo "<pre>".$exception->getMessage()."\n\n";
             echo $exception->getTraceAsString();
@@ -81,8 +111,10 @@ $handler = static function () {
     }
 };
 
+error_log("Starting worker loop...");
 $maxRequests = (int)($_SERVER['MAX_REQUESTS'] ?? 0);
 for ($nbRequests = 0; !$maxRequests || $nbRequests < $maxRequests; ++$nbRequests) {
+    error_log("Waiting for request #$nbRequests");
     $keepRunning = \frankenphp_handle_request($handler);
 
     // Do something after sending the HTTP response

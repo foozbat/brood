@@ -28,7 +28,7 @@ class Message extends Base
 
     public static function get_by(mixed ...$params): mixed
     {
-        if ($params['_user_data']) {
+        if (isset($params['_user_data']) && $params['_user_data'] === true) {
             $params['_left_join'] = [User::class => ['user_id', 'id', 'user']];
             unset($params['_user_data']);
         }

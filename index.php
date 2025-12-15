@@ -8,7 +8,7 @@
 
 namespace Brood;
 
-use Fzb\Auth, Fzb\Database, Fzb\Router, Fzb\Htmx, Fzb\Benchmark, \Redis;
+use Fzb\Auth, Fzb\Database, Fzb\Router, Fzb\Htmx, Fzb\Benchmark, Fzb\JWT, Fzb\Mercure, \Redis;
 
 if (!preg_match('/^8\.*/i', phpversion())) {
 	die("brood requires PHP version 8.1 or newer.");
@@ -68,6 +68,19 @@ $auth->on_failure(function (string $next_url) {
 
     exit;
 });
+
+// Create Mercure publisher
+error_log("Creating Mercure publisher...");
+$jwt =  JWT::encode(
+    payload: [
+        'mercure' => [
+            'publish' => ['*'],
+            'exp' => time() + 3600
+        ]
+        ],
+    secret: $_ENV['MERCURE_PUBLISHER_JWT_KEY']
+);
+$mercure = new Mercure('http://mercure', $jwt);
 
 // router using controllers
 $router = new Router();

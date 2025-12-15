@@ -9,7 +9,7 @@ require_once 'components/wysiwyg_editor.tpl.php';
 
 Fzb\extend("layouts/app_main.tpl.php");
 
-$content = function() use ($title, $description, $chats, $url_id) { ?>
+$content = function() use ($title, $description, $url_id, $mercure_url, $jwt) { ?>
     <div
         id="chat_room"
         class="
@@ -122,8 +122,9 @@ $content = function() use ($title, $description, $chats, $url_id) { ?>
                     
                 "
                 @resize.window="$el.scrollTop = scroll"
+                @scroll="if ($el.scrollTop < 100 && $el.scrollTop > 0) enable_old_messages_getter = true"
                 hx-ext="sse" 
-                sse-connect="/test_sse"
+                sse-connect="<?= $mercure_url ?>"
             >
                 <!-- scroll up old message getter -->
                 <div
@@ -148,10 +149,7 @@ $content = function() use ($title, $description, $chats, $url_id) { ?>
                     class="space-y-3"
                     hx-get="/chat/<?= $url_id ?>/messages"
                     hx-trigger="load"
-                    @htmx:after-swap="
-                        $dispatch('chat-scroll-instant');
-                        enable_old_messages_getter = true
-                    "
+                    @htmx:after-swap="$dispatch('chat-scroll-instant')"
                 ></div>
                 
                 <!-- new chat messages -->
