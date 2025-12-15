@@ -4,4 +4,5 @@ FROM dunglas/frankenphp AS build
 # Install PHP Redis extension
 RUN install-php-extensions \
 	pdo_mysql \
-    redis
+    redis \
+    sockets

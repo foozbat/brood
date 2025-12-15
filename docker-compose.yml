@@ -1,14 +1,34 @@
 services:
+  traefik:
+    image: traefik:v3.0
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    networks:
+      - default
+      
   app:
     build:
       context: .
       dockerfile: Dockerfile
-    ports:
-      - 8080:80
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.app.rule=Host(`brood.localhost`)"
+      - "traefik.http.routers.app.entrypoints=web"
+      - "traefik.http.services.app.loadbalancer.server.port=80"
     depends_on:
       - redis
+      - mariadb
+      - mercure
     networks:
-      - app-network
+      - default
     environment:
       SERVER_NAME: ':80'
       DB_HOST: mariadb
@@ -16,17 +36,15 @@ services:
       DB_PASSWORD: password
       REDIS_HOST: redis
       REDIS_PORT: 6379
-      FRANKENPHP_CONFIG: "worker ./public/worker.php"
-    # mount . to /app/public
+      MERCURE_HUB: 'http://mercure'
+      MERCURE_PUBLISHER_JWT_KEY: 'CHANGE_THIS_SECRET_KEY'
+      MERCURE_SUBSCRIBER_JWT_KEY: 'CHANGE_THIS_SECRET_KEY'
+      #FRANKENPHP_CONFIG: "worker /app/public/worker.php 2"
     volumes:
       - .:/app/public
 
   redis:
     image: redis:alpine3.22
-    ports:
-      - 6379:6379
-    networks:
-      - app-network
 
   mariadb:
     image: mariadb:lts-ubi9
@@ -35,16 +53,24 @@ services:
       MARIADB_DATABASE: brood 
       MARIADB_USER: brood # CHANGE TO SECRET
       MARIADB_PASSWORD: password # CHANGE TO SECRET
-    ports:
-      - 3306:3306
     volumes:
       - mariadb-data:/var/lib/mysql
-    networks:
-      - app-network
 
-networks:
-  app-network:
-    driver: bridge
+  mercure:
+    image: dunglas/mercure
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.mercure.rule=Host(`brood.localhost`) && PathPrefix(`/.well-known/mercure`)"
+      - "traefik.http.routers.mercure.entrypoints=web"
+      - "traefik.http.services.mercure.loadbalancer.server.port=80"
+    environment:
+      SERVER_NAME: ':80'
+      MERCURE_PUBLISHER_JWT_KEY: 'CHANGE_THIS_SECRET_KEY'
+      MERCURE_SUBSCRIBER_JWT_KEY: 'CHANGE_THIS_SECRET_KEY'
+      MERCURE_CORS_ALLOWED_ORIGINS: '*'
+    networks:
+      - default
 
 volumes:
   mariadb-data:
