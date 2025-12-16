@@ -114,6 +114,7 @@ $content = function() use ($title, $description, $url_id, $mercure_url, $jwt) { 
                     w-full h-full 
                     overflow-y-auto
                     pr-3
+                     flex flex-col
                 "
                 x-data="{ scroll: 0 }"
                 x-ref="chat_container"
@@ -134,6 +135,8 @@ $content = function() use ($title, $description, $url_id, $mercure_url, $jwt) { 
                     hx-target="#old_chat_messages"
                     hx-swap="afterbegin"
                 ></div>
+
+                <div class="flex-grow"></div>
 
                 <!-- old chat messages -->
                 <div
