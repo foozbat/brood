@@ -128,23 +128,19 @@ $content = function() use ($title, $description, $url_id, $mercure_url, $jwt) { 
                 sse-connect="<?= $mercure_url ?>"
             >
                 <!-- scroll up old message getter -->
-                <div
-                    x-show="enable_old_messages_getter"
-                    hx-get="/chat/<?= $url_id ?>/messages"
-                    hx-trigger="intersect"
-                    hx-target="#old_chat_messages"
-                    hx-swap="afterbegin"
-                ></div>
+                <div id="old_message_getter"></div>
+
+                <div id="new_message_getter"></div>
 
                 <div class="flex-grow"></div>
 
                 <!-- old chat messages -->
-                <div
+                <!--<div
                     id="old_chat_messages"
                     x-ref="old_chat_messages"
                     class="space-y-3"
                 >
-                </div>
+                </div>-->
 
                 <!-- current chat messages -->
                 <div 
@@ -152,23 +148,29 @@ $content = function() use ($title, $description, $url_id, $mercure_url, $jwt) { 
                     class="space-y-3"
                     hx-get="/chat/<?= $url_id ?>/messages"
                     hx-trigger="load"
-                    @htmx:after-swap="$dispatch('chat-scroll-instant')"
-                ></div>
-                
-                <!-- new chat messages -->
-                <div 
-                    id="new_chat_messages"
-                    class="pt-3 space-y-3"
-                    x-ref="new_chat_messages"
-                    hx-get="/chat/<?= $url_id ?>/messages/1"
-                    hx-trigger="sse:chat-message"
-                    hx-swap="beforeend"
-                    x-on:htmx:after-swap="
+                    @htmx:after-swap="
                         if (!show_jump_latest_icon) {
                             $dispatch('chat-scroll-instant');
                         }
                     "
                 ></div>
+                
+                <!-- new chat messages -->
+                <!--
+                    x-on:htmx:after-swap="
+                        if (!show_jump_latest_icon) {
+                            $dispatch('chat-scroll-instant');
+                        }
+                    "
+                -->
+                <div 
+                    id="new_chat_messages"
+                    class="pt-3 space-y-3"
+                    x-ref="new_chat_messages"
+                    hx-get="/chat/<?= $url_id ?>/messages/1"
+                ></div>
+
+
 
                 <div 
                     x-ref="msg_anchor_newest" 

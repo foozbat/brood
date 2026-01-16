@@ -5,6 +5,8 @@ namespace Brood;
 use Fzb\Input;
 use Fzb\Renderer;
 use Fzb\Htmx;
+use function Fzb\Model\gt;
+use function Fzb\Model\lt;
 use Fzb\JWT; // remove
 
 $renderer = new Renderer();
@@ -13,34 +15,21 @@ $router->use_controller_prefix();
 
 /**
  * Gets chat messages.
- * Implemented using dummy data
- * @todo pull messages from DB
  */
 $router->get(
     "/{url_id}/messages", 
-    "/{url_id}/messages/{num}",
+    "/{url_id}/messages/since/{since_id}",
+    "/{url_id}/messages/before/{before_id}",
     function () use ($renderer) {
-        list($url_id, $num, $validation) = Input::from_request(
+        [$url_id, $since_id, $before_id, $validation] = Input::from_request(
             url_id: 'path required',
-            num: 'path validate:int default:25'
+            since_id: 'path validate:int',
+            before_id: 'path validate:int'
         );
 
-        /*$lorem = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Posuere lorem ipsum dolor sit amet consectetur adipiscing elit. Enim facilisis gravida neque convallis a cras semper auctor neque. Vel eros donec ac odio tempor orci. Donec pretium vulputate sapien nec sagittis aliquam malesuada. Vitae suscipit tellus mauris a diam. Vitae semper quis lectus nulla at volutpat diam. Scelerisque varius morbi enim nunc faucibus a pellentesque. At urna condimentum mattis pellentesque id nibh tortor id aliquet. Suspendisse faucibus interdum posuere lorem ipsum dolor sit. In hac habitasse platea dictumst quisque sagittis purus sit amet. Porttitor lacus luctus accumsan tortor posuere ac ut consequat. Maecenas accumsan lacus vel facilisis volutpat est velit. Pharetra vel turpis nunc eget. Auctor augue mauris augue neque gravida. Nunc mattis enim ut tellus. Ipsum a arcu cursus vitae congue mauris rhoncus aenean.";
-        $lorems = explode(". ", $lorem);
-
-        $chats = [];
-
-        for ($i=0; $i<$num; $i++) {
-            $chats[$i] = [
-                'chat_id' => rand(1,1000000),
-                'poster' => 'Poster ' . $i, 
-                'content' => join(". ", array_slice($lorems, rand(0,5), rand(1,6)))
-            ];
-        }*/
-
-        if (!Htmx::is_htmx_request()) {
+        /*if (!Htmx::is_htmx_request()) {
             return;
-        }
+        }*/
 
         $channel = Channel::get_by(url_id: $url_id);
 
@@ -50,13 +39,46 @@ $router->get(
             return;
         }
 
-        $messages = Message::get_by(
-            channel_id: $channel->id//,
-            //_order_by: 'created_at ASC',
-            //_limit: $num
+        $pagination = Message::get_pagination_by(
+            channel_id: $channel->id,
+            _per_page: 10
         );
 
+        $messages = null;
+
+        $params = [
+            'channel_id' => $channel->id
+        ];
+
+        if ($since_id !== null) {
+            $params['id'] = gt($since_id);
+        } else if ($before_id !== null) {
+            $params['id'] = lt($before_id);
+            $params['_limit'] = 10;
+        } else {
+            Common::debug_message("gothere {$pagination->total_items} {$pagination->total_pages}");
+            // paginate and get the last "page"
+            $params['_order_by'] = 'id DESC';
+            $params['_page'] = $pagination->total_pages;
+            $params['_per_page'] = 10;
+        }
+
+        $messages = Message::get_by(...$params);
+
+        if (!$before_id && $messages !== null) {
+            $newest_message_id = is_array($messages) ? $messages[count($messages) - 1]->id : $messages->id;
+            $renderer->set("newest_message_id", $newest_message_id);
+        }
+
+        if (!$since_id && $messages !== null) {
+            $oldest_message_id = is_array($messages) ? $messages[0]->id : $messages->id;
+            $renderer->set("oldest_message_id", $oldest_message_id);
+        }
+
         $renderer->set("messages", $messages);
+        $renderer->set("channel_is_empty", $pagination->total_items === 0);
+        $renderer->set("url_id", $url_id);
+
         $renderer->show("fragments/chat_message.tpl.php");
 });
 
@@ -66,7 +88,7 @@ $router->get(
 $router->post("/{url_id}/send", function () use ($auth, $mercure) {
     $auth->login_required();
     
-    list($url_id, $content, $validation) = Input::from_request(
+    [$url_id, $content, $validation] = Input::from_request(
         url_id: 'path required',
         content: 'post required'
     );
@@ -105,7 +127,7 @@ $router->post("/{url_id}/send", function () use ($auth, $mercure) {
 $router->get("/{url_id}/stream", function () use ($redis, $auth) {
     //ini_set('max_execution_time', 0);
 
-    list($url_id, $validation) = Input::from_request(
+    [$url_id, $validation] = Input::from_request(
         url_id: 'path required'
     );
 
@@ -155,7 +177,7 @@ $router->get("/{url_id}/stream", function () use ($redis, $auth) {
  * Default page chat room
  */
 $router->get("/{url_id}", function () use ($renderer) {
-    list($url_id, $validation) = Input::from_request(
+    [$url_id, $validation] = Input::from_request(
         url_id: 'path required'
     );
 
